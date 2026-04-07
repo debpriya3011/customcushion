@@ -47,7 +47,6 @@ export async function getSession(req: NextRequest): Promise<SessionPayload | nul
   const token = req.cookies.get(COOKIE_NAME)?.value;
   console.log(`[Session] getSession - token exists: ${!!token}`, {
     cookieName: COOKIE_NAME,
-    allCookies: req.cookies.getSetCookie?.(),
   });
   if (!token) {
     console.log('[Session] No session token found in cookies');
