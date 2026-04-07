@@ -27,20 +27,39 @@ function decode(token: string): SessionPayload | null {
 export async function createSession(res: NextResponse, payload: SessionPayload) {
   const token = encode(payload);
   const secureCookie = process.env.NODE_ENV === 'production' && COOKIE_SECURE;
+  const isDev = process.env.NODE_ENV !== 'production';
 
   res.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: secureCookie,
-    sameSite: 'lax',
+    sameSite: isDev ? 'strict' : 'lax', // Use strict for localhost dev, lax for production
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+  
+  console.log(`[Session] Created session cookie for user ${payload.email}`, {
+    secure: secureCookie,
+    isDev,
   });
 }
 
 export async function getSession(req: NextRequest): Promise<SessionPayload | null> {
   const token = req.cookies.get(COOKIE_NAME)?.value;
-  if (!token) return null;
-  return decode(token);
+  console.log(`[Session] getSession - token exists: ${!!token}`, {
+    cookieName: COOKIE_NAME,
+    allCookies: req.cookies.getSetCookie?.(),
+  });
+  if (!token) {
+    console.log('[Session] No session token found in cookies');
+    return null;
+  }
+  const session = decode(token);
+  if (!session) {
+    console.log('[Session] Failed to decode session token');
+  } else {
+    console.log(`[Session] Session decoded for user: ${session.email}`);
+  }
+  return session;
 }
 
 export async function clearSession(res: NextResponse) {

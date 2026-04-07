@@ -25,16 +25,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchMe = useCallback(async () => {
     try {
+      console.log('[AuthContext] Fetching /api/auth/me...');
       const res = await fetch('/api/auth/me', {
         credentials: 'include'
       });
+      console.log(`[AuthContext] /api/auth/me response: ${res.status}`);
       if (res.ok) {
         const data = await res.json();
+        console.log(`[AuthContext] User loaded: ${data.user?.email}`);
         setUser(data.user);
       } else {
+        console.log('[AuthContext] Not authenticated (401)');
         setUser(null);
       }
-    } catch {
+    } catch (err) {
+      console.error('[AuthContext] Fetch error:', err);
       setUser(null);
     } finally {
       setLoading(false);
@@ -44,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { fetchMe(); }, [fetchMe]);
 
   const login = useCallback(async (email: string, password: string) => {
+    console.log('[AuthContext] Logging in...');
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -51,10 +57,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
+    console.log(`[AuthContext] Login response: ${res.status}`, { email });
     if (res.ok) {
       setUser(data.user);
+      console.log('[AuthContext] User set successfully');
       return { ok: true };
     }
+    console.log('[AuthContext] Login failed:', data.error);
     return { ok: false, error: data.error ?? 'Login failed' };
   }, []);
 

@@ -4,7 +4,10 @@ import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
 export async function GET(req: NextRequest) {
+  console.log('[Auth/ME] GET request received');
   const session = await getSession(req);
+  console.log('[Auth/ME] Session:', session ? `Found for ${session.email}` : 'Not found');
+  
   if (!session) {
     return NextResponse.json({ user: null }, { status: 401 });
   }
@@ -12,7 +15,11 @@ export async function GET(req: NextRequest) {
     where: { id: session.id },
     select: { id: true, name: true, email: true, role: true },
   });
-  if (!user) return NextResponse.json({ user: null }, { status: 401 });
+  if (!user) {
+    console.log('[Auth/ME] User not found in DB');
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+  console.log(`[Auth/ME] Returning user: ${user.email}`);
   return NextResponse.json({ user });
 }
 

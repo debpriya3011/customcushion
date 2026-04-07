@@ -21,11 +21,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
+    console.log(`[Auth/LOGIN] User ${email} authenticated successfully`);
     const response = NextResponse.json({
       user: { id: user.id, name: user.name, email: user.email, role: user.role },
     });
 
     await createSession(response, { id: user.id, email: user.email, role: user.role });
+    console.log(`[Auth/LOGIN] Session created for ${email}`);
     return response;
   } catch (err) {
     console.error('Login error:', err);
