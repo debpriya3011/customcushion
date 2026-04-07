@@ -1,0 +1,63 @@
+.strip {
+  background: linear-gradient(135deg, var(--brand-secondary), #1a6644);
+  overflow: hidden;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.strip::before,
+.strip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+}
+
+.strip::before {
+  left: 0;
+  background: linear-gradient(to right, #FBB91E, transparent);
+}
+
+.strip::after {
+  right: 0;
+  background: linear-gradient(to left, #1a6644, transparent);
+}
+
+.track {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .9);
+  letter-spacing: .03em;
+  padding-right: .75rem;
+}
+
+.sep {
+  color: rgba(255, 255, 255, .35);
+  font-size: 1.1rem;
+}

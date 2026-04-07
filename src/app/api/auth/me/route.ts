@@ -1,0 +1,68 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@/lib/session';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
+
+export async function GET(req: NextRequest) {
+  const session = await getSession(req);
+  if (!session) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: session.id },
+    select: { id: true, name: true, email: true, role: true },
+  });
+  if (!user) return NextResponse.json({ user: null }, { status: 401 });
+  return NextResponse.json({ user });
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const session = await getSession(req);
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { name, email, currentPassword, newPassword } = await req.json();
+
+    const existing = await prisma.user.findUnique({ where: { id: session.id } });
+    if (!existing) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    const updateData: any = {};
+    if (name !== undefined) updateData.name = name;
+    if (email && email !== existing.email) {
+      const taken = await prisma.user.findUnique({ where: { email } });
+      if (taken) return NextResponse.json({ error: 'Email already in use by another account.' }, { status: 409 });
+      updateData.email = email;
+    }
+
+    if (newPassword) {
+      if (!currentPassword) return NextResponse.json({ error: 'Current password is required to set a new password.' }, { status: 400 });
+      const valid = await bcrypt.compare(currentPassword, existing.password);
+      if (!valid) return NextResponse.json({ error: 'Current password is incorrect.' }, { status: 401 });
+      updateData.password = await bcrypt.hash(newPassword, 12);
+    }
+
+    await prisma.user.update({ where: { id: session.id }, data: updateData });
+
+    if (newPassword) {
+      const siteSettings = await prisma.setting.findMany({
+        where: { key: { in: ['siteName', 'siteLogo'] } }
+      });
+      const siteName = siteSettings.find(s => s.key === 'siteName')?.value || 'CushionGuru';
+      const siteLogo = siteSettings.find(s => s.key === 'siteLogo')?.value;
+
+      const { sendMail } = await import('@/lib/mail');
+      const { generatePasswordChangeEmail } = await import('@/lib/email-templates');
+      const htmlContent = generatePasswordChangeEmail(siteName, siteLogo);
+      
+      await sendMail({
+        to: updateData.email || existing.email,
+        subject: `Your Password has been changed - ${siteName}`,
+        html: htmlContent
+      });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
