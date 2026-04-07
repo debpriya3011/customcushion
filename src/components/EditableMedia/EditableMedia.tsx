@@ -43,6 +43,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
+        credentials: 'include',
         body: formData,
       });
       const data = await res.json();

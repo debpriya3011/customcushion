@@ -505,7 +505,7 @@ export default function CustomizePage() {
     fd.append('type', 'image');
 
     try {
-      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const res = await fetch('/api/upload', { method: 'POST', credentials: 'include', body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Upload failed');
       // Reload images

@@ -170,6 +170,7 @@ export default function CartPageClient() {
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           items,
           total: finalTotal,
@@ -189,6 +190,7 @@ export default function CartPageClient() {
           const stripeRes = await fetch('/api/checkout-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ orderId: order.id }),
           });
           const session = await stripeRes.json();

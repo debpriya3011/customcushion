@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const COOKIE_NAME = 'cg_session';
 const SECRET      = process.env.NEXTAUTH_SECRET ?? 'dev-secret-key-32chars-minimum!!';
+const COOKIE_SECURE = process.env.SESSION_COOKIE_SECURE?.toLowerCase() !== 'false';
 
 interface SessionPayload {
   id: string;
@@ -25,9 +26,11 @@ function decode(token: string): SessionPayload | null {
 
 export async function createSession(res: NextResponse, payload: SessionPayload) {
   const token = encode(payload);
+  const secureCookie = process.env.NODE_ENV === 'production' && COOKIE_SECURE;
+
   res.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: secureCookie,
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days
