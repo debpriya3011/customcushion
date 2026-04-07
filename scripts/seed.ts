@@ -17,7 +17,7 @@ async function main() {
 
   // Admin user
   const adminEmail = process.env.ADMIN_EMAIL ?? 'admin@cushionguru.com';
-  const adminPwd   = process.env.ADMIN_PASSWORD ?? 'Admin@123';
+  const adminPwd = process.env.ADMIN_PASSWORD ?? 'Admin@123';
 
   const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
   if (!existingAdmin) {
