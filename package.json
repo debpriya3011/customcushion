@@ -9,11 +9,11 @@
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "ts-node -O \"{\\\"module\\\":\\\"CommonJS\\\"}\" prisma/seed.ts",
+    "db:seed": "ts-node -O \"{\\\"module\\\":\\\"CommonJS\\\"}\" scripts/seed.ts",
     "db:studio": "prisma studio"
   },
   "prisma": {
-    "seed": "ts-node -O \"{\\\"module\\\":\\\"CommonJS\\\"}\" prisma/seed.ts"
+    "seed": "ts-node -O \"{\\\"module\\\":\\\"CommonJS\\\"}\" scripts/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1025.0",
