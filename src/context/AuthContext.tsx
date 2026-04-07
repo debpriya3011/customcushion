@@ -15,6 +15,10 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   logout: () => Promise<void>;
   register: (name: string, email: string, password: string, otp?: string) => Promise<{ ok: boolean; error?: string; requireOtp?: boolean }>;
+  refreshMedia: () => void;
+  mediaRefreshKey: number;
+  mediaCache: Record<string, string>;
+  updateMediaCache: (key: string, url: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +26,43 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mediaCache, setMediaCache] = useState<Record<string, string>>({});
+  const [mediaRefreshKey, setMediaRefreshKey] = useState(0);
+
+  const refreshMedia = useCallback(() => {
+    setMediaRefreshKey(prev => prev + 1);
+  }, []);
+
+  // Preload all media on app start for instant loading
+  const preloadMedia = useCallback(async () => {
+    try {
+      const res = await fetch('/api/media', { cache: 'no-store' });
+      const items: { key: string; url: string }[] = await res.json();
+      const cache: Record<string, string> = {};
+      items.forEach(item => {
+        cache[item.key] = item.url;
+      });
+      setMediaCache(cache);
+    } catch (err) {
+      console.error('Failed to preload media:', err);
+    }
+  }, []);
+
+  // Preload media when component mounts
+  useEffect(() => {
+    preloadMedia();
+  }, [preloadMedia]);
+
+  // Refresh media cache when mediaRefreshKey changes
+  useEffect(() => {
+    if (mediaRefreshKey > 0) {
+      preloadMedia();
+    }
+  }, [mediaRefreshKey, preloadMedia]);
+
+  const updateMediaCache = useCallback((key: string, url: string) => {
+    setMediaCache(prev => ({ ...prev, [key]: url }));
+  }, []);
 
   const fetchMe = useCallback(async () => {
     try {
@@ -91,7 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, refreshMedia, mediaRefreshKey, mediaCache, updateMediaCache }}>
       {children}
     </AuthContext.Provider>
   );

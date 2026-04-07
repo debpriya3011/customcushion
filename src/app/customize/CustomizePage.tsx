@@ -423,7 +423,7 @@ export default function CustomizePage() {
   const [zipper, setZipper] = useState<string>('Long Side');
 
   // Admin Auth
-  const { user } = useAuth();
+  const { user, refreshMedia: globalRefreshMedia } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
 
   // Step 6 – Piping
@@ -434,6 +434,7 @@ export default function CustomizePage() {
 
   // Step option images (admin-uploaded)
   const [stepImages, setStepImages] = useState<Record<string, string>>({});
+  const [stepImagesRefreshKey, setStepImagesRefreshKey] = useState(0);
 
   /* ── Fetch fabrics ── */
   useEffect(() => {
@@ -461,6 +462,17 @@ export default function CustomizePage() {
         setStepImages(map);
       })
       .catch(() => { });
+  }, [stepImagesRefreshKey]);
+
+  // Clean up object URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      Object.values(stepImages).forEach(url => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
   }, []);
 
   /* ── Is throw pillow? ── */
@@ -492,6 +504,16 @@ export default function CustomizePage() {
   const visibleFabrics = currentBrand?.fabrics.slice(0, fabricsShown) ?? [];
 
   const handleImageUpload = async (key: string, file: File) => {
+    // INSTANT UPDATE: Create object URL immediately for instant preview
+    const objectUrl = URL.createObjectURL(file);
+    const normalizedKey = key.toLowerCase().replace(/ /g, '_');
+
+    // Show image immediately
+    setStepImages(prev => ({
+      ...prev,
+      [normalizedKey]: objectUrl
+    }));
+
     const fd = new FormData();
     fd.append('file', file);
     // Determine type string for DB
@@ -501,19 +523,33 @@ export default function CustomizePage() {
     if (PIPING_OPTS.find(f => f.key === key)) prefix = 'piping_';
     if (TIES_OPTS.find(f => f.key === key)) prefix = 'ties_';
 
-    fd.append('key', `${prefix}${key.toLowerCase().replace(/ /g, '_')}`);
+    fd.append('key', `${prefix}${normalizedKey}`);
     fd.append('type', 'image');
 
     try {
       const res = await fetch('/api/upload', { method: 'POST', credentials: 'include', body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Upload failed');
-      // Reload images
+
+      // Replace object URL with actual uploaded URL
+      URL.revokeObjectURL(objectUrl);
       setStepImages(prev => ({
         ...prev,
-        [key.toLowerCase().replace(/ /g, '_')]: data.url
+        [normalizedKey]: data.url
       }));
+
+      // Trigger refresh for all step images
+      setStepImagesRefreshKey(prev => prev + 1);
+      // Trigger global refresh for all media components
+      if (globalRefreshMedia) globalRefreshMedia();
     } catch (err: any) {
+      // Upload failed - revert to previous state
+      URL.revokeObjectURL(objectUrl);
+      setStepImages(prev => {
+        const newState = { ...prev };
+        delete newState[normalizedKey];
+        return newState;
+      });
       alert(`Upload failed: ${err.message}`);
     }
   };

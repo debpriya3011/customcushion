@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/media?prefix=shape_
 // Returns all media items whose key starts with the given prefix
 export async function GET(req: NextRequest) {

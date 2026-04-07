@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 interface EditableMediaProps {
@@ -12,29 +12,65 @@ interface EditableMediaProps {
 }
 
 export default function EditableMedia({ mediaKey, type = 'image', defaultComponent, className = '', style }: EditableMediaProps) {
-  const { user } = useAuth();
+  const { user, refreshMedia: globalRefreshMedia, mediaRefreshKey, mediaCache, updateMediaCache } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
 
   const [url, setUrl] = useState<string | null>(null);
-  // Don't flash fallback initially if we check fast
-  const [loading, setLoading] = useState(true);
+  // Start with loading false if we have cached media
+  const [loading, setLoading] = useState(!mediaCache[mediaKey]);
   const [uploading, setUploading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const fetchMedia = useCallback(async () => {
+    // Check cache first
+    if (mediaCache[mediaKey]) {
+      setUrl(mediaCache[mediaKey]);
+      setLoading(false);
+      return;
+    }
+
+    // Fallback to API if not in cache
+    try {
+      const res = await fetch(`/api/media/${mediaKey}`, { cache: 'no-store' });
+      const data = await res.json();
+      if (data && data.url) setUrl(data.url);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch media:', err);
+      setLoading(false);
+    }
+  }, [mediaKey, mediaCache]);
 
   useEffect(() => {
-    fetch(`/api/media/${mediaKey}`, { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.url) setUrl(data.url);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [mediaKey]);
+    fetchMedia();
+  }, [fetchMedia, refreshKey]);
+
+  // Update when cache changes
+  useEffect(() => {
+    if (mediaCache[mediaKey]) {
+      setUrl(mediaCache[mediaKey]);
+      setLoading(false);
+    }
+  }, [mediaCache, mediaKey]);
+
+  // Clean up object URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (url && url.startsWith('blob:')) {
+        URL.revokeObjectURL(url);
+      }
+    };
+  }, [url]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // INSTANT UPDATE: Create object URL immediately for instant preview
+    const objectUrl = URL.createObjectURL(file);
+    setUrl(objectUrl);
     setUploading(true);
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('key', mediaKey);
@@ -48,11 +84,25 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
       });
       const data = await res.json();
       if (res.ok && data.url) {
+        // Replace object URL with actual uploaded URL
+        URL.revokeObjectURL(objectUrl); // Clean up memory
         setUrl(data.url);
+        // Update cache immediately for instant availability
+        updateMediaCache(mediaKey, data.url);
+        // Trigger refresh for other components that might be showing this media
+        setRefreshKey(prev => prev + 1);
+        // Also trigger global refresh for all media components
+        if (globalRefreshMedia) globalRefreshMedia();
       } else {
+        // Upload failed - revert to previous state
+        URL.revokeObjectURL(objectUrl);
+        setUrl(null);
         alert(data.error || 'Upload failed');
       }
     } catch (err) {
+      // Upload failed - revert to previous state
+      URL.revokeObjectURL(objectUrl);
+      setUrl(null);
       alert('Upload failed');
     } finally {
       setUploading(false);
