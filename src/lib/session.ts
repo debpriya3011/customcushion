@@ -26,20 +26,21 @@ function decode(token: string): SessionPayload | null {
 
 export async function createSession(res: NextResponse, payload: SessionPayload) {
   const token = encode(payload);
-  const secureCookie = process.env.NODE_ENV === 'production' && COOKIE_SECURE;
+  // Only use secure cookies if explicitly enabled - AWS might not have proper HTTPS setup
+  const secureCookie = process.env.SESSION_COOKIE_SECURE === 'true';
   const isDev = process.env.NODE_ENV !== 'production';
 
   res.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: secureCookie,
-    sameSite: isDev ? 'strict' : 'lax', // Use strict for localhost dev, lax for production
+    secure: secureCookie, // Only true if explicitly set in env
+    sameSite: 'lax', // Use lax for both dev and prod
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });
   
   console.log(`[Session] Created session cookie for user ${payload.email}`, {
     secure: secureCookie,
-    isDev,
+    NODE_ENV: process.env.NODE_ENV,
   });
 }
 
