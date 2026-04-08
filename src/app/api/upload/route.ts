@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/session';
-import { uploadToS3, deleteFromS3 } from '@/lib/s3';
+import { uploadToS3, deleteFromS3, isStoredUrl } from '@/lib/s3';
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const fileUrl = await uploadToS3(buffer, filename, file.type || 'application/octet-stream');
     
     const existingMedia = await prisma.media.findUnique({ where: { key } });
-    if (existingMedia?.url && existingMedia.url.includes('amazonaws.com')) {
+    if (existingMedia?.url && isStoredUrl(existingMedia.url)) {
       await deleteFromS3(existingMedia.url);
     }
 

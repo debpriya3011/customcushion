@@ -37,9 +37,9 @@ export async function POST(req: NextRequest) {
       const buffer = Buffer.from(bytes);
       const ext = file.name.split('.').pop() || 'png';
       const filename = `settings/logo_${Date.now()}.${ext}`;
-      
+
       const logoUrl = await uploadToS3(buffer, filename, file.type || 'image/png');
-      
+
       const existingLogo = await prisma.setting.findUnique({ where: { key: 'logoUrl' } });
       if (existingLogo?.value && existingLogo.value.includes('amazonaws.com')) {
         await deleteFromS3(existingLogo.value);

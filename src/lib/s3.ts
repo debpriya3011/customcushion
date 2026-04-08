@@ -21,20 +21,28 @@ export const uploadToS3 = async (buffer: Buffer, filename: string, mimeType: str
 
   await s3Client.send(command);
 
-  // Return the public URL
+  // Return the CloudFront CDN URL if configured, otherwise fall back to direct S3 URL
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
+  if (cdnUrl) {
+    return `${cdnUrl.replace(/\/$/, '')}/${filename}`;
+  }
   return `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${filename}`;
 };
+
+/** Helper – returns true for both S3 and CloudFront URLs owned by this app */
+export const isStoredUrl = (url: string): boolean =>
+  url.includes('amazonaws.com') || url.includes('cloudfront.net');
 
 export const deleteFromS3 = async (fileUrl: string) => {
   const bucketName = process.env.AWS_S3_BUCKET_NAME;
   if (!bucketName || !fileUrl) return;
 
   try {
-    // Extract the key (filename) from the URL
-    // e.g. https://my-bucket.s3.us-east-1.amazonaws.com/uploads/123-image.jpg
+    // Works for both:
+    //   https://bucket.s3.us-east-1.amazonaws.com/uploads/file.jpg  → key = uploads/file.jpg
+    //   https://d2j7elbn0mue4p.cloudfront.net/uploads/file.jpg       → key = uploads/file.jpg
     const urlParts = new URL(fileUrl);
-    // remove leading slash
-    const key = urlParts.pathname.substring(1); 
+    const key = urlParts.pathname.substring(1); // remove leading slash
 
     const command = new DeleteObjectCommand({
       Bucket: bucketName,
