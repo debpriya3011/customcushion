@@ -102,7 +102,7 @@ export default function ContactPageClient() {
                   <span>✉️</span>
                   <div>
                     <strong>Email</strong>
-                    <a href="https://mail.google.com/mail/?fs=1&to=contact@cushionguru.com&tf=cm" target="_blank" rel="noopener noreferrer">contact@cushionguru.com</a>
+                    <a href="mailto:contact@cushionguru.com" target="_blank" rel="noopener noreferrer">contact@cushionguru.com</a>
                   </div>
                 </div>
                 <div className={styles.infoCard}>

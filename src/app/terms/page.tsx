@@ -43,7 +43,7 @@ export default function TermsPage() {
             </div>
           ))}
           <div className={styles.contact}>
-            If you have any questions or concerns, please <a href="https://mail.google.com/mail/?fs=1&to=contact@cushionguru.com&tf=cm" target="_blank" rel="noopener noreferrer">contact our customer service team</a>.
+            If you have any questions or concerns, please <a href="mailto:contact@cushionguru.com" target="_blank" rel="noopener noreferrer">contact our customer service team</a>.
           </div>
         </div>
       </section>
