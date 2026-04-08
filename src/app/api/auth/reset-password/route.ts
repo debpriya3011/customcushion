@@ -36,10 +36,10 @@ export async function POST(req: NextRequest) {
     await prisma.otp.delete({ where: { id: otpRecord.id } });
 
     const siteSettings = await prisma.setting.findMany({
-      where: { key: { in: ['siteName', 'siteLogo'] } }
+      where: { key: { in: ['siteName', 'logoUrl'] } }
     });
     const siteName = siteSettings.find(s => s.key === 'siteName')?.value || 'CushionGuru';
-    const siteLogo = siteSettings.find(s => s.key === 'siteLogo')?.value;
+    const siteLogo = siteSettings.find(s => s.key === 'logoUrl')?.value;
 
     const htmlContent = generatePasswordChangeEmail(siteName, siteLogo);
     

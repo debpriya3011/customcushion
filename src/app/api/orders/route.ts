@@ -37,10 +37,10 @@ export async function POST(req: NextRequest) {
     try {
       const user = await prisma.user.findUnique({ where: { id: session.id } });
       const siteSettings = await prisma.setting.findMany({
-        where: { key: { in: ['siteName', 'siteLogo'] } }
+        where: { key: { in: ['siteName', 'logoUrl'] } }
       });
       const siteName = siteSettings.find(s => s.key === 'siteName')?.value || 'CushionGuru';
-      const siteLogo = siteSettings.find(s => s.key === 'siteLogo')?.value;
+      const siteLogo = siteSettings.find(s => s.key === 'logoUrl')?.value;
 
       if (user?.email) {
         const { sendMail } = await import('@/lib/mail');
@@ -48,8 +48,16 @@ export async function POST(req: NextRequest) {
         
         // Extract customer name for greeting
         const customerName = (order.shippingAddr as any)?.shipping?.fullName || user?.name || 'Valued Customer';
+        const originUrl = req.nextUrl.origin;
         
-        const emailHtml = generateOrderConfirmationEmail(order, siteName, siteLogo, customerName);
+        console.log('--- DEBUG ORDERS API ---');
+        console.log('Site Name Fetched:', siteName);
+        console.log('Site Logo Fetched:', siteLogo);
+        console.log('Origin URL derived:', originUrl);
+        console.log('Customer Name mapped:', customerName);
+        console.log('------------------------');
+
+        const emailHtml = generateOrderConfirmationEmail(order, siteName, siteLogo, customerName, originUrl);
         await sendMail({
           to: user.email,
           subject: `Order Confirmation - ${siteName}`,

@@ -24,10 +24,10 @@ export async function POST(req: NextRequest) {
 
     // Settings for brand info
     const siteSettings = await prisma.setting.findMany({
-      where: { key: { in: ['siteName', 'siteLogo'] } }
+      where: { key: { in: ['siteName', 'logoUrl'] } }
     });
     const siteName = siteSettings.find(s => s.key === 'siteName')?.value || 'CushionGuru';
-    const siteLogo = siteSettings.find(s => s.key === 'siteLogo')?.value;
+    const siteLogo = siteSettings.find(s => s.key === 'logoUrl')?.value;
 
     // Verify OTP flow
     if (otp) {

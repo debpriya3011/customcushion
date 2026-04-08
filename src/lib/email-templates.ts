@@ -1,6 +1,12 @@
-export function generateOrderConfirmationEmail(order: any, brandName: string, brandLogoUrl?: string, customerName: string = 'Valued Customer') {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') : 'http://localhost:3000';
+export function generateOrderConfirmationEmail(order: any, brandName: string, brandLogoUrl?: string, customerName: string = 'Valued Customer', originUrl?: string) {
+  const siteUrl = originUrl || (process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') : 'http://localhost:3000');
   const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
+
+  console.log('--- DEBUG EMAIL TEMPLATE ---');
+  console.log('Input brandLogoUrl:', brandLogoUrl);
+  console.log('Derived siteUrl:', siteUrl);
+  console.log('Final injected logoUrl:', logoUrl);
+  console.log('----------------------------');
 
   return `
     <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333;">
@@ -26,7 +32,6 @@ export function generateOrderConfirmationEmail(order: any, brandName: string, br
           <th style="padding: 10px; text-align: right; border: 1px solid #ddd;">Price</th>
         </tr>
         ${order.items.map((item: any) => {
-          const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') : 'http://localhost:3000';
           const itemImgUrl = item.image ? (item.image.startsWith('http') ? item.image : `${siteUrl}/${item.image.replace(/^\//, '')}`) : '';
           const customDetails = item.customOptions ? Object.entries(item.customOptions)
             .filter(([k,v]) => k !== 'shape' && v)
