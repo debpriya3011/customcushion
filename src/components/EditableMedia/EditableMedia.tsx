@@ -123,10 +123,10 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
           transition: 'opacity 0.2s', cursor: 'pointer', zIndex: 10, fontWeight: 600
         }}>
           {uploading ? 'Uploading...' : `Upload ${type === 'video' ? 'Video' : 'Image'}`}
-          <input type="file" accept={type === 'video' ? 'video/*' : 'image/*'} 
-                 onChange={handleUpload} 
-                 style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
-                 disabled={uploading} />
+          <input type="file" accept={type === 'video' ? 'video/*' : 'image/*'}
+            onChange={handleUpload}
+            style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
+            disabled={uploading} />
         </div>
       </div>
     );

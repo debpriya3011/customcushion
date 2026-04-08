@@ -3,6 +3,9 @@ import type { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/session';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession(req);
@@ -42,7 +45,11 @@ export async function POST(req: NextRequest) {
       if (user?.email) {
         const { sendMail } = await import('@/lib/mail');
         const { generateOrderConfirmationEmail } = await import('@/lib/email-templates');
-        const emailHtml = generateOrderConfirmationEmail(order, siteName, siteLogo);
+        
+        // Extract customer name for greeting
+        const customerName = (order.shippingAddr as any)?.shipping?.fullName || user?.name || 'Valued Customer';
+        
+        const emailHtml = generateOrderConfirmationEmail(order, siteName, siteLogo, customerName);
         await sendMail({
           to: user.email,
           subject: `Order Confirmation - ${siteName}`,
