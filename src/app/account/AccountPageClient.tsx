@@ -82,41 +82,41 @@ export default function AccountPageClient() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           {showOtp ? (
-             <div className="form-group">
-               <label className="form-label" htmlFor="acc-otp">Verification Code <span style={{ color: 'var(--error)' }}>*</span></label>
-               <input id="acc-otp" name="otp" type="text" placeholder="6-digit code" value={otp} onChange={(e) => setOtp(e.target.value)} className="form-control" required autoFocus />
-             </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="acc-otp">Verification Code <span style={{ color: 'var(--error)' }}>*</span></label>
+              <input id="acc-otp" name="otp" type="text" placeholder="6-digit code" value={otp} onChange={(e) => setOtp(e.target.value)} className="form-control" required autoFocus />
+            </div>
           ) : (
-             <>
-                {mode === 'register' && (
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="acc-name">Full Name</label>
-                    <input id="acc-name" name="name" type="text" placeholder="Your full name" value={form.name} onChange={handleInput} className="form-control" />
-                  </div>
-                )}
+            <>
+              {mode === 'register' && (
                 <div className="form-group">
-                  <label className="form-label" htmlFor="acc-email">Username or Email Address <span style={{ color: 'var(--error)' }}>*</span></label>
-                  <input id="acc-email" name="email" type="email" placeholder="Email address" value={form.email} onChange={handleInput} className="form-control" required />
+                  <label className="form-label" htmlFor="acc-name">Full Name</label>
+                  <input id="acc-name" name="name" type="text" placeholder="Your full name" value={form.name} onChange={handleInput} className="form-control" />
                 </div>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="acc-pwd">Password <span style={{ color: 'var(--error)' }}>*</span></label>
-                  <div className={styles.pwdWrap}>
-                    <input
-                      id="acc-pwd"
-                      name="password"
-                      type={showPwd ? 'text' : 'password'}
-                      placeholder="••••••••••••••••"
-                      value={form.password}
-                      onChange={handleInput}
-                      className="form-control"
-                      required
-                    />
-                    <button type="button" className={styles.eyeBtn} onClick={() => setShowPwd(v => !v)} aria-label="Toggle password visibility">
-                      {showPwd ? '🙉' : '🙈'}
-                    </button>
-                  </div>
+              )}
+              <div className="form-group">
+                <label className="form-label" htmlFor="acc-email">Username or Email Address <span style={{ color: 'var(--error)' }}>*</span></label>
+                <input id="acc-email" name="email" type="email" placeholder="Email address" value={form.email} onChange={handleInput} className="form-control" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="acc-pwd">Password <span style={{ color: 'var(--error)' }}>*</span></label>
+                <div className={styles.pwdWrap}>
+                  <input
+                    id="acc-pwd"
+                    name="password"
+                    type={showPwd ? 'text' : 'password'}
+                    placeholder="••••••••••••••••"
+                    value={form.password}
+                    onChange={handleInput}
+                    className="form-control"
+                    required
+                  />
+                  <button type="button" className={styles.eyeBtn} onClick={() => setShowPwd(v => !v)} aria-label="Toggle password visibility">
+                    {showPwd ? '👁️‍🗨️' : '👁️'}
+                  </button>
                 </div>
-             </>
+              </div>
+            </>
           )}
 
           {mode === 'login' && (
