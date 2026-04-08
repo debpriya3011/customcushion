@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 };
 
 const BED_TYPES = [
-  { label: 'SMALL BED BREEDS', examples: 'French Bulldog, Pug, Dachshund, Corgi', emoji: '🐕' },
-  { label: 'MEDIUM BED BREEDS', examples: 'Beagle, Basset Hound, Springer Spaniel', emoji: '🐶' },
-  { label: 'LARGE BED BREEDS', examples: 'Boxer, Collie, German Shepard, Golden Retriever', emoji: '🦮' },
-  { label: 'X-LARGE BED BREEDS', examples: 'Great Dane, Mastiff, Irish Wolfhound, St. Bernard', emoji: '🐕‍🦺' },
+  { label: 'SMALL BED BREEDS', examples: 'French Bulldog, Pug, Dachshund, Corgi', emoji: '' },
+  { label: 'MEDIUM BED BREEDS', examples: 'Beagle, Basset Hound, Springer Spaniel', emoji: '' },
+  { label: 'LARGE BED BREEDS', examples: 'Boxer, Collie, German Shepard, Golden Retriever', emoji: '' },
+  { label: 'X-LARGE BED BREEDS', examples: 'Great Dane, Mastiff, Irish Wolfhound, St. Bernard', emoji: '' },
 ];
 
 const SIZES = [
