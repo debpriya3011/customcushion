@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
+import OtpVerification from '@/components/OtpVerification';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
@@ -31,12 +32,42 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [saved, setSaved] = useState(false);
+  
+  // Password change states
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [savingPassword, setSavingPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Email update states
+  const [enableEmailUpdate, setEnableEmailUpdate] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [existingEmailVerified, setExistingEmailVerified] = useState(false);
+  const [newEmailVerified, setNewEmailVerified] = useState(false);
+  const [verifyingExistingEmail, setVerifyingExistingEmail] = useState(false);
+  const [verifyingNewEmail, setVerifyingNewEmail] = useState(false);
+  const [existingEmailOtpSent, setExistingEmailOtpSent] = useState(false);
+  const [newEmailOtpSent, setNewEmailOtpSent] = useState(false);
+  const [emailMessage, setEmailMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [savingEmail, setSavingEmail] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
       router.replace('/account');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    // Reset email update state when toggler is unchecked
+    if (!enableEmailUpdate) {
+      setNewEmail('');
+      setExistingEmailVerified(false);
+      setNewEmailVerified(false);
+      setExistingEmailOtpSent(false);
+      setNewEmailOtpSent(false);
+    }
+  }, [enableEmailUpdate]);
 
   useEffect(() => {
     if (!user || user.role !== 'ADMIN') return;
@@ -98,6 +129,120 @@ export default function AdminSettingsPage() {
       alert('Failed to remove logo');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSavePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordMessage(null);
+
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ type: 'error', text: 'New passwords do not match.' });
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPasswordMessage({ type: 'error', text: 'Password must be at least 6 characters.' });
+      return;
+    }
+
+    setSavingPassword(true);
+    try {
+      const res = await fetch('/api/auth/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPasswordMessage({ type: 'success', text: 'Password updated successfully!' });
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        setPasswordMessage({ type: 'error', text: data.error || 'Failed to update password.' });
+      }
+    } catch {
+      setPasswordMessage({ type: 'error', text: 'Connection error. Please try again.' });
+    } finally {
+      setSavingPassword(false);
+    }
+  };
+
+  const handleSendOtpExistingEmail = async () => {
+    setVerifyingExistingEmail(true);
+    try {
+      const res = await fetch('/api/auth/email-otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user?.email, type: 'EXISTING_EMAIL' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEmailMessage({ type: 'success', text: 'OTP sent to existing email!' });
+        setExistingEmailOtpSent(true);
+      } else {
+        setEmailMessage({ type: 'error', text: data.error || 'Failed to send OTP' });
+      }
+    } catch {
+      setEmailMessage({ type: 'error', text: 'Connection error. Please try again.' });
+    } finally {
+      setVerifyingExistingEmail(false);
+    }
+  };
+
+  const handleSendOtpNewEmail = async () => {
+    if (!newEmail) {
+      setEmailMessage({ type: 'error', text: 'Please enter a new email address' });
+      return;
+    }
+    setVerifyingNewEmail(true);
+    try {
+      const res = await fetch('/api/auth/email-otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail, type: 'NEW_EMAIL' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEmailMessage({ type: 'success', text: 'OTP sent to new email!' });
+        setNewEmailOtpSent(true);
+      } else {
+        setEmailMessage({ type: 'error', text: data.error || 'Failed to send OTP' });
+      }
+    } catch {
+      setEmailMessage({ type: 'error', text: 'Connection error. Please try again.' });
+    } finally {
+      setVerifyingNewEmail(false);
+    }
+  };
+
+  const handleCompleteEmailUpdate = async () => {
+    setSavingEmail(true);
+    try {
+      const res = await fetch('/api/auth/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEmailMessage({ type: 'success', text: 'Email updated successfully! Changes will reflect on next login.' });
+        setEnableEmailUpdate(false);
+        setNewEmail('');
+        setExistingEmailVerified(false);
+        setNewEmailVerified(false);
+        setExistingEmailOtpSent(false);
+        setNewEmailOtpSent(false);
+      } else {
+        setEmailMessage({ type: 'error', text: data.error || 'Failed to update email.' });
+      }
+    } catch {
+      setEmailMessage({ type: 'error', text: 'Connection error. Please try again.' });
+    } finally {
+      setSavingEmail(false);
     }
   };
 
@@ -257,6 +402,208 @@ export default function AdminSettingsPage() {
                 {saved && <span style={{ color: '#10b981', fontWeight: 600, fontSize: '0.9rem' }}>✓ Saved successfully!</span>}
               </div>
             </form>
+          </div>
+
+          {/* Change Password */}
+          <div className="card" style={{ padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              🔒 Change Password
+            </h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Update your admin account password.</p>
+
+            {passwordMessage && (
+              <div
+                style={{
+                  padding: '0.75rem 1rem',
+                  borderRadius: 'var(--radius-md)',
+                  marginBottom: '1rem',
+                  background: passwordMessage.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                  border: `1px solid ${passwordMessage.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
+                  color: passwordMessage.type === 'success' ? '#15803d' : '#dc2626',
+                  fontSize: '0.85rem',
+                }}
+              >
+                {passwordMessage.type === 'success' ? '✓ ' : '✕ '}{passwordMessage.text}
+              </div>
+            )}
+
+            <form onSubmit={handleSavePassword} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <label style={labelStyle}>Current Password</label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={e => setCurrentPassword(e.target.value)}
+                  style={inputStyle}
+                  placeholder="Enter current password"
+                  autoComplete="current-password"
+                  required
+                />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={labelStyle}>New Password</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    style={inputStyle}
+                    placeholder="Min. 6 characters"
+                    autoComplete="new-password"
+                    required
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Confirm Password</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    style={inputStyle}
+                    placeholder="Repeat new password"
+                    autoComplete="new-password"
+                    required
+                  />
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={savingPassword} style={{ alignSelf: 'flex-start' }}>
+                {savingPassword ? 'Updating…' : 'Update Password'}
+              </button>
+            </form>
+          </div>
+
+          {/* Update Email */}
+          <div className="card" style={{ padding: '2rem', background: '#fffbf0', borderLeft: '4px solid var(--brand-primary)' }}>
+            <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              📧 Update Email Address
+            </h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Update your admin account email address.</p>
+
+            {emailMessage && (
+              <div
+                style={{
+                  padding: '0.75rem 1rem',
+                  borderRadius: 'var(--radius-md)',
+                  marginBottom: '1rem',
+                  background: emailMessage.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                  border: `1px solid ${emailMessage.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
+                  color: emailMessage.type === 'success' ? '#15803d' : '#dc2626',
+                  fontSize: '0.85rem',
+                }}
+              >
+                {emailMessage.type === 'success' ? '✓ ' : '✕ '}{emailMessage.text}
+              </div>
+            )}
+
+            {!enableEmailUpdate && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <input
+                  type="checkbox"
+                  id="enableAdminEmailUpdate"
+                  checked={enableEmailUpdate}
+                  onChange={(e) => setEnableEmailUpdate(e.target.checked)}
+                  style={{ cursor: 'pointer' }}
+                />
+                <label
+                  htmlFor="enableAdminEmailUpdate"
+                  style={{
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    fontWeight: 500,
+                    color: 'var(--text-primary)',
+                  }}
+                >
+                  Click to enable email update
+                </label>
+              </div>
+            )}
+
+            {enableEmailUpdate && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {/* Current Email Verification */}
+                <div>
+                  <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text-primary)' }}>
+                    {existingEmailVerified ? '✓ Current Email Verified' : 'Step 1: Verify Current Email'}
+                  </h3>
+                  {!existingEmailVerified ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                        {user?.email}
+                      </p>
+                      {!existingEmailOtpSent ? (
+                        <button
+                          type="button"
+                          onClick={handleSendOtpExistingEmail}
+                          disabled={verifyingExistingEmail}
+                          className="btn btn-primary"
+                          style={{ fontSize: '0.9rem', padding: '0.5rem 1rem', alignSelf: 'flex-start' }}
+                        >
+                          {verifyingExistingEmail ? 'Sending…' : 'Send OTP'}
+                        </button>
+                      ) : (
+                        <OtpVerification
+                          email={user?.email || ''}
+                          type="EXISTING_EMAIL"
+                          onVerified={() => setExistingEmailVerified(true)}
+                          onCancel={() => setEnableEmailUpdate(false)}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <div style={{ padding: '0.75rem 1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 'var(--radius-md)', color: '#15803d', fontSize: '0.85rem' }}>
+                      ✓ Current email verified successfully
+                    </div>
+                  )}
+                </div>
+
+                {/* New Email Section */}
+                {existingEmailVerified && (
+                  <div>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text-primary)' }}>
+                      {newEmailVerified ? '✓ New Email Verified' : 'Step 2: Set & Verify New Email'}
+                    </h3>
+
+                    {!newEmailVerified ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div>
+                          <label style={labelStyle}>New Email Address</label>
+                          <input
+                            type="email"
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                            style={inputStyle}
+                            placeholder="admin.newemail@example.com"
+                            disabled={verifyingNewEmail || newEmailOtpSent}
+                          />
+                        </div>
+                        {!newEmailOtpSent ? (
+                          <button
+                            type="button"
+                            onClick={handleSendOtpNewEmail}
+                            disabled={verifyingNewEmail || !newEmail}
+                            className="btn btn-primary"
+                            style={{ fontSize: '0.9rem', padding: '0.5rem 1rem', alignSelf: 'flex-start' }}
+                          >
+                            {verifyingNewEmail ? 'Sending…' : 'Send OTP to New Email'}
+                          </button>
+                        ) : (
+                          <OtpVerification
+                            email={newEmail}
+                            type="NEW_EMAIL"
+                            onVerified={handleCompleteEmailUpdate}
+                            onCancel={() => setNewEmail('')}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <div style={{ padding: '0.75rem 1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 'var(--radius-md)', color: '#15803d', fontSize: '0.85rem', marginBottom: '1rem' }}>
+                        ✓ New email verified successfully
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Live Preview */}

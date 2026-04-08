@@ -112,3 +112,23 @@ export function generatePasswordChangeEmail(brandName: string, brandLogoUrl?: st
     </div>
   `;
 }
+
+export function generateEmailVerificationOtpEmail(otp: string, actionText: string, brandName: string, brandLogoUrl?: string) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') : 'http://localhost:3000';
+  const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
+
+  return `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center;">
+      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px;">` : `<h2>${brandName}</h2>`}
+      
+      <h3>Email Verification</h3>
+      <p>Here is your one-time password (OTP) for ${actionText}.</p>
+      
+      <div style="margin: 30px 0; padding: 20px; background-color: #f4f4f4; border-radius: 8px;">
+        <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #333;">${otp}</span>
+      </div>
+      
+      <p style="font-size: 14px; color: #777;">This code will expire in 10 minutes. If you did not request this, please ignore this email.</p>
+    </div>
+  `;
+}
