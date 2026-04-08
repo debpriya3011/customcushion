@@ -54,7 +54,7 @@ const FILL_OPTIONS: FillOpt[] = [
   { key: 'High Density Foam', label: 'High Density Foam', img: '' },
   { key: 'Dry Fast Foam', label: 'Dry Fast Foam', img: '' },
   { key: 'Fiber Fill', label: 'Fiberfill', img: '' },
-  { key: 'Covers Only', label: 'No Cover / Covers Only', img: '' },
+  { key: 'Covers Only', label: 'Covers Only', img: '' },
 ];
 
 /** Zipper positions */

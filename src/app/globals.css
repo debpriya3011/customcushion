@@ -608,7 +608,7 @@ textarea.form-control {
 }
 
 .img-placeholder::after {
-  content: '📷';
+  content: '';
   font-size: 2rem;
   position: absolute;
   opacity: .3;
