@@ -20,14 +20,14 @@ const labelStyle: React.CSSProperties = {
 };
 
 const FIELDS = [
-  { name: 'fullName',  label: 'Full Name',          col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
-  { name: 'email',     label: 'Email Address',       col: '1 / -1', type: 'email' },
-  { name: 'phone',     label: 'Phone Number',        col: '', type: 'tel', pattern: "^[0-9\\+\\-\\s\\(\\)]{7,15}$", title: "Valid phone number required" },
-  { name: 'address',   label: 'Street Address',      col: '1 / -1', type: 'text' },
-  { name: 'city',      label: 'City',                col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "City name should contain only letters" },
-  { name: 'state',     label: 'State / Province',    col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "State name should contain only letters" },
-  { name: 'zip',       label: 'ZIP / Postal Code',   col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
-  { name: 'country',   label: 'Country',             col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Country name should contain only letters" },
+  { name: 'fullName', label: 'Full Name', col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
+  { name: 'email', label: 'Email Address', col: '1 / -1', type: 'email' },
+  { name: 'phone', label: 'Phone Number', col: '', type: 'tel', pattern: "^[0-9\\+\\-\\s\\(\\)]{7,15}$", title: "Valid phone number required" },
+  { name: 'address', label: 'Street Address', col: '1 / -1', type: 'text' },
+  { name: 'city', label: 'City', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "City name should contain only letters" },
+  { name: 'state', label: 'State / Province', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "State name should contain only letters" },
+  { name: 'zip', label: 'ZIP / Postal Code', col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
+  { name: 'country', label: 'Country', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Country name should contain only letters" },
 ];
 
 interface AddrType { fullName: string; email: string; phone: string; address: string; city: string; state: string; zip: string; country: string; }
@@ -38,13 +38,13 @@ function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: Rea
       {FIELDS.map(field => (
         <div key={field.name} style={{ display: 'flex', flexDirection: 'column', gridColumn: field.col || '' }}>
           <label style={labelStyle}>{field.label}</label>
-          <input 
+          <input
             type={field.type || "text"}
-            name={field.name} 
-            value={(values as any)[field.name]} 
-            onChange={onChange} 
-            style={inputStyle} 
-            required 
+            name={field.name}
+            value={(values as any)[field.name]}
+            onChange={onChange}
+            style={inputStyle}
+            required
             placeholder={field.label}
             pattern={field.pattern}
             title={field.title}
@@ -58,11 +58,11 @@ function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: Rea
 const EMPTY: AddrType = { fullName: '', email: '', phone: '', address: '', city: '', state: '', zip: '', country: '' };
 
 const statusColor: Record<string, { bg: string; color: string }> = {
-  PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
+  PENDING: { bg: '#fff7ed', color: '#f59e0b' },
   PROCESSING: { bg: '#eff6ff', color: '#3b82f6' },
-  SHIPPED:    { bg: '#f5f3ff', color: '#8b5cf6' },
-  DELIVERED:  { bg: '#f0fdf4', color: '#10b981' },
-  CANCELLED:  { bg: '#fef2f2', color: '#ef4444' },
+  SHIPPED: { bg: '#f5f3ff', color: '#8b5cf6' },
+  DELIVERED: { bg: '#f0fdf4', color: '#10b981' },
+  CANCELLED: { bg: '#fef2f2', color: '#ef4444' },
 };
 
 export default function CartPageClient() {
@@ -184,7 +184,7 @@ export default function CartPageClient() {
       });
       if (res.ok) {
         const order = await res.json();
-        
+
         if (paymentMethod === 'STRIPE') {
           // 2. Init Stripe Checkout
           const stripeRes = await fetch('/api/checkout-session', {
@@ -257,9 +257,9 @@ export default function CartPageClient() {
                       </div>
                       {item.customOptions && (
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'var(--gray-50)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.2rem', marginBottom: '0.2rem' }}>
-                          <span style={{fontWeight: 600}}>Details:</span> {Object.entries(item.customOptions)
-                            .filter(([k,v]) => k !== 'shape' && v)
-                            .map(([k,v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
+                          <span style={{ fontWeight: 600 }}>Details:</span> {Object.entries(item.customOptions)
+                            .filter(([k, v]) => k !== 'shape' && v)
+                            .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
                             .join(' | ')}
                         </div>
                       )}
@@ -269,7 +269,7 @@ export default function CartPageClient() {
                           <label style={{ fontSize: '0.85rem', fontWeight: 700 }}>Qty:</label>
                           <select value={item.quantity} onChange={e => updateQuantity(item.id, parseInt(e.target.value))}
                             style={{ padding: '0.35rem 0.6rem', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem', background: '#fff' }}>
-                            {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}</option>)}
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>{n}</option>)}
                           </select>
                         </div>
                         <span style={{ fontWeight: 800, color: 'var(--brand-secondary)', fontSize: '1.2rem' }}>${((item.price || 0) * item.quantity).toFixed(2)}</span>
@@ -295,7 +295,7 @@ export default function CartPageClient() {
                 </div>
                 <button onClick={() => { if (!user) { router.push('/account'); return; } setShowCheckout(true); window.scrollTo({ top: 0 }); }}
                   className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  Proceed to Checkout →
+                  Checkout →
                 </button>
                 <Link href="/products" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', textDecoration: 'none' }}>
                   ← Continue Shopping
@@ -312,11 +312,11 @@ export default function CartPageClient() {
                 <div className="card" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>🚚 Shipping Address</h2>
-                    <button 
-                      type="button" 
-                      onClick={handleDetectAddress} 
+                    <button
+                      type="button"
+                      onClick={handleDetectAddress}
                       disabled={isDetecting}
-                      className="btn btn-outline" 
+                      className="btn btn-outline"
                       style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
                     >
                       {isDetecting ? 'Detecting...' : '📍 Auto-Detect'}
@@ -330,11 +330,11 @@ export default function CartPageClient() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>💳 Billing Address</h2>
                       {!billingSame && (
-                        <button 
-                          type="button" 
-                          onClick={handleDetectBillingAddress} 
+                        <button
+                          type="button"
+                          onClick={handleDetectBillingAddress}
                           disabled={isDetectingBilling}
-                          className="btn btn-outline" 
+                          className="btn btn-outline"
                           style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
                         >
                           {isDetectingBilling ? 'Detecting...' : '📍 Auto-Detect'}
