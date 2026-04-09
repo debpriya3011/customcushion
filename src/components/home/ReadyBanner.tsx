@@ -11,7 +11,7 @@ export default function ReadyBanner() {
             <h2>Ready to Transform Your Living Space?</h2>
             <p>Don&rsquo;t live with flat, faded cushions another season. Get your custom cushion in seconds!</p>
           </div>
-          <Link href="/customize" className="btn btn-accent btn-lg">Customize Now</Link>
+          <Link href="/customize" className="btn btn-accent btn-lg" style={{ marginTop: '1rem', border: '2px solid black' }}>Customize Now</Link>
         </div>
       </div>
     </section>

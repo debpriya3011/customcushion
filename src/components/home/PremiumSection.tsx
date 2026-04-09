@@ -9,14 +9,14 @@ export default function PremiumSection() {
           <div className={styles.text}>
             <h2 id="premium-title">Premium Custom Cushions for Every Home</h2>
             <p>
-              At Cushion Guru, we specialize in high-quality custom cushions designed to fit your unique furniture. 
-              Whether you need replacement cushions for outdoor furniture, a cozy window seat cushion, or durable marine-grade seating, 
+              At Cushion Guru, we specialize in high-quality custom cushions designed to fit your unique furniture.
+              Whether you need replacement cushions for outdoor furniture, a cozy window seat cushion, or durable marine-grade seating,
               our expert team crafts each piece to your exact specifications.
             </p>
             <h3>Sunbrella® Fabric Excellence</h3>
             <p>
-              We partner exclusively with Sunbrella® to ensure your outdoor patio cushions withstand the elements. 
-              Fade-resistant, water-repellent, and easy to clean, our fabrics ensure your investment looks new for years. 
+              We partner exclusively with Sunbrella® to ensure your outdoor patio cushions withstand the elements.
+              Fade-resistant, water-repellent, and easy to clean, our fabrics ensure your investment looks new for years.
               Browse our collection of custom bench cushions and elevate your living space today.
             </p>
           </div>

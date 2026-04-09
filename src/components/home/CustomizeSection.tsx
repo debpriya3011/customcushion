@@ -9,7 +9,7 @@ const TYPES = ['Indoor', 'Outdoor', 'Boat', 'RV', 'Pet'];
 
 export default function CustomizeSection() {
   const [typeIdx, setTypeIdx] = useState(0);
-  const [fade,    setFade]    = useState(true);
+  const [fade, setFade] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,13 +56,13 @@ export default function CustomizeSection() {
               Cushion Covers
             </h2>
             <p>
-              Cushion Guru offers complete freedom to customize cushion covers that reflect your personal style and the way you live. 
-              From precise sizing and premium fabrics to carefully selected colors and designs, every detail is chosen by you and crafted 
-              with intention. Whether enhancing a living space, refining a bedroom, or creating a thoughtful, made-to-order piece, Cushion Guru 
+              Cushion Guru offers complete freedom to customize cushion covers that reflect your personal style and the way you live.
+              From precise sizing and premium fabrics to carefully selected colors and designs, every detail is chosen by you and crafted
+              with intention. Whether enhancing a living space, refining a bedroom, or creating a thoughtful, made-to-order piece, Cushion Guru
               makes customization effortless—transforming your vision into beautifully tailored comfort.
             </p>
             <div className={styles.stats}>
-              {[['500+', 'Fabric Options'], ['99%', 'Satisfaction Rate'], ['3-4wk', 'Avg. Delivery']].map(([num, lbl]) => (
+              {[['500+', 'Fabric Options'], ['99%', 'Satisfaction Rate'], ['3-4wks', 'Avg. Delivery']].map(([num, lbl]) => (
                 <div key={lbl} className={styles.stat}>
                   <strong>{num}</strong>
                   <span>{lbl}</span>
@@ -71,7 +71,7 @@ export default function CustomizeSection() {
             </div>
             <Link href="/customize" className={`btn btn-primary btn-lg ${styles.ctaBtn}`}>
               Customize Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </Link>
           </div>
         </div>

@@ -22,10 +22,10 @@ export default function AboutPage() {
               <h1>About CushionGuru</h1>
               <p>Cushion Guru LLC: The New York Leader in Custom Comfort</p>
             </div>
-            <EditableMedia 
-              mediaKey="about_hero" 
-              type="image" 
-              className={`img-placeholder ${styles.heroImg}`} 
+            <EditableMedia
+              mediaKey="about_hero"
+              type="image"
+              className={`img-placeholder ${styles.heroImg}`}
             />
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function AboutPage() {
             defaultComponent={
               <div className="video-placeholder-inner">
                 <div className="video-placeholder-play">
-                  <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                 </div>
                 <span>Our Story Video</span>
               </div>
@@ -111,10 +111,10 @@ export default function AboutPage() {
                 <div className={styles.certBadge}><span>🌿</span> Eco Certified</div>
               </div>
             </div>
-            <EditableMedia 
-              mediaKey="about_cert_first" 
-              type="image" 
-              className={`img-placeholder ${styles.certImg}`} 
+            <EditableMedia
+              mediaKey="about_cert_first"
+              type="image"
+              className={`img-placeholder ${styles.certImg}`}
             />
           </div>
         </div>
@@ -124,10 +124,10 @@ export default function AboutPage() {
       <section className={`section-padding ${styles.careSection}`}>
         <div className="container">
           <div className={styles.certGrid}>
-            <EditableMedia 
-              mediaKey="about_care_img" 
-              type="image" 
-              className={`img-placeholder ${styles.certImg}`} 
+            <EditableMedia
+              mediaKey="about_care_img"
+              type="image"
+              className={`img-placeholder ${styles.certImg}`}
             />
             <div>
               <h2>Care &amp; Protection</h2>
