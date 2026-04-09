@@ -241,15 +241,15 @@ export default function CartPageClient() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'flex-start' }}>
             {/* Items */}
             <div style={{ flex: '1 1 580px' }}>
-              <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div className="card card-responsive-padding" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {items.map((item, index) => (
-                  <div key={item.id} style={{ display: 'flex', gap: '1.5rem', paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
-                    <div style={{ width: '110px', height: '110px', flexShrink: 0, borderRadius: 'var(--radius-md)', overflow: 'hidden', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
+                  <div key={item.id} className="cart-item-row" style={{ paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
+                    <div className="cart-item-image-wrapper">
                       {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : '🛋️')}
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>{item.name}</h3>
+                    <div className="cart-item-info">
+                      <div className="cart-item-title-row">
+                        <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0, wordBreak: 'break-word' }}>{item.name}</h3>
                         <button onClick={() => removeItem(item.id)} style={{ color: 'var(--error)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}>Remove</button>
                       </div>
                       <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -264,11 +264,11 @@ export default function CartPageClient() {
                         </div>
                       )}
                       <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Unit price: <strong>${(item.price || 0).toFixed(2)}</strong></div>
-                      <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem' }}>
+                      <div className="cart-item-footer">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <label style={{ fontSize: '0.85rem', fontWeight: 700 }}>Qty:</label>
                           <select value={item.quantity} onChange={e => updateQuantity(item.id, parseInt(e.target.value))}
-                            style={{ padding: '0.35rem 0.6rem', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}>
+                            style={{ padding: '0.35rem 0.6rem', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem', background: '#fff' }}>
                             {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}</option>)}
                           </select>
                         </div>
@@ -282,7 +282,7 @@ export default function CartPageClient() {
 
             {/* Summary */}
             <div style={{ flex: '1 1 280px', maxWidth: '380px' }}>
-              <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+              <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                 <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Summary</h2>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
                   <span>Subtotal ({count} items)</span><span>${total.toFixed(2)}</span>
@@ -369,7 +369,7 @@ export default function CartPageClient() {
 
               {/* Order recap */}
               <div style={{ flex: '1 1 280px', maxWidth: '400px' }}>
-                <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+                <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                   <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Items</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--gray-100)' }}>
                     {items.map(item => (

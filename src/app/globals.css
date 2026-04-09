@@ -644,3 +644,67 @@ textarea.form-control {
 .editable-admin:hover .edit-overlay {
   opacity: 1 !important;
 }
+
+/* ── Cart Page Responsive ────────────────────────────────── */
+.cart-item-row {
+  display: flex;
+  gap: 1.5rem;
+}
+.cart-item-image-wrapper {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+.cart-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0; /* Prevents overflow when handling long texts */
+}
+.cart-item-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+}
+.cart-item-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-responsive-padding {
+  padding: 2rem;
+}
+
+@media (max-width: 640px) {
+  .cart-item-row {
+    gap: 1rem;
+  }
+  .cart-item-image-wrapper {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+  .cart-item-footer {
+    flex-wrap: wrap; /* Allows price to wrap underneath qty if compressed */
+    gap: 0.75rem;
+  }
+  .card-responsive-padding {
+    padding: 1.25rem;
+  }
+  .cart-item-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
