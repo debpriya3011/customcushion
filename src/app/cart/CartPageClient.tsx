@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
+// ── Defined OUTSIDE the main component so React doesn't remount on every render ──
 const inputStyle: React.CSSProperties = {
   width: '100%', padding: '0.65rem 0.9rem',
   border: '1px solid var(--gray-200)',
@@ -19,14 +20,14 @@ const labelStyle: React.CSSProperties = {
 };
 
 const FIELDS = [
-  { name: 'fullName', label: 'Full Name', col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
-  { name: 'email', label: 'Email Address', col: '1 / -1', type: 'email' },
-  { name: 'phone', label: 'Phone Number', col: '', type: 'tel', pattern: "^[0-9\\+\\-\\s\\(\\)]{7,15}$", title: "Valid phone number required" },
-  { name: 'address', label: 'Street Address', col: '1 / -1', type: 'text' },
-  { name: 'city', label: 'City', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "City name should contain only letters" },
-  { name: 'state', label: 'State / Province', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "State name should contain only letters" },
-  { name: 'zip', label: 'ZIP / Postal Code', col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
-  { name: 'country', label: 'Country', col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Country name should contain only letters" },
+  { name: 'fullName',  label: 'Full Name',          col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
+  { name: 'email',     label: 'Email Address',       col: '1 / -1', type: 'email' },
+  { name: 'phone',     label: 'Phone Number',        col: '', type: 'tel', pattern: "^[0-9\\+\\-\\s\\(\\)]{7,15}$", title: "Valid phone number required" },
+  { name: 'address',   label: 'Street Address',      col: '1 / -1', type: 'text' },
+  { name: 'city',      label: 'City',                col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "City name should contain only letters" },
+  { name: 'state',     label: 'State / Province',    col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "State name should contain only letters" },
+  { name: 'zip',       label: 'ZIP / Postal Code',   col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
+  { name: 'country',   label: 'Country',             col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Country name should contain only letters" },
 ];
 
 interface AddrType { fullName: string; email: string; phone: string; address: string; city: string; state: string; zip: string; country: string; }
@@ -37,13 +38,13 @@ function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: Rea
       {FIELDS.map(field => (
         <div key={field.name} style={{ display: 'flex', flexDirection: 'column', gridColumn: field.col || '' }}>
           <label style={labelStyle}>{field.label}</label>
-          <input
+          <input 
             type={field.type || "text"}
-            name={field.name}
-            value={(values as any)[field.name]}
-            onChange={onChange}
-            style={inputStyle}
-            required
+            name={field.name} 
+            value={(values as any)[field.name]} 
+            onChange={onChange} 
+            style={inputStyle} 
+            required 
             placeholder={field.label}
             pattern={field.pattern}
             title={field.title}
@@ -56,17 +57,13 @@ function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: Rea
 
 const EMPTY: AddrType = { fullName: '', email: '', phone: '', address: '', city: '', state: '', zip: '', country: '' };
 
-function getItemLabel(category?: string) {
-  if (category === 'Custom') return 'Custom Cushion';
-  if (category === 'Linked') return 'Linked Product';
-  return 'Ready-made Product';
-}
-
-function getItemBadgeStyle(category?: string): React.CSSProperties {
-  if (category === 'Custom') return { background: '#ede9fe', color: '#7c3aed' };
-  if (category === 'Linked') return { background: '#fef3c7', color: '#d97706' };
-  return { background: '#dcfce7', color: '#16a34a' };
-}
+const statusColor: Record<string, { bg: string; color: string }> = {
+  PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
+  PROCESSING: { bg: '#eff6ff', color: '#3b82f6' },
+  SHIPPED:    { bg: '#f5f3ff', color: '#8b5cf6' },
+  DELIVERED:  { bg: '#f0fdf4', color: '#10b981' },
+  CANCELLED:  { bg: '#fef2f2', color: '#ef4444' },
+};
 
 export default function CartPageClient() {
   const { items, total, count, updateQuantity, removeItem, clearCart } = useCart();
@@ -81,9 +78,10 @@ export default function CartPageClient() {
   const [billingSame, setBillingSame] = useState(true);
   const [billing, setBilling] = useState<AddrType>({ ...EMPTY });
   const [paymentMethod, setPaymentMethod] = useState<'STRIPE' | 'COD'>('STRIPE');
-  const deliveryCharge = 0; // Free delivery
+  const deliveryCharge = 15;
   const finalTotal = total + deliveryCharge;
 
+  // Open checkout automatically when ?checkout=1 is in the URL
   useEffect(() => {
     if (searchParams.get('checkout') === '1' && user && count > 0) {
       setShowCheckout(true);
@@ -113,10 +111,18 @@ export default function CartPageClient() {
           } else {
             alert("Could not detect address automatically.");
           }
-        } catch { alert("Failed to detect address from location."); }
-        finally { setIsDetecting(false); }
-      }, (error) => { alert("Geolocation error: " + error.message); setIsDetecting(false); });
-    } else { alert("Geolocation is not supported by your browser."); }
+        } catch (error) {
+          alert("Failed to detect address from location.");
+        } finally {
+          setIsDetecting(false);
+        }
+      }, (error) => {
+        alert("Geolocation error: " + error.message);
+        setIsDetecting(false);
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
   };
 
   const handleDetectBillingAddress = () => {
@@ -135,11 +141,21 @@ export default function CartPageClient() {
               zip: data.address.postcode || prev.zip,
               country: data.address.country || prev.country
             }));
-          } else { alert("Could not detect address automatically."); }
-        } catch { alert("Failed to detect address from location."); }
-        finally { setIsDetectingBilling(false); }
-      }, (error) => { alert("Geolocation error: " + error.message); setIsDetectingBilling(false); });
-    } else { alert("Geolocation is not supported by your browser."); }
+          } else {
+            alert("Could not detect address automatically.");
+          }
+        } catch (error) {
+          alert("Failed to detect address from location.");
+        } finally {
+          setIsDetectingBilling(false);
+        }
+      }, (error) => {
+        alert("Geolocation error: " + error.message);
+        setIsDetectingBilling(false);
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
   };
 
   const handleBillingChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -150,6 +166,7 @@ export default function CartPageClient() {
     if (!user) { router.push('/account'); return; }
     setIsProcessing(true);
     try {
+      // 1. Create the Order in DB
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -157,7 +174,7 @@ export default function CartPageClient() {
         body: JSON.stringify({
           items,
           total: finalTotal,
-          deliveryCharge: 0,
+          deliveryCharge,
           paymentMethod,
           status: 'PENDING',
           shippingAddr: shipping,
@@ -167,7 +184,9 @@ export default function CartPageClient() {
       });
       if (res.ok) {
         const order = await res.json();
+        
         if (paymentMethod === 'STRIPE') {
+          // 2. Init Stripe Checkout
           const stripeRes = await fetch('/api/checkout-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -175,9 +194,14 @@ export default function CartPageClient() {
             body: JSON.stringify({ orderId: order.id }),
           });
           const session = await stripeRes.json();
-          if (session.url) { window.location.href = session.url; }
-          else { alert('Stripe error: ' + (session.error || 'Unknown')); setIsProcessing(false); }
+          if (session.url) {
+            window.location.href = session.url;
+          } else {
+            alert('Stripe error: ' + (session.error || 'Unknown'));
+            setIsProcessing(false);
+          }
         } else {
+          // COD - finish
           clearCart();
           router.push('/account/orders');
         }
@@ -217,43 +241,44 @@ export default function CartPageClient() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'flex-start' }}>
             {/* Items */}
             <div style={{ flex: '1 1 580px' }}>
-              <div className="card card-responsive-padding" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {items.map((item, index) => (
-                  <div key={item.id} className="cart-item-row" style={{ paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
-                    <div className="cart-item-image-wrapper">
-                      {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : item.category === 'Linked' ? '🔗' : '🛋️')}
+                  <div key={item.id} style={{ display: 'flex', gap: '1.5rem', paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
+                    <div style={{ width: '110px', height: '110px', flexShrink: 0, borderRadius: 'var(--radius-md)', overflow: 'hidden', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
+                      {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : '🛋️')}
                     </div>
-                    <div className="cart-item-info">
-                      <div className="cart-item-title-row">
-                        <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0, wordBreak: 'break-word' }}>{item.name}</h3>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>{item.name}</h3>
                         <button onClick={() => removeItem(item.id)} style={{ color: 'var(--error)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}>Remove</button>
                       </div>
-                      {/* Category badge */}
-                      <div style={{ display: 'inline-block', marginTop: '0.2rem', marginBottom: '0.4rem' }}>
-                        <span style={{ ...getItemBadgeStyle(item.category), padding: '0.15rem 0.55rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>
-                          {getItemLabel(item.category)}
-                        </span>
+                      <div style={{ marginBottom: '0.5rem' }}>
+                        {item.category === 'Non-Customizable' ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', background: '#dcfce7', color: '#16a34a', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                            Ready-made Product
+                          </span>
+                        ) : (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', background: '#f3e8ff', color: '#7c3aed', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                            Custom Cushion
+                          </span>
+                        )}
                       </div>
                       {item.customOptions && (
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'var(--gray-50)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.2rem', marginBottom: '0.2rem' }}>
-                          <span style={{ fontWeight: 600 }}>Details:</span> {Object.entries(item.customOptions)
-                            .filter(([k, v]) => k !== 'shape' && v)
-                            .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
+                          <span style={{fontWeight: 600}}>Details:</span> {Object.entries(item.customOptions)
+                            .filter(([k,v]) => k !== 'shape' && v)
+                            .map(([k,v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
                             .join(' | ')}
                         </div>
                       )}
                       <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Unit price: <strong>${(item.price || 0).toFixed(2)}</strong></div>
-                      <div className="cart-item-footer">
+                      <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <label style={{ fontSize: '0.85rem', fontWeight: 700 }}>Qty:</label>
-                          {item.category === 'Linked' ? (
-                            <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>1 (external)</span>
-                          ) : (
-                            <select value={item.quantity} onChange={e => updateQuantity(item.id, parseInt(e.target.value))}
-                              style={{ padding: '0.35rem 0.6rem', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem', background: '#fff' }}>
-                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <option key={n} value={n}>{n}</option>)}
-                            </select>
-                          )}
+                          <select value={item.quantity} onChange={e => updateQuantity(item.id, parseInt(e.target.value))}
+                            style={{ padding: '0.35rem 0.6rem', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}>
+                            {Array.from({ length: item.category === 'Non-Customizable' && item.stock ? Math.min(item.stock, 10) : 10 }, (_, i) => i + 1).map(n => <option key={n} value={n}>{n}</option>)}
+                          </select>
                         </div>
                         <span style={{ fontWeight: 800, color: 'var(--brand-secondary)', fontSize: '1.2rem' }}>${((item.price || 0) * item.quantity).toFixed(2)}</span>
                       </div>
@@ -265,21 +290,20 @@ export default function CartPageClient() {
 
             {/* Summary */}
             <div style={{ flex: '1 1 280px', maxWidth: '380px' }}>
-              <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+              <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                 <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Summary</h2>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
                   <span>Subtotal ({count} items)</span><span>${total.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--gray-100)', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-                  <span>Delivery</span>
-                  <span style={{ color: '#16a34a', fontWeight: 700 }}>FREE 🎉</span>
+                  <span>Delivery Charge</span><span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>${deliveryCharge.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', fontWeight: 800, fontSize: '1.3rem' }}>
                   <span>Total</span><span style={{ color: 'var(--brand-secondary)' }}>${finalTotal.toFixed(2)}</span>
                 </div>
                 <button onClick={() => { if (!user) { router.push('/account'); return; } setShowCheckout(true); window.scrollTo({ top: 0 }); }}
                   className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  Checkout →
+                  Proceed to Checkout →
                 </button>
                 <Link href="/products" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', textDecoration: 'none' }}>
                   ← Continue Shopping
@@ -296,7 +320,13 @@ export default function CartPageClient() {
                 <div className="card" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>🚚 Shipping Address</h2>
-                    <button type="button" onClick={handleDetectAddress} disabled={isDetecting} className="btn btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                    <button 
+                      type="button" 
+                      onClick={handleDetectAddress} 
+                      disabled={isDetecting}
+                      className="btn btn-outline" 
+                      style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+                    >
                       {isDetecting ? 'Detecting...' : '📍 Auto-Detect'}
                     </button>
                   </div>
@@ -308,7 +338,13 @@ export default function CartPageClient() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>💳 Billing Address</h2>
                       {!billingSame && (
-                        <button type="button" onClick={handleDetectBillingAddress} disabled={isDetectingBilling} className="btn btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                        <button 
+                          type="button" 
+                          onClick={handleDetectBillingAddress} 
+                          disabled={isDetectingBilling}
+                          className="btn btn-outline" 
+                          style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+                        >
                           {isDetectingBilling ? 'Detecting...' : '📍 Auto-Detect'}
                         </button>
                       )}
@@ -341,22 +377,17 @@ export default function CartPageClient() {
 
               {/* Order recap */}
               <div style={{ flex: '1 1 280px', maxWidth: '400px' }}>
-                <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+                <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                   <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Items</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--gray-100)' }}>
                     {items.map(item => (
                       <div key={item.id} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                         <div style={{ width: '52px', height: '52px', flexShrink: 0, borderRadius: 'var(--radius-sm)', overflow: 'hidden', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
-                          {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : item.category === 'Linked' ? '🔗' : '🛋️')}
+                          {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : '🛋️')}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontWeight: 600, fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.2rem' }}>
-                            <span style={{ ...getItemBadgeStyle(item.category), padding: '0.1rem 0.4rem', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 700 }}>
-                              {getItemLabel(item.category)}
-                            </span>
-                          </div>
-                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>Qty: {item.quantity}</div>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Qty: {item.quantity}</div>
                           {item.customOptions && (
                             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem', lineHeight: 1.4 }}>
                               {item.customOptions.dimensions && <span>📐 {item.customOptions.dimensions} </span>}
@@ -368,13 +399,13 @@ export default function CartPageClient() {
                         <span style={{ fontWeight: 700, color: 'var(--brand-secondary)', whiteSpace: 'nowrap' }}>${((item.price || 0) * item.quantity).toFixed(2)}</span>
                       </div>
                     ))}
+
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                     <span>Subtotal</span><span>${total.toFixed(2)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                    <span>Delivery</span>
-                    <span style={{ color: '#16a34a', fontWeight: 700 }}>FREE 🎉</span>
+                    <span>Delivery Charge</span><span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>${deliveryCharge.toFixed(2)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', fontWeight: 800, fontSize: '1.25rem', paddingTop: '1rem', borderTop: '2px solid var(--gray-200)' }}>
                     <span>Total</span><span style={{ color: 'var(--brand-secondary)' }}>${finalTotal.toFixed(2)}</span>

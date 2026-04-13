@@ -56,13 +56,13 @@ export default function ProductsPage() {
 
   const handleAddToCart = (product: any) => {
     if (product.stock === 0) { alert('This product is out of stock.'); return; }
-    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: 1, image: product.imageUrl, category: 'Non-Customizable' });
+    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: 1, image: product.imageUrl, category: 'Non-Customizable', stock: product.stock });
     alert('Added to cart!');
   };
 
   const handleBuyNow = (product: any) => {
     if (product.stock === 0) { alert('This product is out of stock.'); return; }
-    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: 1, image: product.imageUrl, category: 'Non-Customizable' });
+    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: 1, image: product.imageUrl, category: 'Non-Customizable', stock: product.stock });
     router.push('/cart');
   };
 
@@ -217,12 +217,11 @@ export default function ProductsPage() {
                     </a>
 
                     <div style={{ padding: '1.4rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                      {/* Linked badge */}
-                      <div style={{ marginBottom: '0.5rem' }}>
+                      {/* <div style={{ marginBottom: '0.5rem' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', background: '#fef3c7', color: '#d97706', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700 }}>
                           🔗 Linked Product
                         </span>
-                      </div>
+                      </div> */}
 
                       <a href={detailHref} style={{ textDecoration: 'none' }}>
                         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.35rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={lp.name}>

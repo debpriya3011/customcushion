@@ -136,14 +136,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const handleAddToCart = () => {
     if (product.stock === 0) return;
-    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: qty, image: product.imageUrl, category: 'Non-Customizable' });
+    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: qty, image: product.imageUrl, category: 'Non-Customizable', stock: product.stock });
     setAddedMsg(true);
     setTimeout(() => setAddedMsg(false), 2500);
   };
 
   const handleBuyNow = () => {
     if (product.stock === 0) return;
-    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: qty, image: product.imageUrl, category: 'Non-Customizable' });
+    addItem({ id: product.id, name: product.name, price: product.sellingPrice || product.listingPrice, quantity: qty, image: product.imageUrl, category: 'Non-Customizable', stock: product.stock });
     router.push('/cart');
   };
 
@@ -215,7 +215,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.5rem' }}>{product.description}</p>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>SKU: {product.sku}</div>
+            {/* <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>SKU: {product.sku}</div> */}
 
             {/* Qty picker */}
             {product.stock > 0 && (

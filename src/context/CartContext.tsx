@@ -11,6 +11,7 @@ export interface CartItem {
   image?: string;
   category?: string;
   customOptions?: Record<string, string>;
+  stock?: number;
 }
 
 interface CartContextType {
@@ -52,23 +53,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   const dbProduct = products.find(p => p.id === item.id);
                   if (dbProduct) {
                     const latestPrice = dbProduct.sellingPrice || dbProduct.listingPrice || dbProduct.price || 0;
-                    if (item.name !== dbProduct.name || item.price !== latestPrice || item.image !== dbProduct.imageUrl) {
+                    const latestStock = dbProduct.stock || 0;
+                    if (item.name !== dbProduct.name || item.price !== latestPrice || item.image !== dbProduct.imageUrl || item.stock !== latestStock) {
                       hasChanges = true;
                       return {
                         ...item,
                         name: dbProduct.name,
                         price: latestPrice,
-                        image: dbProduct.imageUrl
+                        image: dbProduct.imageUrl,
+                        stock: latestStock,
+                        quantity: Math.min(item.quantity, latestStock) // Cap quantity to available stock
                       };
                     }
                   } else {
-                    // Item was deleted from the database! We could optionally remove it, but letting the user keep it or removing it is a design choice.
-                    // For now, if we wanted to remove it: return null; 
-                    // To keep it simple and safe, we won't auto-delete without telling them, or we could!
+                    // Product deleted, remove from cart
+                    hasChanges = true;
+                    return null;
                   }
                 }
                 return item;
-              });
+              }).filter(item => item !== null);
               
               return hasChanges ? syncedItems : prevItems;
             });
@@ -99,13 +103,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems(prev => {
       const existing = prev.find(i => i.id === item.id);
       if (existing) {
+        const newQty = existing.quantity + item.quantity;
+        const maxQty = item.stock || 999; // If no stock info, allow high qty
         return prev.map(i => i.id === item.id ? { 
           ...i, 
-          quantity: i.quantity + item.quantity,
+          quantity: Math.min(newQty, maxQty),
           name: item.name,
           price: item.price,
           image: item.image,
-          category: item.category
+          category: item.category,
+          stock: item.stock
         } : i);
       }
       return [...prev, item];
@@ -118,7 +125,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const updateQuantity = useCallback((id: string, qty: number) => {
     if (qty <= 0) { removeItem(id); return; }
-    setItems(prev => prev.map(i => i.id === id ? { ...i, quantity: qty } : i));
+    setItems(prev => prev.map(i => {
+      if (i.id === id) {
+        const maxQty = i.stock || 999;
+        return { ...i, quantity: Math.min(qty, maxQty) };
+      }
+      return i;
+    }));
   }, [removeItem]);
 
   const clearCart = useCallback(() => setItems([]), []);
