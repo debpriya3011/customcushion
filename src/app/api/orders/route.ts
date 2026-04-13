@@ -30,9 +30,25 @@ export async function POST(req: NextRequest) {
         notes: notes || '',
         shippingAddr: addressData,
         paymentMethod: paymentMethod || 'COD',
-        deliveryCharge: deliveryCharge || 0,
+        deliveryCharge: 0, // Free delivery
       }
     });
+
+    // Decrement stock for non-customizable products
+    try {
+      if (Array.isArray(items)) {
+        for (const item of items) {
+          if (item.category === 'Non-Customizable' && item.id) {
+            await prisma.product.updateMany({
+              where: { id: item.id },
+              data: { stock: { decrement: item.quantity || 1 } },
+            });
+          }
+        }
+      }
+    } catch (stockErr) {
+      console.error('Stock decrement error:', stockErr);
+    }
 
     try {
       const user = await prisma.user.findUnique({ where: { id: session.id } });

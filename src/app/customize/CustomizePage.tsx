@@ -396,11 +396,16 @@ export default function CustomizePage() {
   /* ── State ── */
   const [step, setStep] = useState(1);
 
-  // Step 1
+  // Step 1 – read ?type= and &shape= params
   const typeParam = searchParams.get('type');
-  const defaultCat = CATEGORIES.find(c => c.toLowerCase().replace(' ', '-') === typeParam) ?? 'Indoor';
+  const shapeParam = searchParams.get('shape');
+  const defaultCat = CATEGORIES.find(c => c.toLowerCase().replace(/\s+/g, '-') === typeParam?.toLowerCase()) ?? 'Indoor';
+  const defaultShape = SHAPES.find(s =>
+    s.key.toLowerCase().replace(/\s+/g, '-') === shapeParam?.toLowerCase() ||
+    s.label.toLowerCase().replace(/\s+/g, '-') === shapeParam?.toLowerCase()
+  )?.key ?? 'Rectangle';
   const [category, setCategory] = useState(defaultCat);
-  const [shape, setShape] = useState<string>('Rectangle');
+  const [shape, setShape] = useState<string>(defaultShape);
 
   // Step 2 – Dimensions
   const [dims, setDims] = useState<Dims>({
