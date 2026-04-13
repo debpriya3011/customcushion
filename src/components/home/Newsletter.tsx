@@ -52,7 +52,7 @@ export default function Newsletter() {
                   id="newsletter-email"
                   required
                 />
-                <button type="submit" className="btn btn-accent">Shop Now</button>
+                <button type="submit" className="btn btn-accent">Join Now</button>
               </div>
             </form>
           )}

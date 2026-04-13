@@ -34,7 +34,7 @@ interface AddrType { fullName: string; email: string; phone: string; address: st
 
 function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
       {FIELDS.map(field => (
         <div key={field.name} style={{ display: 'flex', flexDirection: 'column', gridColumn: field.col || '' }}>
           <label style={labelStyle}>{field.label}</label>
@@ -240,15 +240,15 @@ export default function CartPageClient() {
         {!showCheckout ? (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'flex-start' }}>
             {/* Items */}
-            <div style={{ flex: '1 1 580px' }}>
-              <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ flex: '1 1 min(100%, 580px)', minWidth: 0 }}>
+              <div className="card card-responsive-padding" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {items.map((item, index) => (
-                  <div key={item.id} style={{ display: 'flex', gap: '1.5rem', paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
-                    <div style={{ width: '110px', height: '110px', flexShrink: 0, borderRadius: 'var(--radius-md)', overflow: 'hidden', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
+                  <div key={item.id} className="cart-item-row" style={{ paddingBottom: index < items.length - 1 ? '2rem' : 0, borderBottom: index < items.length - 1 ? '1px solid var(--gray-100)' : 'none' }}>
+                    <div className="cart-item-image-wrapper">
                       {item.image ? <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : (item.category === 'Non-Customizable' ? '🛍️' : '🛋️')}
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div className="cart-item-info">
+                      <div className="cart-item-title-row">
                         <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>{item.name}</h3>
                         <button onClick={() => removeItem(item.id)} style={{ color: 'var(--error)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}>Remove</button>
                       </div>
@@ -272,7 +272,7 @@ export default function CartPageClient() {
                         </div>
                       )}
                       <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Unit price: <strong>${(item.price || 0).toFixed(2)}</strong></div>
-                      <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem' }}>
+                      <div className="cart-item-footer">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <label style={{ fontSize: '0.85rem', fontWeight: 700 }}>Qty:</label>
                           <select value={item.quantity} onChange={e => updateQuantity(item.id, parseInt(e.target.value))}
@@ -289,8 +289,8 @@ export default function CartPageClient() {
             </div>
 
             {/* Summary */}
-            <div style={{ flex: '1 1 280px', maxWidth: '380px' }}>
-              <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+            <div style={{ flex: '1 1 min(100%, 280px)', maxWidth: '100%', width: '100%', flexBasis: '280px' }}>
+              <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                 <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Summary</h2>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
                   <span>Subtotal ({count} items)</span><span>${total.toFixed(2)}</span>
@@ -315,9 +315,9 @@ export default function CartPageClient() {
           /* CHECKOUT */
           <form onSubmit={handlePlaceOrder}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'flex-start' }}>
-              <div style={{ flex: '1 1 560px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div style={{ flex: '1 1 min(100%, 560px)', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
-                <div className="card" style={{ padding: '2rem' }}>
+                <div className="card card-responsive-padding">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>🚚 Shipping Address</h2>
                     <button 
@@ -333,7 +333,7 @@ export default function CartPageClient() {
                   <AddressForm values={shipping} onChange={handleShippingChange} />
                 </div>
 
-                <div className="card" style={{ padding: '2rem' }}>
+                <div className="card card-responsive-padding">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--brand-primary)' }}>💳 Billing Address</h2>
@@ -360,7 +360,7 @@ export default function CartPageClient() {
                   }
                 </div>
 
-                <div className="card" style={{ padding: '2rem' }}>
+                <div className="card card-responsive-padding">
                   <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', color: 'var(--brand-primary)' }}>💲 Payment Method</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', border: `2px solid ${paymentMethod === 'STRIPE' ? 'var(--brand-primary)' : 'var(--gray-200)'}`, borderRadius: 'var(--radius-md)', cursor: 'pointer', background: paymentMethod === 'STRIPE' ? '#f0f4f8' : 'white' }}>
@@ -376,8 +376,8 @@ export default function CartPageClient() {
               </div>
 
               {/* Order recap */}
-              <div style={{ flex: '1 1 280px', maxWidth: '400px' }}>
-                <div className="card" style={{ padding: '2rem', position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
+              <div style={{ flex: '1 1 min(100%, 280px)', maxWidth: '100%', width: '100%', flexBasis: '280px' }}>
+                <div className="card card-responsive-padding" style={{ position: 'sticky', top: 'calc(var(--nav-height, 80px) + 2rem)' }}>
                   <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-100)' }}>Order Items</h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--gray-100)' }}>
                     {items.map(item => (
