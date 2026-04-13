@@ -78,7 +78,7 @@ export default function CartPageClient() {
   const [billingSame, setBillingSame] = useState(true);
   const [billing, setBilling] = useState<AddrType>({ ...EMPTY });
   const [paymentMethod, setPaymentMethod] = useState<'STRIPE' | 'COD'>('STRIPE');
-  const deliveryCharge = 15;
+  const deliveryCharge = 0;
   const finalTotal = total + deliveryCharge;
 
   // Open checkout automatically when ?checkout=1 is in the URL

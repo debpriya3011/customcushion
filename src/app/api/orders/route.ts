@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         notes: notes || '',
         shippingAddr: addressData,
         paymentMethod: paymentMethod || 'COD',
-        deliveryCharge: deliveryCharge || 0,
+        deliveryCharge: 0, // Free delivery
       }
     });
 
