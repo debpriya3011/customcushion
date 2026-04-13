@@ -6,9 +6,9 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function Newsletter() {
   const { user } = useAuth();
-  const [email, setEmail]   = useState('');
-  const [sent,  setSent]    = useState(false);
-  const [error, setError]   = useState('');
+  const [email, setEmail] = useState('');
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (user?.email) setEmail(user.email);
@@ -34,7 +34,7 @@ export default function Newsletter() {
         <div className={styles.inner}>
           <div className={styles.text}>
             <span className={styles.eyebrow}>Exclusive Offers</span>
-            <h2>GET $20 OFF YOUR FIRST ORDER?</h2>
+            <h2>Stay Updated with Our Latest Designs</h2>
             <p>Join our mailing list and never miss a deal!</p>
           </div>
           {sent ? (
