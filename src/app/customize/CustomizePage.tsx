@@ -303,7 +303,7 @@ function FabricCard({
       ) : (
         <div className={styles.fabricCardPlaceholder}>🧵</div>
       )}
-      <span className={styles.fabricCardLabel}>{fabric.label}</span>
+      {/* <span className={styles.fabricCardLabel}>{fabric.label}</span> */}
 
       {/* Hover popover using Portal */}
       {hover && mounted && createPortal(

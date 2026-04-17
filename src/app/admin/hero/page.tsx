@@ -20,11 +20,11 @@ const NAV_ITEMS = [
 ];
 
 const CATEGORY_BANNERS = [
-  { key: 'shop_indoor_hero', label: 'Custom Indoor Cushions' },
-  { key: 'shop_outdoor_hero', label: 'Custom Outdoor Cushions' },
-  { key: 'shop_rv_hero', label: 'Custom RV Cushions' },
-  { key: 'shop_boat_hero', label: 'Custom Boat Cushions' },
-  { key: 'shop_pet-bed_hero', label: 'Custom Pet Bed' },
+  { key: 'home_cat_indoorcushions', label: 'Custom Indoor Cushions' },
+  { key: 'home_cat_outdoorcushions', label: 'Custom Outdoor Cushions' },
+  { key: 'home_cat_rvcushions', label: 'Custom RV Cushions' },
+  { key: 'home_cat_boatcushions', label: 'Custom Boat Cushions' },
+  { key: 'home_cat_petbed', label: 'Custom Pet Bed' },
 ];
 
 export default function AdminHeroPage() {

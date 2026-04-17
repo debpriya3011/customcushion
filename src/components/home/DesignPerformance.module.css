@@ -40,8 +40,8 @@
 
 /* Brand logo image holders */
 .brandLogoBox {
-  width: 120px;
-  height: 52px;
+  width: 200px;
+  height: 60px;
   border: 2px solid var(--brand-primary);
   border-radius: var(--radius-md);
   overflow: hidden;

@@ -28,9 +28,16 @@ export default function ShopPage({ badge, heroTitle, heroSubtitle, introText, se
       <section className={styles.heroVideo}>
         <EditableMedia
           mediaKey={`shop_${customizeType}_hero`}
-          type="image"
-          className="img-placeholder"
-          style={{ minHeight: '320px', borderRadius: 0, height: '320px' }}
+          type="video"
+          className="video-placeholder"
+          style={{ minHeight: '560px', borderRadius: 0 }}
+          defaultComponent={
+            <div className="video-placeholder-inner">
+              <div className="video-placeholder-play">
+                <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5 3 19 12 5 21 5 3" /></svg>
+              </div>
+            </div>
+          }
         />
         <div className={styles.heroOverlay}>
           <div className="container">
