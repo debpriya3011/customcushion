@@ -28,7 +28,7 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
         if (data && typeof data === 'object') {
           setSettings({
             siteName:    data.siteName    ?? '',   // ?? keeps empty string as-is
-            logoUrl:     data.logoUrl     ?? '',
+            logoUrl:     data.logoUrl     ?? data.siteLogo ?? '',
             siteTagline: data.siteTagline ?? '',
             initialized: true,
           });

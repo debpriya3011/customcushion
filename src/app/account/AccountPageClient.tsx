@@ -16,6 +16,7 @@ export default function AccountPageClient() {
   const [showPwd, setShowPwd] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otp, setOtp] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // If already logged in, redirect
   React.useEffect(() => {
@@ -40,6 +41,11 @@ export default function AccountPageClient() {
         setError(result.error ?? 'Something went wrong');
       }
     } else {
+      if (!termsAccepted) {
+        setError('You must accept the Terms & Conditions to create an account.');
+        setLoading(false);
+        return;
+      }
       const result = await register(form.name, form.email, form.password, showOtp ? otp : undefined);
       if (result.requireOtp) {
         setShowOtp(true);
@@ -57,6 +63,7 @@ export default function AccountPageClient() {
     setError('');
     setShowOtp(false);
     setOtp('');
+    setTermsAccepted(false);
   };
 
   return (
@@ -126,6 +133,24 @@ export default function AccountPageClient() {
                 Remember me
               </label>
               <Link href="/account/forgot-password" className={styles.forgot}>Lost your password?</Link>
+            </div>
+          )}
+
+          {mode === 'register' && !showOtp && (
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginTop: '0.5rem' }}>
+              <input
+                type="checkbox"
+                id="terms-accept"
+                checked={termsAccepted}
+                onChange={e => setTermsAccepted(e.target.checked)}
+                style={{ width: '16px', height: '16px', marginTop: '3px', cursor: 'pointer', flexShrink: 0 }}
+              />
+              <label htmlFor="terms-accept" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', cursor: 'pointer', lineHeight: 1.5 }}>
+                I agree to the{' '}
+                <Link href="/terms" style={{ color: 'var(--brand-primary)', fontWeight: 600 }} target="_blank">Terms &amp; Conditions</Link>
+                {' '}and{' '}
+                <Link href="/privacy-policy" style={{ color: 'var(--brand-primary)', fontWeight: 600 }} target="_blank">Privacy Policy</Link>
+              </label>
             </div>
           )}
 

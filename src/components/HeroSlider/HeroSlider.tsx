@@ -11,6 +11,7 @@ const SLIDES = [
     subtitle: 'Wrap your adventures in comfort with our RV cushion covers from CushionGuru – where every journey feels like home.',
     cta: 'Buy Now',
     href: '/shop/rv',
+    mediaKey: 'shop_rv_hero',
     gradient: 'linear-gradient(135deg, #1a3c5e 0%, #FBB91E 100%)',
     emoji: '🚌',
   },
@@ -20,6 +21,7 @@ const SLIDES = [
     subtitle: 'Transform your living space with the exquisite elegance of the Indoor Cushion Cover from CushionGuru, where comfort meets style seamlessly.',
     cta: 'Buy Now',
     href: '/shop/indoor',
+    mediaKey: 'shop_indoor_hero',
     gradient: 'linear-gradient(135deg, #2c1654 0%, #1a3c5e 100%)',
     emoji: '🛋️',
   },
@@ -29,6 +31,7 @@ const SLIDES = [
     subtitle: 'Where comfort meets style, cushion your pet\'s dreams with our bespoke pet beds from CushionGuru.',
     cta: 'Buy Now',
     href: '/shop/pet-bed',
+    mediaKey: 'shop_pet-bed_hero',
     gradient: 'linear-gradient(135deg, #6b3a2a 0%, #c0652b 100%)',
     emoji: '🐾',
   },
@@ -38,6 +41,7 @@ const SLIDES = [
     subtitle: 'Experience comfort that lasts with CushionGuru\'s outdoor cushion covers where style meets durability, outdoors!',
     cta: 'Buy Now',
     href: '/shop/outdoor',
+    mediaKey: 'shop_outdoor_hero',
     gradient: 'linear-gradient(135deg, #1a4a28 0%, #FBB91E 100%)',
     emoji: '☀️',
   },
@@ -47,6 +51,7 @@ const SLIDES = [
     subtitle: 'Where comfort meets style, cushion your Boat Cushions dreams with our bespoke Boat Cushions from CushionGuru.',
     cta: 'Buy Now',
     href: '/shop/boat',
+    mediaKey: 'shop_boat_hero',
     gradient: 'linear-gradient(135deg, #0d2d4a 0%, #1a5d8a 100%)',
     emoji: '⛵',
   },
@@ -55,7 +60,27 @@ const SLIDES = [
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [bannerUrls, setBannerUrls] = useState<Record<string, string>>({});
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const loadBanners = async () => {
+      try {
+        const res = await fetch('/api/media?prefix=shop_', { cache: 'no-store' });
+        if (!res.ok) return;
+        const items: Array<{ key: string; url: string }> = await res.json();
+        const map: Record<string, string> = {};
+        items.forEach(item => {
+          if (item.key && item.url) map[item.key] = item.url;
+        });
+        setBannerUrls(map);
+      } catch (err) {
+        console.error('Failed to load hero banner media:', err);
+      }
+    };
+
+    loadBanners();
+  }, []);
 
   const goTo = useCallback((idx: number) => {
     if (animating) return;
@@ -75,9 +100,18 @@ export default function HeroSlider() {
   }, [current, next]);
 
   const slide = SLIDES[current];
+  const imageUrl = slide.mediaKey ? bannerUrls[slide.mediaKey] : undefined;
 
   return (
-    <section className={styles.hero} aria-label="Hero slider" style={{ background: slide.gradient }}>
+    <section
+      className={styles.hero}
+      aria-label="Hero slider"
+      style={{
+        background: imageUrl
+          ? `linear-gradient(rgba(0,0,0,0.26), rgba(0,0,0,0.26)), url(${imageUrl}) center/cover no-repeat`
+          : slide.gradient,
+      }}
+    >
       {/* Slide content */}
       <div className={`container ${styles.content} ${animating ? styles.exit : styles.enter}`}>
         <span className={styles.badge}>{slide.badge}</span>

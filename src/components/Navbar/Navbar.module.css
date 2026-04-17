@@ -100,10 +100,10 @@
 
 /* Sunbrella badge */
 .sunbrellaBadge {
-  font-size: .75rem;
+  font-size: .85rem;
   font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, var(--brand-secondary), #1a6644);
+  color: var(--brand-primary);
+  background: #ffffff;
   padding: .25rem .7rem;
   border-radius: var(--radius-full);
   letter-spacing: .05em;

@@ -38,6 +38,26 @@
   letter-spacing: .04em;
 }
 
+/* Brand logo image holders */
+.brandLogoBox {
+  width: 120px;
+  height: 52px;
+  border: 2px solid var(--brand-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.brandLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .cross {
   font-size: 1.5rem;
   font-weight: 700;

@@ -21,9 +21,27 @@ export default function DesignPerformance() {
             <span className="badge badge-accent">Partnership</span>
             <h2 id="design-perf-title">Design &amp; Performance</h2>
             <div className={styles.logoRow}>
-              <div className={styles.logoBox}>CushionGuru</div>
+              <div className={styles.brandLogoBox}>
+                <EditableMedia
+                  mediaKey="home_brand_cushionguru"
+                  type="image"
+                  className={styles.brandLogoImg}
+                  defaultComponent={
+                    <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--brand-primary)', padding: '0.4rem 0.75rem', display: 'block', textAlign: 'center' }}>CushionGuru</span>
+                  }
+                />
+              </div>
               <span className={styles.cross}>×</span>
-              <div className={styles.logoBox}>Sunbrella®</div>
+              <div className={styles.brandLogoBox}>
+                <EditableMedia
+                  mediaKey="home_brand_sunbrella"
+                  type="image"
+                  className={styles.brandLogoImg}
+                  defaultComponent={
+                    <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--brand-primary)', padding: '0.4rem 0.75rem', display: 'block', textAlign: 'center' }}>Sunbrella®</span>
+                  }
+                />
+              </div>
             </div>
             <p className={styles.quote}>&ldquo;Your Vision, Our Craftsmanship&rdquo;</p>
             <p>

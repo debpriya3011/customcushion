@@ -76,7 +76,7 @@ export default function AdminSettingsPage() {
       .then(data => {
         setSiteName(data.siteName || 'CushionGuru');
         setSiteTagline(data.siteTagline || 'Custom Cushions, Factory Direct');
-        setLogoUrl(data.logoUrl || '');
+        setLogoUrl(data.logoUrl || data.siteLogo || '');
       })
       .catch(() => { });
   }, [user]);

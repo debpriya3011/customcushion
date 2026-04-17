@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -9,7 +9,6 @@ import styles from '../admin.module.css';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  // { href: '/admin/media', label: 'Media', icon: '🖼️' },
   { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
   { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
@@ -18,6 +17,120 @@ const NAV_ITEMS = [
   { href: '/admin/users', label: 'Users Data', icon: '👥' },
   { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
+
+/* ── Rich Text Toolbar ── */
+const FONT_SIZES = ['10px','12px','14px','16px','18px','20px','24px','28px','32px','40px','48px'];
+
+function RichTextEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [fontSizeOpen, setFontSizeOpen] = useState(false);
+  const [textColorOpen, setTextColorOpen] = useState(false);
+  const [bgColorOpen, setBgColorOpen] = useState(false);
+
+  const COLORS = ['#000000','#ffffff','#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f59e0b','#1a3c5e','#FBB91E','#475569','#9ca3af'];
+
+  // Load initial value
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value || '';
+    }
+  }, []); // only on mount
+
+  const exec = useCallback((cmd: string, val?: string) => {
+    editorRef.current?.focus();
+    document.execCommand(cmd, false, val);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }, [onChange]);
+
+  const handleInput = () => {
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  };
+
+  const insertLine = () => {
+    exec('insertHTML', '<hr style="border:none;border-top:2px solid #e2e8f0;margin:1rem 0;" /><br />');
+  };
+
+  const btnStyle: React.CSSProperties = {
+    padding: '4px 9px', border: '1px solid #d1d5db', borderRadius: '5px',
+    background: '#fff', cursor: 'pointer', fontSize: '13px', fontWeight: 600,
+    color: '#374151', display: 'flex', alignItems: 'center', gap: '3px',
+    transition: 'background 0.15s',
+  };
+
+  const ColorPicker = ({ label, cmd, open, setOpen }: { label: string; cmd: string; open: boolean; setOpen: (v: boolean) => void }) => (
+    <div style={{ position: 'relative' }}>
+      <button type="button" style={btnStyle} onClick={() => { setOpen(!open); setFontSizeOpen(false); }} title={label}>{label}</button>
+      {open && (
+        <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 50, background: '#fff', border: '1px solid #d1d5db', borderRadius: '8px', padding: '8px', display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '4px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', width: '140px' }}>
+          {COLORS.map(c => (
+            <button key={c} type="button" onClick={() => { exec(cmd, c); setOpen(false); }}
+              style={{ width: '26px', height: '26px', borderRadius: '4px', background: c, border: c === '#ffffff' ? '1px solid #d1d5db' : 'none', cursor: 'pointer' }} title={c} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div style={{ border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', overflow: 'visible' }}>
+      {/* Toolbar */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '8px 10px', borderBottom: '1px solid var(--gray-200)', background: '#f9fafb', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', position: 'sticky', top: 0, zIndex: 10 }} onClick={e => e.stopPropagation()}>
+        <button type="button" style={btnStyle} onClick={() => exec('bold')} title="Bold"><strong>B</strong></button>
+        <button type="button" style={{ ...btnStyle, fontStyle: 'italic' }} onClick={() => exec('italic')} title="Italic"><em>I</em></button>
+        <button type="button" style={{ ...btnStyle, textDecoration: 'underline' }} onClick={() => exec('underline')} title="Underline"><u>U</u></button>
+        <button type="button" style={{ ...btnStyle, textDecoration: 'line-through' }} onClick={() => exec('strikeThrough')} title="Strikethrough">S̶</button>
+        <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
+        <button type="button" style={btnStyle} onClick={() => exec('justifyLeft')} title="Align Left">⬅</button>
+        <button type="button" style={btnStyle} onClick={() => exec('justifyCenter')} title="Center">⬛</button>
+        <button type="button" style={btnStyle} onClick={() => exec('justifyRight')} title="Align Right">➡</button>
+        <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
+        <button type="button" style={btnStyle} onClick={() => exec('insertUnorderedList')} title="Bullet List">• List</button>
+        <button type="button" style={btnStyle} onClick={() => exec('insertOrderedList')} title="Numbered List">1. List</button>
+        <button type="button" style={btnStyle} onClick={insertLine} title="Insert Horizontal Line">— Line</button>
+        <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
+        {/* Font Size */}
+        <div style={{ position: 'relative' }}>
+          <button type="button" style={btnStyle} onClick={() => { setFontSizeOpen(!fontSizeOpen); setTextColorOpen(false); setBgColorOpen(false); }} title="Font Size">Aa ▾</button>
+          {fontSizeOpen && (
+            <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 50, background: '#fff', border: '1px solid #d1d5db', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', minWidth: '90px' }}>
+              {FONT_SIZES.map(sz => (
+                <button key={sz} type="button" onClick={() => { exec('fontSize', '7'); const els = editorRef.current?.querySelectorAll('font[size="7"]'); els?.forEach(el => { (el as HTMLElement).removeAttribute('size'); (el as HTMLElement).style.fontSize = sz; }); setFontSizeOpen(false); onChange(editorRef.current?.innerHTML || ''); }}
+                  style={{ display: 'block', width: '100%', padding: '4px 12px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: sz }}>
+                  {sz}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <ColorPicker label="A▾" cmd="foreColor" open={textColorOpen} setOpen={v => { setTextColorOpen(v); if(v) setBgColorOpen(false); setFontSizeOpen(false); }} />
+        <ColorPicker label="H▾" cmd="hiliteColor" open={bgColorOpen} setOpen={v => { setBgColorOpen(v); if(v) setTextColorOpen(false); setFontSizeOpen(false); }} />
+        <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
+        <button type="button" style={btnStyle} onClick={() => exec('undo')} title="Undo">↺</button>
+        <button type="button" style={btnStyle} onClick={() => exec('redo')} title="Redo">↻</button>
+        <button type="button" style={btnStyle} onClick={() => exec('removeFormat')} title="Clear Formatting">✕ Fmt</button>
+      </div>
+
+      {/* Editable area */}
+      <div
+        ref={editorRef}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={handleInput}
+        style={{
+          minHeight: '200px',
+          padding: '1rem',
+          outline: 'none',
+          fontSize: '0.95rem',
+          lineHeight: 1.8,
+          color: 'var(--text-primary)',
+          background: '#fff',
+          borderRadius: '0 0 var(--radius-md) var(--radius-md)',
+          wordBreak: 'break-word',
+        }}
+      />
+    </div>
+  );
+}
 
 export default function AdminBlogsPage() {
   const { user, logout, loading } = useAuth();
@@ -30,6 +143,7 @@ export default function AdminBlogsPage() {
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editorKey, setEditorKey] = useState(0);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
@@ -90,6 +204,7 @@ export default function AdminBlogsPage() {
     setContent('');
     setFile(null);
     setEditingId(null);
+    setEditorKey(k => k + 1);
     const fileInput = document.getElementById('blogImageInput') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
   };
@@ -100,6 +215,7 @@ export default function AdminBlogsPage() {
     setDescription(blog.excerpt);
     setContent(blog.content || blog.excerpt);
     setFile(null);
+    setEditorKey(k => k + 1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -175,8 +291,11 @@ export default function AdminBlogsPage() {
             </div>
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-              <label className="form-label">Content (Full Text)</label>
-              <textarea className="form-control" value={content} onChange={(e) => setContent(e.target.value)} rows={6} placeholder="Format with newlines..." required />
+              <label className="form-label" style={{ marginBottom: '0.5rem', display: 'block' }}>Content (Full Text)</label>
+              <RichTextEditor key={editorKey} value={content} onChange={setContent} />
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
+                Rich text: bold, italic, underline, color, highlight, font size, lists, lines. Paste formatted text to preserve styling.
+              </div>
             </div>
 
             <div className="form-group" style={{ marginBottom: '1.5rem' }}>
@@ -212,7 +331,11 @@ export default function AdminBlogsPage() {
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={blog.title}>{blog.title}</h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '1rem', flex: 1 }} title={blog.excerpt}>{blog.excerpt}</p>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '1rem' }}><strong>Preview:</strong> {blog.content}</div>
+                {blog.content && (
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem', maxHeight: '60px', overflow: 'hidden', position: 'relative' }}>
+                    <strong>Preview:</strong> <span dangerouslySetInnerHTML={{ __html: blog.content }} />
+                  </div>
+                )}
 
                 <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--gray-100)' }}>
                   <button onClick={() => handleEdit(blog)} className="btn btn-outline btn-sm" style={{ flex: 1, borderColor: 'var(--brand-secondary)', color: 'var(--brand-secondary)' }}>

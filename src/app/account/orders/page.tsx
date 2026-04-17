@@ -4,18 +4,38 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { useSite } from '@/context/SiteContext';
 import { downloadInvoice } from '@/lib/invoice';
 
+const STATUS_LABELS: Record<string, string> = {
+  ORDER_RECEIVED:    'Order Received (Pending)',
+  STITCHING:         'Stitching In Progress',
+  PROCESSING:        'Processing / Picking',
+  PACKING:           'Packing',
+  SHIPPING:          'Shipping (In Transit)',
+  OUT_FOR_DELIVERY:  'Out for Delivery',
+  DELIVERED:         'Delivered',
+  CANCELLED:         'Cancelled',
+  PENDING:           'Pending',
+  SHIPPED:           'Shipped',
+};
+
 const statusColor: Record<string, { bg: string; color: string }> = {
-  PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
-  PROCESSING: { bg: '#eff6ff', color: '#3b82f6' },
-  SHIPPED:    { bg: '#f5f3ff', color: '#8b5cf6' },
-  DELIVERED:  { bg: '#f0fdf4', color: '#10b981' },
-  CANCELLED:  { bg: '#fef2f2', color: '#ef4444' },
+  ORDER_RECEIVED:   { bg: '#fff7ed', color: '#f59e0b' },
+  STITCHING:        { bg: '#fdf4ff', color: '#a855f7' },
+  PROCESSING:       { bg: '#eff6ff', color: '#3b82f6' },
+  PACKING:          { bg: '#fff1f2', color: '#f43f5e' },
+  SHIPPING:         { bg: '#f5f3ff', color: '#8b5cf6' },
+  OUT_FOR_DELIVERY: { bg: '#fefce8', color: '#ca8a04' },
+  DELIVERED:        { bg: '#f0fdf4', color: '#10b981' },
+  CANCELLED:        { bg: '#fef2f2', color: '#ef4444' },
+  PENDING:          { bg: '#fff7ed', color: '#f59e0b' },
+  SHIPPED:          { bg: '#f5f3ff', color: '#8b5cf6' },
 };
 
 export default function AccountOrdersPage() {
   const { user, loading } = useAuth();
+  const { logoUrl, siteName } = useSite();
   const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
@@ -85,7 +105,7 @@ export default function AccountOrdersPage() {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                       <span style={{ background: sc.bg, color: sc.color, padding: '0.3rem 0.85rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                        {order.status}
+                        {STATUS_LABELS[order.status] || order.status}
                       </span>
                       <span style={{ fontWeight: 800, color: 'var(--brand-secondary)', fontSize: '1.15rem' }}>
                         ${order.total.toFixed(2)}
@@ -206,7 +226,7 @@ export default function AccountOrdersPage() {
                           <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Payment Method: <span style={{ color: 'var(--brand-primary)', textTransform: 'uppercase' }}>{order.paymentMethod || 'COD'}</span></div>
                           <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Download your official tax invoice.</div>
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); downloadInvoice(order); }} className="btn btn-outline btn-sm">
+                        <button onClick={(e) => { e.stopPropagation(); downloadInvoice(order, logoUrl, siteName); }} className="btn btn-outline btn-sm">
                           📄 Download Invoice
                         </button>
                       </div>

@@ -29,6 +29,7 @@ const CATEGORIES = ['Indoor', 'Outdoor', 'RV', 'Boat', 'Pet Bed'];
 type ShapeDef = { key: string; label: string; icon?: string };
 const SHAPES: ShapeDef[] = [
   { key: 'Rectangle', label: 'Throw Pillow' },
+  { key: 'Box', label: 'Rectangle' },
   { key: 'Trapezium', label: 'Trapezium' },
   { key: 'T Cushion', label: 'T Shape' },
   { key: 'L Shape', label: 'L Shape' },
@@ -98,6 +99,7 @@ function calcFabricMeters(shape: string, d: Dims): number {
   const denom = 54 * 12 * 3;
   switch (shape) {
     case 'Rectangle':
+    case 'Box':
       return (2 * ((F7 * F8) + (F8 * F10) + (F10 * F7))) / denom;
     case 'Trapezium': {
       const slant = Math.sqrt(Math.pow(F7, 2) + Math.pow(F32 - F33, 2));
@@ -117,7 +119,7 @@ function calcFabricMeters(shape: string, d: Dims): number {
 function calcMin(shape: string, d: Dims): number {
   const { length: F7, width: F8, bottomWidth: F32, topWidth: F33, diameter: F35 } = d;
   switch (shape) {
-    case 'Rectangle': return Math.min(F7, F8);
+    case 'Rectangle': case 'Box': return Math.min(F7, F8);
     case 'Trapezium': case 'T Cushion': case 'L Shape': return Math.min(F7, F32, F33);
     case 'Round': return F35;
     case 'Triangle': return Math.min(F7, F8);
@@ -128,7 +130,7 @@ function calcMin(shape: string, d: Dims): number {
 function calcMax(shape: string, d: Dims): number {
   const { length: F7, width: F8, bottomWidth: F32, topWidth: F33, diameter: F35 } = d;
   switch (shape) {
-    case 'Rectangle': return Math.max(F7, F8);
+    case 'Rectangle': case 'Box': return Math.max(F7, F8);
     case 'Trapezium': case 'T Cushion': case 'L Shape': return Math.max(F7, F32, F33);
     case 'Round': return F35;
     case 'Triangle': return Math.max(F7, F8);
@@ -178,7 +180,7 @@ function calcFiberfill(shape: string, fill: string, d: Dims, lookupDim: number, 
   }
   if (fill === 'Fiber Fill') {
     if (shape === 'Round') return F35 * F35 * F10 * 0.003 * qty;
-    if (shape === 'Rectangle' || shape === 'Triangle') return F7 * F8 * F10 * 0.003 * qty;
+    if (shape === 'Rectangle' || shape === 'Box' || shape === 'Triangle') return F7 * F8 * F10 * 0.003 * qty;
     return F7 * F32 * F10 * 0.003 * qty;
   }
   return 0; // Covers Only
@@ -359,7 +361,7 @@ function ImgOptionCard({
           <img src={displayImg} alt={label} className={styles.imgOptionImg} />
         ) : (
           <div className={styles.imgOptionPlaceholder}>
-            {'key' in opt && opt.key === 'Rectangle' ? '🟦' : 'key' in opt && opt.key === 'Round' ? '⭕' : 'key' in opt && opt.key === 'Triangle' ? '🔺' : 'key' in opt && opt.key === 'Trapezium' ? '🔷' : 'key' in opt && opt.key === 'T Cushion' ? '🔤' : '🔣'}
+            {'key' in opt && opt.key === 'Rectangle' ? '🟦' : 'key' in opt && opt.key === 'Box' ? '⬛' : 'key' in opt && opt.key === 'Round' ? '⭕' : 'key' in opt && opt.key === 'Triangle' ? '🔺' : 'key' in opt && opt.key === 'Trapezium' ? '🔷' : 'key' in opt && opt.key === 'T Cushion' ? '🔤' : '🔣'}
           </div>
         )}
         <span className={styles.imgOptionLabel}>{label}</span>
@@ -481,7 +483,7 @@ export default function CustomizePage() {
   }, []);
 
   /* ── Is throw pillow? ── */
-  const isThrowPillow = shape === 'Rectangle';
+  const isThrowPillow = shape === 'Rectangle' || shape === 'Box';
 
   /* ── Ensure fill is valid for shape ── */
   useEffect(() => {
@@ -730,7 +732,7 @@ export default function CustomizePage() {
                   {/* Common: quantity always shown */}
 
                   {/* Rectangle / Throw Pillow */}
-                  {shape === 'Rectangle' && (<>
+                  {(shape === 'Rectangle' || shape === 'Box') && (<>
                     <DimSelect field="length" value={dims.length} onChange={v => setDims(d => ({ ...d, length: v }))} />
                     <DimSelect field="width" value={dims.width} onChange={v => setDims(d => ({ ...d, width: v }))} />
                     <DimSelect field="thickness" value={dims.thickness} onChange={v => setDims(d => ({ ...d, thickness: v }))} />
@@ -777,10 +779,10 @@ export default function CustomizePage() {
                 </div>
 
                 {/* Fabric Meters (calculated, read-only) */}
-                <div className={styles.calcField}>
+                {/* <div className={styles.calcField}>
                   <span className={styles.calcFieldLabel}>Fabric Meters (calculated)</span>
                   <span className={styles.calcFieldValue}>{fabricMeters.toFixed(4)} m</span>
-                </div>
+                </div> */}
 
                 {/* Quantity */}
                 <div className={styles.qtyRow}>
@@ -1004,7 +1006,7 @@ export default function CustomizePage() {
                     <div><span>Category</span><strong>{category}</strong></div>
                     <div><span>Shape</span><strong>{SHAPES.find(s => s.key === shape)?.label}</strong></div>
                     <div><span>Dimensions</span><strong>{buildDimString()}</strong></div>
-                    <div><span>Fabric Meters</span><strong>{fabricMeters.toFixed(4)} m</strong></div>
+                    {/* <div><span>Fabric Meters</span><strong>{fabricMeters.toFixed(4)} m</strong></div> */}
                     <div><span>Fill</span><strong>{fill}</strong></div>
                     <div><span>Fabric</span><strong>{selectedFabric?.label ?? '—'}</strong></div>
                     <div><span>Zipper</span><strong>{zipper}</strong></div>

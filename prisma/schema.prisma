@@ -19,8 +19,13 @@ enum Role {
 
 enum OrderStatus {
   PENDING
+  ORDER_RECEIVED
+  STITCHING
   PROCESSING
+  PACKING
+  SHIPPING
   SHIPPED
+  OUT_FOR_DELIVERY
   DELIVERED
   CANCELLED
 }
@@ -42,7 +47,7 @@ model Order {
   id             String      @id @default(cuid())
   userId         String
   user           User        @relation(fields: [userId], references: [id])
-  status         OrderStatus @default(PENDING)
+  status         OrderStatus @default(ORDER_RECEIVED)
   items          Json
   total          Float       // This will be subtotal + deliveryCharge
   deliveryCharge Float       @default(0)

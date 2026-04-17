@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useSite } from '@/context/SiteContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
@@ -10,6 +11,7 @@ import { downloadInvoice } from '@/lib/invoice';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
+  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
   // { href: '/admin/media', label: 'Media', icon: '🖼️' },
   { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
@@ -20,18 +22,45 @@ const NAV_ITEMS = [
   { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-const STATUS_OPTIONS = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+const STATUS_OPTIONS = [
+  'ORDER_RECEIVED',
+  'STITCHING',
+  'PROCESSING',
+  'PACKING',
+  'SHIPPING',
+  'OUT_FOR_DELIVERY',
+  'DELIVERED',
+  'CANCELLED',
+];
+
+const STATUS_LABELS: Record<string, string> = {
+  ORDER_RECEIVED:    'Order Received (Pending)',
+  STITCHING:         'Stitching In Progress',
+  PROCESSING:        'Processing / Picking',
+  PACKING:           'Packing',
+  SHIPPING:          'Shipping (In Transit)',
+  OUT_FOR_DELIVERY:  'Out for Delivery',
+  DELIVERED:         'Delivered',
+  CANCELLED:         'Cancelled',
+};
 
 const statusColor: Record<string, { bg: string; color: string }> = {
-  PENDING: { bg: '#fff7ed', color: '#f59e0b' },
-  PROCESSING: { bg: '#eff6ff', color: '#3b82f6' },
-  SHIPPED: { bg: '#f5f3ff', color: '#8b5cf6' },
-  DELIVERED: { bg: '#f0fdf4', color: '#10b981' },
-  CANCELLED: { bg: '#fef2f2', color: '#ef4444' },
+  ORDER_RECEIVED:   { bg: '#fff7ed', color: '#f59e0b' },
+  STITCHING:        { bg: '#fdf4ff', color: '#a855f7' },
+  PROCESSING:       { bg: '#eff6ff', color: '#3b82f6' },
+  PACKING:          { bg: '#fff1f2', color: '#f43f5e' },
+  SHIPPING:         { bg: '#f5f3ff', color: '#8b5cf6' },
+  OUT_FOR_DELIVERY: { bg: '#fefce8', color: '#ca8a04' },
+  DELIVERED:        { bg: '#f0fdf4', color: '#10b981' },
+  CANCELLED:        { bg: '#fef2f2', color: '#ef4444' },
+  // legacy fallbacks
+  PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
+  SHIPPED:    { bg: '#f5f3ff', color: '#8b5cf6' },
 };
 
 export default function AdminOrdersPage() {
   const { user, logout, loading } = useAuth();
+  const { logoUrl, siteName } = useSite();
   const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
   const [filter, setFilter] = useState('ALL');
@@ -62,10 +91,11 @@ export default function AdminOrdersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
+      const data = await res.json();
       if (res.ok) {
         setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o));
       } else {
-        alert('Failed to update status');
+        alert(data.error || 'Failed to update status');
       }
     } catch {
       alert('Error updating status');
@@ -131,7 +161,7 @@ export default function AdminOrdersPage() {
                 color: filter === s ? 'white' : 'var(--text-secondary)',
                 borderColor: filter === s ? 'var(--brand-primary)' : 'var(--gray-200)',
               }}>
-              {s}
+              {s === 'ALL' ? 'ALL' : (STATUS_LABELS[s] || s)}
             </button>
           ))}
         </div>
@@ -236,7 +266,7 @@ export default function AdminOrdersPage() {
                   <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Update Status:</label>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     {STATUS_OPTIONS.filter(s => s !== order.status).map(s => {
-                      const c = statusColor[s];
+                      const c = statusColor[s] || { bg: '#f3f4f6', color: '#6b7280' };
                       return (
                         <button key={s} onClick={() => updateStatus(order.id, s)}
                           disabled={updating === order.id}
@@ -252,7 +282,7 @@ export default function AdminOrdersPage() {
                             opacity: updating === order.id ? 0.5 : 1,
                             transition: 'all 0.2s',
                           }}>
-                          → {s}
+                          → {STATUS_LABELS[s] || s}
                         </button>
                       );
                     })}
@@ -263,7 +293,7 @@ export default function AdminOrdersPage() {
                     <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
                       Paid via {order.paymentMethod || 'COD'}
                     </div>
-                    <button onClick={() => downloadInvoice(order)} className="btn btn-outline btn-sm">
+                    <button onClick={() => downloadInvoice(order, logoUrl, siteName)} className="btn btn-outline btn-sm">
                       📄 Invoice
                     </button>
                   </div>

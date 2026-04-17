@@ -9,6 +9,7 @@ import styles from '../admin.module.css';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
+  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
   // { href: '/admin/media', label: 'Media', icon: '🖼️' },
   { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
@@ -61,6 +62,7 @@ export default function AdminFabricsPage() {
 
   const SHAPE_KEYS = [
     { key: 'Rectangle', label: 'Throw Pillow' },
+    { key: 'Box', label: 'Rectangle' },
     { key: 'Trapezium', label: 'Trapezium' },
     { key: 'T Cushion', label: 'T Cushion' },
     { key: 'L Shape', label: 'L Shape' },

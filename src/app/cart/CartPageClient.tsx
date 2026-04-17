@@ -19,43 +19,123 @@ const labelStyle: React.CSSProperties = {
   marginBottom: '0.35rem', display: 'block',
 };
 
+const COUNTRY_CODES = [
+  { code: '+1', label: 'US/CA (+1)' },
+  { code: '+44', label: 'UK (+44)' },
+  { code: '+61', label: 'AU (+61)' },
+  { code: '+91', label: 'IN (+91)' },
+  { code: '+81', label: 'JP (+81)' },
+  { code: '+49', label: 'DE (+49)' },
+  { code: '+33', label: 'FR (+33)' },
+  { code: '+39', label: 'IT (+39)' },
+  { code: '+34', label: 'ES (+34)' },
+  { code: '+55', label: 'BR (+55)' },
+  { code: '+52', label: 'MX (+52)' },
+  { code: '+82', label: 'KR (+82)' },
+  { code: '+86', label: 'CN (+86)' },
+  { code: '+65', label: 'SG (+65)' },
+  { code: '+971', label: 'AE (+971)' },
+  { code: '+966', label: 'SA (+966)' },
+  { code: '+27', label: 'ZA (+27)' },
+  { code: '+7', label: 'RU (+7)' },
+  { code: '+351', label: 'PT (+351)' },
+  { code: '+31', label: 'NL (+31)' },
+  { code: '+64', label: 'NZ (+64)' },
+  { code: '+20', label: 'EG (+20)' },
+  { code: '+234', label: 'NG (+234)' },
+  { code: '+254', label: 'KE (+254)' },
+  { code: '+60', label: 'MY (+60)' },
+  { code: '+62', label: 'ID (+62)' },
+  { code: '+63', label: 'PH (+63)' },
+  { code: '+66', label: 'TH (+66)' },
+  { code: '+90', label: 'TR (+90)' },
+  { code: '+46', label: 'SE (+46)' },
+  { code: '+47', label: 'NO (+47)' },
+  { code: '+45', label: 'DK (+45)' },
+  { code: '+358', label: 'FI (+358)' },
+  { code: '+48', label: 'PL (+48)' },
+  { code: '+420', label: 'CZ (+420)' },
+  { code: '+36', label: 'HU (+36)' },
+  { code: '+40', label: 'RO (+40)' },
+  { code: '+380', label: 'UA (+380)' },
+  { code: '+30', label: 'GR (+30)' },
+  { code: '+972', label: 'IL (+972)' },
+  { code: '+92', label: 'PK (+92)' },
+  { code: '+880', label: 'BD (+880)' },
+  { code: '+94', label: 'LK (+94)' },
+  { code: '+977', label: 'NP (+977)' },
+  { code: '+95', label: 'MM (+95)' },
+  { code: '+84', label: 'VN (+84)' },
+  { code: '+57', label: 'CO (+57)' },
+  { code: '+54', label: 'AR (+54)' },
+  { code: '+56', label: 'CL (+56)' },
+  { code: '+51', label: 'PE (+51)' },
+  { code: '+58', label: 'VE (+58)' },
+  { code: '+593', label: 'EC (+593)' },
+];
+
 const FIELDS = [
-  { name: 'fullName',  label: 'Full Name',          col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
-  { name: 'email',     label: 'Email Address',       col: '1 / -1', type: 'email' },
-  { name: 'phone',     label: 'Phone Number',        col: '', type: 'tel', pattern: "^[0-9\\+\\-\\s\\(\\)]{7,15}$", title: "Valid phone number required" },
-  { name: 'address',   label: 'Street Address',      col: '1 / -1', type: 'text' },
+  { name: 'fullName',  label: 'Full name',          col: '1 / -1', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Only letters and spaces allowed" },
+  { name: 'email',     label: 'Email address',       col: '1 / -1', type: 'email' },
+  { name: 'phone',     label: 'Phone number',        col: '', type: 'tel', isPhone: true },
+  { name: 'address',   label: 'Street address',      col: '1 / -1', type: 'text' },
   { name: 'city',      label: 'City',                col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "City name should contain only letters" },
   { name: 'state',     label: 'State / Province',    col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "State name should contain only letters" },
-  { name: 'zip',       label: 'ZIP / Postal Code',   col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
+  { name: 'zip',       label: 'ZIP / Postal code',   col: '', type: 'text', pattern: "^(?=.*[0-9])[a-zA-Z0-9\\s\\-]{3,10}$", title: "Valid ZIP/Postal code required (must contain numbers)" },
   { name: 'country',   label: 'Country',             col: '', type: 'text', pattern: "^[a-zA-Z\\s\\-']{2,}$", title: "Country name should contain only letters" },
 ];
 
-interface AddrType { fullName: string; email: string; phone: string; address: string; city: string; state: string; zip: string; country: string; }
+interface AddrType { fullName: string; email: string; phone: string; phoneCode: string; address: string; city: string; state: string; zip: string; country: string; }
 
-function AddressForm({ values, onChange }: { values: AddrType; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+function AddressForm({ values, onChange, onCodeChange }: { values: AddrType; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; onCodeChange?: (code: string) => void }) {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
       {FIELDS.map(field => (
         <div key={field.name} style={{ display: 'flex', flexDirection: 'column', gridColumn: field.col || '' }}>
-          <label style={labelStyle}>{field.label}</label>
-          <input 
-            type={field.type || "text"}
-            name={field.name} 
-            value={(values as any)[field.name]} 
-            onChange={onChange} 
-            style={inputStyle} 
-            required 
-            placeholder={field.label}
-            pattern={field.pattern}
-            title={field.title}
-          />
+          <label style={labelStyle}>{field.label.charAt(0).toUpperCase() + field.label.slice(1)}</label>
+          {field.isPhone ? (
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <select
+                value={values.phoneCode || '+1'}
+                onChange={e => onCodeChange && onCodeChange(e.target.value)}
+                style={{ ...inputStyle, width: '130px', flexShrink: 0 }}
+              >
+                {COUNTRY_CODES.map(cc => (
+                  <option key={cc.code} value={cc.code}>{cc.label}</option>
+                ))}
+              </select>
+              <input
+                type="tel"
+                name="phone"
+                value={values.phone}
+                onChange={onChange}
+                style={{ ...inputStyle, flex: 1 }}
+                required
+                placeholder="Phone number"
+                pattern="^[0-9\-\s\(\)]{5,15}$"
+                title="Valid phone number required"
+              />
+            </div>
+          ) : (
+            <input 
+              type={field.type || "text"}
+              name={field.name} 
+              value={(values as any)[field.name]} 
+              onChange={onChange} 
+              style={inputStyle} 
+              required 
+              placeholder={field.label.charAt(0).toUpperCase() + field.label.slice(1)}
+              pattern={(field as any).pattern}
+              title={(field as any).title}
+            />
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-const EMPTY: AddrType = { fullName: '', email: '', phone: '', address: '', city: '', state: '', zip: '', country: '' };
+const EMPTY: AddrType = { fullName: '', email: '', phone: '', phoneCode: '+1', address: '', city: '', state: '', zip: '', country: '' };
 
 const statusColor: Record<string, { bg: string; color: string }> = {
   PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
@@ -78,6 +158,7 @@ export default function CartPageClient() {
   const [billingSame, setBillingSame] = useState(true);
   const [billing, setBilling] = useState<AddrType>({ ...EMPTY });
   const [paymentMethod, setPaymentMethod] = useState<'STRIPE' | 'COD'>('STRIPE');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const deliveryCharge = 0;
   const finalTotal = total + deliveryCharge;
 
@@ -89,8 +170,13 @@ export default function CartPageClient() {
     }
   }, [searchParams, user, count]);
 
-  const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setShipping(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    if (e.target.name !== 'email' && typeof val === 'string' && val.length > 0) {
+      val = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+    setShipping(prev => ({ ...prev, [e.target.name]: val }));
+  };
 
   const handleDetectAddress = () => {
     if ("geolocation" in navigator) {
@@ -100,8 +186,15 @@ export default function CartPageClient() {
           const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`);
           const data = await res.json();
           if (data && data.address) {
+            let detectedPhoneCode = shipping.phoneCode || '+1';
+            if (data.address.country_code) {
+              const detectedIso = data.address.country_code.toLowerCase();
+              const isoToCode: Record<string, string> = { us: '+1', ca: '+1', gb: '+44', au: '+61', in: '+91', jp: '+81', de: '+49', fr: '+33', it: '+39', es: '+34', br: '+55', mx: '+52', kr: '+82', cn: '+86', sg: '+65', ae: '+971', sa: '+966', za: '+27', ru: '+7', pt: '+351', nl: '+31', nz: '+64', eg: '+20', ng: '+234', ke: '+254', my: '+60', id: '+62', ph: '+63', th: '+66', tr: '+90', se: '+46', no: '+47', dk: '+45', fi: '+358', pl: '+48', cz: '+420', hu: '+36', ro: '+40', ua: '+380', gr: '+30', il: '+972', pk: '+92', bd: '+880', lk: '+94', np: '+977', mm: '+95', vn: '+84', co: '+57', ar: '+54', cl: '+56', pe: '+51', ve: '+58', ec: '+593' };
+              detectedPhoneCode = isoToCode[detectedIso] || detectedPhoneCode;
+            }
             setShipping(prev => ({
               ...prev,
+              phoneCode: detectedPhoneCode,
               address: data.address.road || data.address.suburb || data.address.neighbourhood || prev.address,
               city: data.address.city || data.address.town || data.address.village || prev.city,
               state: data.address.state || prev.state,
@@ -133,8 +226,15 @@ export default function CartPageClient() {
           const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`);
           const data = await res.json();
           if (data && data.address) {
+            let detectedPhoneCode = billing.phoneCode || '+1';
+            if (data.address.country_code) {
+              const detectedIso = data.address.country_code.toLowerCase();
+              const isoToCode: Record<string, string> = { us: '+1', ca: '+1', gb: '+44', au: '+61', in: '+91', jp: '+81', de: '+49', fr: '+33', it: '+39', es: '+34', br: '+55', mx: '+52', kr: '+82', cn: '+86', sg: '+65', ae: '+971', sa: '+966', za: '+27', ru: '+7', pt: '+351', nl: '+31', nz: '+64', eg: '+20', ng: '+234', ke: '+254', my: '+60', id: '+62', ph: '+63', th: '+66', tr: '+90', se: '+46', no: '+47', dk: '+45', fi: '+358', pl: '+48', cz: '+420', hu: '+36', ro: '+40', ua: '+380', gr: '+30', il: '+972', pk: '+92', bd: '+880', lk: '+94', np: '+977', mm: '+95', vn: '+84', co: '+57', ar: '+54', cl: '+56', pe: '+51', ve: '+58', ec: '+593' };
+              detectedPhoneCode = isoToCode[detectedIso] || detectedPhoneCode;
+            }
             setBilling(prev => ({
               ...prev,
+              phoneCode: detectedPhoneCode,
               address: data.address.road || data.address.suburb || data.address.neighbourhood || prev.address,
               city: data.address.city || data.address.town || data.address.village || prev.city,
               state: data.address.state || prev.state,
@@ -158,8 +258,13 @@ export default function CartPageClient() {
     }
   };
 
-  const handleBillingChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setBilling(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleBillingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    if (e.target.name !== 'email' && typeof val === 'string' && val.length > 0) {
+      val = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+    setBilling(prev => ({ ...prev, [e.target.name]: val }));
+  };
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,9 +281,9 @@ export default function CartPageClient() {
           total: finalTotal,
           deliveryCharge,
           paymentMethod,
-          status: 'PENDING',
-          shippingAddr: shipping,
-          billingAddr: billingSame ? shipping : billing,
+          status: 'ORDER_RECEIVED',
+          shippingAddr: { ...shipping, phone: `${shipping.phoneCode || '+1'}${shipping.phone}` },
+          billingAddr: billingSame ? { ...shipping, phone: `${shipping.phoneCode || '+1'}${shipping.phone}` } : { ...billing, phone: `${billing.phoneCode || '+1'}${billing.phone}` },
           notes: paymentMethod === 'COD' ? 'Cash on Delivery' : 'Stripe checkout initiated',
         }),
       });
@@ -330,7 +435,7 @@ export default function CartPageClient() {
                       {isDetecting ? 'Detecting...' : '📍 Auto-Detect'}
                     </button>
                   </div>
-                  <AddressForm values={shipping} onChange={handleShippingChange} />
+                  <AddressForm values={shipping} onChange={handleShippingChange} onCodeChange={(code) => setShipping(prev => ({ ...prev, phoneCode: code }))} />
                 </div>
 
                 <div className="card card-responsive-padding">
@@ -356,7 +461,7 @@ export default function CartPageClient() {
                   </div>
                   {billingSame
                     ? <div style={{ padding: '1rem', background: 'var(--gray-50)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', fontSize: '0.9rem' }}>✓ Using same address as shipping</div>
-                    : <AddressForm values={billing} onChange={handleBillingChange} />
+                    : <AddressForm values={billing} onChange={handleBillingChange} onCodeChange={(code) => setBilling(prev => ({ ...prev, phoneCode: code }))} />
                   }
                 </div>
 

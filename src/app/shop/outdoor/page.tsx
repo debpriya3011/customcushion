@@ -22,7 +22,7 @@ export default function OutdoorPage() {
           defaultComponent={
             <div className="video-placeholder-inner">
               <div className="video-placeholder-play">
-                <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21 5 3" /></svg>
               </div>
             </div>
           }

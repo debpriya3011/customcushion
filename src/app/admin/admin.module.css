@@ -22,13 +22,16 @@
 /* Sidebar */
 .sidebar {
   width: 260px;
-  min-height: calc(100vh - var(--nav-height));
+  height: calc(100vh - var(--nav-height));
   background: #0d2438;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: var(--nav-height);
+  left: 0;
   flex-shrink: 0;
+  z-index: 100;
+  overflow-y: auto;
 }
 .sidebarHeader {
   display: flex;
@@ -90,6 +93,7 @@
   padding: 2rem;
   background: var(--off-white);
   overflow-y: auto;
+  margin-left: 260px;
 }
 .mainHeader {
   display: flex;
@@ -157,12 +161,13 @@
 
 @media (max-width: 1024px) {
   .layout { flex-direction: column; }
-  .sidebar { width: 100%; min-height: auto; position: sticky; z-index: 50; }
+  .sidebar { width: 100%; height: auto; position: sticky; z-index: 50; }
   .sideNav { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; padding: 1rem; overflow-x: auto; }
   .navItem { padding: 0.5rem 0.75rem; white-space: nowrap; }
   .sidebarHeader { display: none; } /* Hide header to save space */
   .sidebarFooter { display: none; }
   .statsGrid { grid-template-columns: repeat(2,1fr); }
+  .main { margin-left: 0; }
 }
 @media (max-width: 640px) {
   .statsGrid { grid-template-columns: 1fr; }

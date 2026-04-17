@@ -12,42 +12,54 @@ const fetchImageAsBase64 = async (url: string) => {
       reader.readAsDataURL(blob);
     });
   } catch (e) {
-    console.error("Failed to fetch image", e);
+    console.warn("Failed to fetch image", e);
     return null;
   }
 };
 
-export const downloadInvoice = async (order: any) => {
+export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: string) => {
   const doc = new jsPDF();
   
-  // Try fetching logo
+  // Try fetching logo, using passed logoUrl if available
   let logoBase64: string | null = null;
   try {
-    const setRes = await fetch('/api/settings');
-    if (setRes.ok) {
-      const settings = await setRes.json();
-      if (settings.logoUrl) {
-        logoBase64 = await fetchImageAsBase64(settings.logoUrl);
+    const finalLogoUrl = logoUrl?.trim();
+    if (finalLogoUrl) {
+      const resolvedUrl = finalLogoUrl.startsWith('data:')
+        ? finalLogoUrl
+        : (typeof window !== 'undefined' ? new URL(finalLogoUrl, window.location.origin).href : finalLogoUrl);
+      logoBase64 = await fetchImageAsBase64(resolvedUrl);
+    } else {
+      const setRes = await fetch(typeof window !== 'undefined' ? window.location.origin + '/api/settings' : '/api/settings');
+      if (setRes.ok) {
+        const settings = await setRes.json();
+        const settingsLogo = settings.logoUrl || settings.siteLogo || '';
+        if (settingsLogo) {
+          const resolvedUrl = settingsLogo.startsWith('data:')
+            ? settingsLogo
+            : (typeof window !== 'undefined' ? new URL(settingsLogo, window.location.origin).href : settingsLogo);
+          logoBase64 = await fetchImageAsBase64(resolvedUrl);
+        }
       }
     }
   } catch (e) {
-    // ignore
+    console.warn('Invoice logo fetch failed:', e);
   }
 
   // Header Logo
   if (logoBase64) {
     try {
-       // A square/rectangular logo fit into roughly 40x40. We assume JPEG/PNG.
-       doc.addImage(logoBase64, 'JPEG', 14, 10, 30, 30);
-    } catch(err) {
-       doc.setFontSize(22);
-       doc.setTextColor(40, 40, 40);
-       doc.text('CushionGuru', 14, 25);
+      const type = logoBase64.startsWith('data:image/png') ? 'PNG' : logoBase64.startsWith('data:image/jpeg') ? 'JPEG' : 'JPEG';
+      doc.addImage(logoBase64, type, 14, 10, 30, 30);
+    } catch (err) {
+      doc.setFontSize(22);
+      doc.setTextColor(40, 40, 40);
+      doc.text(brandName || 'CushionGuru', 14, 25);
     }
   } else {
     doc.setFontSize(22);
     doc.setTextColor(40, 40, 40);
-    doc.text('CushionGuru', 14, 25);
+    doc.text(brandName || 'CushionGuru', 14, 25);
   }
 
   doc.setFontSize(24);
@@ -64,7 +76,7 @@ export const downloadInvoice = async (order: any) => {
   doc.setFont('helvetica', 'bold');
   doc.text('Order Details', 14, startY);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Order ID: ${order.id}`, 14, startY + 6);
+  doc.text(`Order ID: ${order.id.slice(-8).toUpperCase()}`, 14, startY + 6);
   doc.text(`Order Date: ${new Date(order.createdAt).toLocaleDateString()}`, 14, startY + 12);
   doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 14, startY + 18);
   doc.text(`Payment: ${order.paymentMethod || 'COD'}`, 14, startY + 24);
@@ -155,5 +167,5 @@ export const downloadInvoice = async (order: any) => {
   doc.text('Thank you for shopping with CushionGuru!', 14, finalY + 45);
   doc.text('For any questions or support, please contact us.', 14, finalY + 50);
 
-  doc.save(`Invoice_${order.id.slice(-8).toUpperCase()}.pdf`);
+  doc.save(`Invoice_${order.id}.pdf`);
 };

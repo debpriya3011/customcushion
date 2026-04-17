@@ -95,7 +95,10 @@ export default function ContactPageClient() {
                   <span>📍</span>
                   <div>
                     <strong>Address</strong>
-                    <p>328 Stewart Avenue, Bethpage, New York 11714</p>
+                    <p>328 Stewart Avenue, Bethpage, New York 11714
+                      <br />
+                      <b>(Not a walk-in store)</b>
+                    </p>
                   </div>
                 </div>
                 <div className={styles.infoCard}>

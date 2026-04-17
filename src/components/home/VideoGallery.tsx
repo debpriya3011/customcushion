@@ -12,7 +12,7 @@ export default function VideoGallery() {
           <div className="divider" />
         </div>
         <div className={styles.grid}>
-          {[1,2,3,4].map(n => (
+          {[1, 2, 3, 4].map(n => (
             <EditableMedia
               key={n}
               mediaKey={`home_video_${n}`}
@@ -21,7 +21,7 @@ export default function VideoGallery() {
               defaultComponent={
                 <div className="video-placeholder-inner">
                   <div className="video-placeholder-play">
-                    <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                   </div>
                   <span style={{ fontSize: '.85rem', fontWeight: 600 }}>Watch Video {n}</span>
                 </div>

@@ -10,6 +10,9 @@ export async function GET() {
     const settings = await prisma.setting.findMany();
     const map: Record<string, string> = {};
     settings.forEach(s => { map[s.key] = s.value; });
+    if (!map.logoUrl && map.siteLogo) {
+      map.logoUrl = map.siteLogo;
+    }
     return NextResponse.json(map);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

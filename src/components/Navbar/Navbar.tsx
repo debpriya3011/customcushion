@@ -121,9 +121,11 @@ export default function Navbar() {
               <li>
                 <Link href="/account" className={`${styles.navLink} ${isActive('/account') ? styles.active : ''}`}>My Account</Link>
               </li>
-              {/* <li>
-                <span className={styles.sunbrellaBadge}>Sunbrella®</span>
-              </li> */}
+              <li>
+                <a href="https://www.sunbrella.com" target="_blank">
+                  <span className={styles.sunbrellaBadge}>Sunbrella®</span>
+                </a>
+              </li>
             </ul>
           </nav>
 

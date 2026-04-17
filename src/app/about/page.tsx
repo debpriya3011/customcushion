@@ -81,16 +81,14 @@ export default function AboutPage() {
       <section className={`section-padding-sm ${styles.videoSection}`}>
         <div className="container">
           <EditableMedia
-            mediaKey="about_video"
-            type="video"
-            className="video-placeholder"
-            style={{ maxWidth: '860px', margin: '0 auto' }}
+            mediaKey="about_featured_image"
+            type="image"
+            className="img-placeholder"
+            style={{ maxWidth: '860px', height: '480px', margin: '0 auto', borderRadius: 'var(--radius-xl)' }}
             defaultComponent={
-              <div className="video-placeholder-inner">
-                <div className="video-placeholder-play">
-                  <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-                </div>
-                <span>Our Story Video</span>
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.75rem' }}>
+                <span style={{ fontSize: '3rem' }}>🛋️</span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Our Story Image</span>
               </div>
             }
           />

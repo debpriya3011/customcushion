@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/session';
+import { OrderStatus } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -15,22 +16,31 @@ export async function POST(req: NextRequest) {
 
     const { items, total, status, notes, shippingAddr, billingAddr, paymentMethod, deliveryCharge } = await req.json();
 
-    // Store both addresses cleanly in the shippingAddr JSON field
+    // Build safe payload values for Prisma
+    const safeStatus = typeof status === 'string' && status in OrderStatus
+      ? OrderStatus[status as keyof typeof OrderStatus]
+      : OrderStatus.ORDER_RECEIVED;
+    const safePaymentMethod = typeof paymentMethod === 'string' ? paymentMethod : 'COD';
+    const safeTotal = Number(total ?? 0);
+    const safeDeliveryCharge = Number(deliveryCharge ?? 0);
     const addressData = shippingAddr ? {
       shipping: shippingAddr,
       billing: billingAddr ?? shippingAddr,
     } : undefined;
 
+    const safeItems = JSON.parse(JSON.stringify(items || []));
+    const safeAddressData = addressData ? JSON.parse(JSON.stringify(addressData)) : undefined;
+
     const order = await prisma.order.create({
       data: {
         userId: session.id,
-        items,
-        total,
-        status: status || 'PENDING',
+        items: safeItems,
+        total: safeTotal,
+        status: safeStatus,
         notes: notes || '',
-        shippingAddr: addressData,
-        paymentMethod: paymentMethod || 'COD',
-        deliveryCharge: 0, // Free delivery
+        shippingAddr: safeAddressData,
+        paymentMethod: safePaymentMethod,
+        deliveryCharge: safeDeliveryCharge,
       }
     });
 
