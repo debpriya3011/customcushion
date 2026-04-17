@@ -19,7 +19,7 @@ const fetchImageAsBase64 = async (url: string) => {
 
 export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: string) => {
   const doc = new jsPDF();
-  
+
   // Try fetching logo, using passed logoUrl if available
   let logoBase64: string | null = null;
   try {
@@ -47,19 +47,44 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
   }
 
   // Header Logo
+  const LOGO_X = 14;
+  const LOGO_Y = 10;
+  const MAX_WIDTH = 40;   // 🔁 change this to control size
+  const MAX_HEIGHT = 30;  // 🔁 change this to control size
+
   if (logoBase64) {
     try {
-      const type = logoBase64.startsWith('data:image/png') ? 'PNG' : logoBase64.startsWith('data:image/jpeg') ? 'JPEG' : 'JPEG';
-      doc.addImage(logoBase64, type, 14, 10, 30, 30);
+      const type = logoBase64.startsWith('data:image/png')
+        ? 'PNG'
+        : logoBase64.startsWith('data:image/jpeg')
+          ? 'JPEG'
+          : 'JPEG';
+
+      // Get original image dimensions
+      const imgProps = doc.getImageProperties(logoBase64);
+
+      let width = MAX_WIDTH;
+      let height = (imgProps.height * width) / imgProps.width;
+
+      // If height exceeds max, scale down
+      if (height > MAX_HEIGHT) {
+        height = MAX_HEIGHT;
+        width = (imgProps.width * height) / imgProps.height;
+      }
+
+      doc.addImage(logoBase64, type, LOGO_X, LOGO_Y, width, height);
+
     } catch (err) {
+      // Fallback to text
       doc.setFontSize(22);
       doc.setTextColor(40, 40, 40);
-      doc.text(brandName || 'CushionGuru', 14, 25);
+      doc.text(brandName || 'CushionGuru', LOGO_X, LOGO_Y + 15);
     }
   } else {
+    // No logo → show brand name
     doc.setFontSize(22);
     doc.setTextColor(40, 40, 40);
-    doc.text(brandName || 'CushionGuru', 14, 25);
+    doc.text(brandName || 'CushionGuru', LOGO_X, LOGO_Y + 15);
   }
 
   doc.setFontSize(24);
@@ -84,7 +109,7 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
   // Address Parsers
   const rawShip = order.shippingAddr?.shipping || order.shippingAddr || {};
   const rawBill = order.shippingAddr?.billing || rawShip;
-  
+
   const formatAddr = (addr: any) => {
     return [
       addr.fullName || order.user?.name || 'Customer',
@@ -97,7 +122,7 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
 
   const billLines = formatAddr(rawBill);
   const shipLines = formatAddr(rawShip);
-  
+
   // Compare safely excluding methods, etc.
   const isSame = JSON.stringify(rawBill) === JSON.stringify(rawShip);
 
@@ -121,7 +146,7 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
 
   // Items
   const itemsArray = Array.isArray(order.items) ? order.items : [];
-  
+
   const tableData = itemsArray.map((item: any) => [
     item.name,
     item.quantity.toString(),
@@ -138,7 +163,7 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
   });
 
   const finalY = (doc as any).lastAutoTable.finalY || tableStartY + 20;
-  
+
   const subtotal = itemsArray.reduce((acc: number, val: any) => acc + (Number(val.price || 0) * Number(val.quantity)), 0);
   const delivery = order.deliveryCharge || 0;
   const total = order.total || (subtotal + delivery);
@@ -156,7 +181,7 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
   doc.setFont('helvetica', 'normal');
   doc.text('Subtotal:', 140, finalY + 10);
   doc.text(`$${subtotal.toFixed(2)}`, 180, finalY + 10, { align: 'right' });
-  
+
   doc.text('Delivery Charge:', 140, finalY + 16);
   doc.text(`$${delivery.toFixed(2)}`, 180, finalY + 16, { align: 'right' });
 
