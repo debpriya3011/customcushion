@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const preloadMedia = useCallback(async () => {
     try {
       const res = await fetch('/api/media', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const items: { key: string; url: string }[] = await res.json();
       const cache: Record<string, string> = {};
       items.forEach(item => {

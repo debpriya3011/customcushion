@@ -31,7 +31,7 @@ export default function DesignPerformance() {
                   }
                 />
               </div>
-              <span className={styles.cross}>×</span>
+              <span className={styles.cross}>✘</span>
               <div className={styles.brandLogoBox}>
                 <EditableMedia
                   mediaKey="home_brand_sunbrella"
@@ -45,10 +45,10 @@ export default function DesignPerformance() {
             </div>
             <p className={styles.quote}>&ldquo;Your Vision, Our Craftsmanship&rdquo;</p>
             <p>
-              In a groundbreaking collaboration, CushionGuru proudly partners with Sunbrella, combining their renowned fabric expertise 
-              with our commitment to comfort and style. With Sunbrella&rsquo;s premium quality fabrics, we elevate our cushion covers to 
-              unparalleled excellence, ensuring durability, fade resistance, and easy maintenance. Experience the pinnacle of luxury and 
-              performance as we deliver nothing short of perfection in every stitch, setting the standard as the premier destination for 
+              In a groundbreaking collaboration, CushionGuru proudly partners with Sunbrella, combining their renowned fabric expertise
+              with our commitment to comfort and style. With Sunbrella&rsquo;s premium quality fabrics, we elevate our cushion covers to
+              unparalleled excellence, ensuring durability, fade resistance, and easy maintenance. Experience the pinnacle of luxury and
+              performance as we deliver nothing short of perfection in every stitch, setting the standard as the premier destination for
               top-tier fabric cushion covers.
             </p>
 
@@ -71,7 +71,7 @@ export default function DesignPerformance() {
                 type="image"
                 className={`img-placeholder ${styles.mainImg}`}
                 defaultComponent={
-                  <div className={styles.imgLabel}>CushionGuru × Sunbrella®<br/>Partnership Photo</div>
+                  <div className={styles.imgLabel}>CushionGuru × Sunbrella®<br />Partnership Photo</div>
                 }
               />
               <div className={styles.floatCard}>

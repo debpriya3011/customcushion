@@ -23,7 +23,10 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetch('/api/settings')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
+        return r.json();
+      })
       .then(data => {
         if (data && typeof data === 'object') {
           setSettings({

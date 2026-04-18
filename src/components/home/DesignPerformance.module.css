@@ -40,28 +40,26 @@
 
 /* Brand logo image holders */
 .brandLogoBox {
-  width: 200px;
-  height: 60px;
-  border: 2px solid var(--brand-primary);
+  width: 140px;
+  height: 50px;
+  /* border: 2px solid var(--brand-primary); */
   border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  /* background: #fff; */
   flex-shrink: 0;
 }
 
 .brandLogoImg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .cross {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--brand-accent);
+  color: #000000;
 }
 
 .quote {

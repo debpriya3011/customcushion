@@ -43,7 +43,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Auto-sync Non-Customizable products with the database to catch subsequent admin changes (price, name, etc.)
     if (initialItems.length > 0) {
       fetch('/api/products')
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
         .then(products => {
           if (Array.isArray(products)) {
             setItems(prevItems => {
