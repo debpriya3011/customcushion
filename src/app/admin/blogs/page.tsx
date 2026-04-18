@@ -9,7 +9,8 @@ import styles from '../admin.module.css';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/messages', label: 'Messages', icon: '✉️' },
+  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
+  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
   { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
   { href: '/admin/products', label: 'Products', icon: '🛍️' },
@@ -19,7 +20,7 @@ const NAV_ITEMS = [
 ];
 
 /* ── Rich Text Toolbar ── */
-const FONT_SIZES = ['10px','12px','14px','16px','18px','20px','24px','28px','32px','40px','48px'];
+const FONT_SIZES = ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '40px', '48px'];
 
 function RichTextEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -27,7 +28,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (html: s
   const [textColorOpen, setTextColorOpen] = useState(false);
   const [bgColorOpen, setBgColorOpen] = useState(false);
 
-  const COLORS = ['#000000','#ffffff','#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f59e0b','#1a3c5e','#FBB91E','#475569','#9ca3af'];
+  const COLORS = ['#000000', '#ffffff', '#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#f59e0b', '#1a3c5e', '#FBB91E', '#475569', '#9ca3af'];
 
   // Load initial value
   useEffect(() => {
@@ -102,8 +103,8 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (html: s
             </div>
           )}
         </div>
-        <ColorPicker label="A▾" cmd="foreColor" open={textColorOpen} setOpen={v => { setTextColorOpen(v); if(v) setBgColorOpen(false); setFontSizeOpen(false); }} />
-        <ColorPicker label="H▾" cmd="hiliteColor" open={bgColorOpen} setOpen={v => { setBgColorOpen(v); if(v) setTextColorOpen(false); setFontSizeOpen(false); }} />
+        <ColorPicker label="A▾" cmd="foreColor" open={textColorOpen} setOpen={v => { setTextColorOpen(v); if (v) setBgColorOpen(false); setFontSizeOpen(false); }} />
+        <ColorPicker label="H▾" cmd="hiliteColor" open={bgColorOpen} setOpen={v => { setBgColorOpen(v); if (v) setTextColorOpen(false); setFontSizeOpen(false); }} />
         <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
         <button type="button" style={btnStyle} onClick={() => exec('undo')} title="Undo">↺</button>
         <button type="button" style={btnStyle} onClick={() => exec('redo')} title="Redo">↻</button>
@@ -244,7 +245,7 @@ export default function AdminBlogsPage() {
           <span>🛋️</span>
           <div>
             <strong>CushionGuru</strong>
-            <span>Admin Panel</span>
+            {/* <span>Admin Panel</span> */}
           </div>
         </div>
         <nav className={styles.sideNav}>

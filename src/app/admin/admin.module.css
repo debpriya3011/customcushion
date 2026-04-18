@@ -92,7 +92,7 @@
   flex: 1;
   padding: 2rem;
   background: var(--off-white);
-  overflow-y: auto;
+  min-height: calc(100vh - var(--nav-height));
   margin-left: 260px;
 }
 .mainHeader {

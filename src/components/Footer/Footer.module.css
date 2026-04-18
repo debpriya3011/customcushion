@@ -233,3 +233,15 @@
     text-align: center;
   }
 }
+
+.adminFooter {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+}
+
+@media (max-width: 1024px) {
+  .adminFooter {
+    margin-left: 0;
+    width: 100%;
+  }
+}

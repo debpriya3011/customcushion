@@ -60,9 +60,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       const newUrl = await uploadToS3(buffer, filename, file.type || 'image/jpeg');
       updateData.imageUrl = newUrl;
 
-      if (existingProduct?.imageUrl && existingProduct.imageUrl.includes('amazonaws.com')) {
-        await deleteFromS3(existingProduct.imageUrl);
-      }
+      // We intentionally DO NOT delete the old image from S3 here to ensure that 
+      // old order histories that rely on the previous image URL continue to work.
     }
 
     const updatedProduct = await prisma.product.update({
@@ -106,9 +105,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const resolvedParams = await params;
     const existingProduct = await prisma.product.findUnique({ where: { id: resolvedParams.id } });
     
-    if (existingProduct?.imageUrl && existingProduct.imageUrl.includes('amazonaws.com')) {
-      await deleteFromS3(existingProduct.imageUrl);
-    }
+    // We intentionally DO NOT delete from S3 here to ensure that order histories 
+    // that rely on this product's image URL continue to display the image properly.
 
     await prisma.product.delete({ where: { id: resolvedParams.id } });
     return NextResponse.json({ success: true });

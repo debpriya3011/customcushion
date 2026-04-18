@@ -135,12 +135,11 @@ export default function AccountOrdersPage() {
                                   {item.category ?? 'Custom'} · Quantity: {item.quantity} · ${item.price?.toFixed(2)} each
                                 </div>
                                 {item.customOptions && Object.keys(item.customOptions).length > 0 && (
-                                  <div style={{ marginTop: '0.4rem', display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                                  <div style={{ marginTop: '0.4rem', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                    <strong>Details:</strong>{' '}
                                     {Object.entries(item.customOptions).map(([k, v]) => (
-                                      <span key={k} style={{ background: 'white', border: '1px solid var(--gray-200)', padding: '0.15rem 0.5rem', borderRadius: 'var(--radius-sm)', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                                        {k}: {v as string}
-                                      </span>
-                                    ))}
+                                      `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v as string}`
+                                    )).join(' | ')}
                                   </div>
                                 )}
                               </div>

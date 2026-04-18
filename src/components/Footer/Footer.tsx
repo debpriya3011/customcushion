@@ -7,6 +7,8 @@ import { useSite } from '@/context/SiteContext';
 import { useAuth } from '@/context/AuthContext';
 
 
+import { usePathname } from 'next/navigation';
+
 const USEFUL_LINKS = [
   { href: '/about', label: 'About CushionGuru' },
   { href: '/how-to-measure', label: 'How To Measure' },
@@ -28,6 +30,8 @@ const SOCIAL = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith('/admin');
   const { siteName, logoUrl, siteTagline, initialized } = useSite();
   const { user } = useAuth();
   const [email, setEmail] = useState('');
@@ -50,7 +54,7 @@ export default function Footer() {
     } catch (err) { }
   };
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${isAdmin ? styles.adminFooter : ''}`}>
       <div className={styles.footerTop}>
         <div className="container">
           <div className={styles.grid}>

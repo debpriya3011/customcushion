@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
   { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
   // { href: '/admin/media', label: 'Media', icon: '🖼️' },
-  { href: '/admin/messages', label: 'Messages', icon: '✉️' },
+  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
   { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
   { href: '/admin/products', label: 'Products', icon: '🛍️' },
@@ -34,28 +34,28 @@ const STATUS_OPTIONS = [
 ];
 
 const STATUS_LABELS: Record<string, string> = {
-  ORDER_RECEIVED:    'Order Received (Pending)',
-  STITCHING:         'Stitching In Progress',
-  PROCESSING:        'Processing / Picking',
-  PACKING:           'Packing',
-  SHIPPING:          'Shipping (In Transit)',
-  OUT_FOR_DELIVERY:  'Out for Delivery',
-  DELIVERED:         'Delivered',
-  CANCELLED:         'Cancelled',
+  ORDER_RECEIVED: 'Order Received (Pending)',
+  STITCHING: 'Stitching In Progress',
+  PROCESSING: 'Processing / Picking',
+  PACKING: 'Packing',
+  SHIPPING: 'Shipping (In Transit)',
+  OUT_FOR_DELIVERY: 'Out for Delivery',
+  DELIVERED: 'Delivered',
+  CANCELLED: 'Cancelled',
 };
 
 const statusColor: Record<string, { bg: string; color: string }> = {
-  ORDER_RECEIVED:   { bg: '#fff7ed', color: '#f59e0b' },
-  STITCHING:        { bg: '#fdf4ff', color: '#a855f7' },
-  PROCESSING:       { bg: '#eff6ff', color: '#3b82f6' },
-  PACKING:          { bg: '#fff1f2', color: '#f43f5e' },
-  SHIPPING:         { bg: '#f5f3ff', color: '#8b5cf6' },
+  ORDER_RECEIVED: { bg: '#fff7ed', color: '#f59e0b' },
+  STITCHING: { bg: '#fdf4ff', color: '#a855f7' },
+  PROCESSING: { bg: '#eff6ff', color: '#3b82f6' },
+  PACKING: { bg: '#fff1f2', color: '#f43f5e' },
+  SHIPPING: { bg: '#f5f3ff', color: '#8b5cf6' },
   OUT_FOR_DELIVERY: { bg: '#fefce8', color: '#ca8a04' },
-  DELIVERED:        { bg: '#f0fdf4', color: '#10b981' },
-  CANCELLED:        { bg: '#fef2f2', color: '#ef4444' },
+  DELIVERED: { bg: '#f0fdf4', color: '#10b981' },
+  CANCELLED: { bg: '#fef2f2', color: '#ef4444' },
   // legacy fallbacks
-  PENDING:    { bg: '#fff7ed', color: '#f59e0b' },
-  SHIPPED:    { bg: '#f5f3ff', color: '#8b5cf6' },
+  PENDING: { bg: '#fff7ed', color: '#f59e0b' },
+  SHIPPED: { bg: '#f5f3ff', color: '#8b5cf6' },
 };
 
 export default function AdminOrdersPage() {
@@ -208,6 +208,14 @@ export default function AdminOrdersPage() {
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontWeight: 700, fontSize: '0.95rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.category ?? 'Custom'} · Qty: {item.quantity} · ${item.price?.toFixed(2)} each</div>
+                        {item.customOptions && Object.keys(item.customOptions).length > 0 && (
+                          <div style={{ marginTop: '0.4rem', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                            <strong>Details:</strong>{' '}
+                            {Object.entries(item.customOptions).map(([k, v]) => (
+                              `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v as string}`
+                            )).join(' | ')}
+                          </div>
+                        )}
                       </div>
                       <span style={{ fontWeight: 800, color: 'var(--brand-secondary)', whiteSpace: 'nowrap' }}>${(item.price * item.quantity).toFixed(2)}</span>
                     </div>

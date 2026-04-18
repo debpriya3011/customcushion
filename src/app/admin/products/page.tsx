@@ -9,7 +9,8 @@ import styles from '../admin.module.css';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/messages', label: 'Messages', icon: '✉️' },
+  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
+  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
   { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
   { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
   { href: '/admin/products', label: 'Products', icon: '🛍️' },
@@ -161,8 +162,8 @@ function RichDescriptionEditor({ blocks, setBlocks }: {
                     onChange={e => updateBlock(block.id, e.target.value)}
                     placeholder={
                       block.type === 'heading' ? 'Section heading...' :
-                      block.type === 'bullet' ? 'Bullet point...' :
-                      'Paragraph text... (select text then B/I/U to format)'
+                        block.type === 'bullet' ? 'Bullet point...' :
+                          'Paragraph text... (select text then B/I/U to format)'
                     }
                     rows={block.type === 'paragraph' ? 3 : 1}
                   />
