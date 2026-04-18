@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       const siteName = siteSettings.find(s => s.key === 'siteName')?.value || 'CushionGuru';
       const siteLogo = siteSettings.find(s => s.key === 'logoUrl')?.value;
 
-      if (user?.email) {
+      if (user?.email && safePaymentMethod !== 'stripe') {
         const { sendMail } = await import('@/lib/mail');
         const { generateOrderConfirmationEmail } = await import('@/lib/email-templates');
         

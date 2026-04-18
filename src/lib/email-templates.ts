@@ -132,3 +132,32 @@ export function generateEmailVerificationOtpEmail(otp: string, actionText: strin
     </div>
   `;
 }
+
+export function generatePaymentFailedEmail(order: any, brandName: string, brandLogoUrl?: string, customerName: string = 'Valued Customer', originUrl?: string) {
+  const siteUrl = originUrl || (process.env.NEXT_PUBLIC_SITE_URL ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') : 'http://localhost:3000');
+  const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
+
+  return `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333;">
+      ${logoUrl ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoUrl}" alt="${brandName}" style="max-height: 50px;"></div>` : `<h2 style="text-align: center;">${brandName}</h2>`}
+      
+      <h3 style="color: #f44336;">Payment Failed</h3>
+      <p>Dear ${customerName},</p>
+      <p>Unfortunately, your recent payment attempt for your order has failed or was canceled.</p>
+      
+      <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <p><strong>Order ID:</strong> ${order.id}</p>
+        <p><strong>Total Amount Attempted:</strong> $${order.total.toFixed(2)}</p>
+        <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+      </div>
+
+      <p style="margin-top: 20px;">
+        Don't worry, no charges were successfully completed. Please return to your cart and try again using a different payment method if needed.
+      </p>
+
+      <p style="margin-top: 30px; font-size: 14px; color: #777;">
+        If you have any questions or need assistance, feel free to reply to this email.
+      </p>
+    </div>
+  `;
+}
