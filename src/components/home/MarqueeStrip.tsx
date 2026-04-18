@@ -4,16 +4,12 @@ import React from 'react';
 import styles from './MarqueeStrip.module.css';
 
 const ITEMS = [
-  '🛋️ Indoor Cushions',
-  '☀️ Outdoor Cushions',
-  '🚌 RV Cushions',
-  '⛵ Boat Cushions',
-  '🐾 Pet Beds',
-  '🌿 Sunbrella® Fabrics',
-  '🏭 Factory Direct',
-  '🌍 Free Worldwide Shipping',
-  '✅ Perfect Fit Guarantee',
-  '⚡ Fast Turnaround',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/image-145-1.webp',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/Group-688.webp',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/Group-684.webp',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/image-62.webp',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/pngegg-4-1.webp',
+  'https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/StripImages/pngfind-1.webp'
 ];
 
 export default function MarqueeStrip() {
@@ -23,8 +19,7 @@ export default function MarqueeStrip() {
       <div className={styles.track}>
         {doubled.map((item, i) => (
           <span key={i} className={styles.item}>
-            {item}
-            <span className={styles.sep}>·</span>
+            <img src={item} alt="Partner" />
           </span>
         ))}
       </div>

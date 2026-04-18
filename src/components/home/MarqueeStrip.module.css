@@ -1,28 +1,9 @@
 .strip {
-  background: linear-gradient(135deg, var(--brand-secondary), #1a6644);
+  background: transparent;
   overflow: hidden;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
+  margin-bottom: 3.5rem;
   position: relative;
-}
-
-.strip::before,
-.strip::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  z-index: 2;
-}
-
-.strip::before {
-  left: 0;
-  background: linear-gradient(to right, #FBB91E, transparent);
-}
-
-.strip::after {
-  right: 0;
-  background: linear-gradient(to left, #1a6644, transparent);
 }
 
 .track {
@@ -30,13 +11,13 @@
   white-space: nowrap;
   animation: scroll 30s linear infinite;
   width: max-content;
+  align-items: center;
 }
 
 @keyframes scroll {
   from {
     transform: translateX(0);
   }
-
   to {
     transform: translateX(-50%);
   }
@@ -49,15 +30,19 @@
 .item {
   display: inline-flex;
   align-items: center;
-  gap: .75rem;
-  font-size: .85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, .9);
-  letter-spacing: .03em;
-  padding-right: .75rem;
+  justify-content: center;
+  gap: 4rem;
+  padding-right: 4rem;
 }
 
-.sep {
-  color: rgba(255, 255, 255, .35);
-  font-size: 1.1rem;
+.item img {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%) opacity(70%);
+  transition: filter 0.3s ease;
+}
+
+.item img:hover {
+  filter: grayscale(0%) opacity(100%);
 }
