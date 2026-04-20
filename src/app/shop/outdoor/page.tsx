@@ -17,8 +17,8 @@ export default function OutdoorPage() {
         <EditableMedia
           mediaKey="shop_outdoor_hero"
           type="video"
-          className="video-placeholder"
-          style={{ minHeight: '520px', borderRadius: 0 }}
+          className={styles.heroMedia}
+          style={{ borderRadius: 0 }}
           defaultComponent={
             <div className="video-placeholder-inner">
               <div className="video-placeholder-play">

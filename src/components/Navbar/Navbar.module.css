@@ -134,6 +134,16 @@
   z-index: 200;
 }
 
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  right: 0;
+  height: 1.5rem;
+  background: transparent;
+}
+
 @keyframes dropIn {
   from {
     opacity: 0;

@@ -104,7 +104,7 @@ export default function HeroSlider() {
 
   return (
     <section
-      className={styles.hero}
+      className={`${styles.hero} ${styles.hasImage}`}
       aria-label="Hero slider"
       style={{
         background: imageUrl

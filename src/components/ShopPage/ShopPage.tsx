@@ -29,8 +29,8 @@ export default function ShopPage({ badge, heroTitle, heroSubtitle, introText, se
         <EditableMedia
           mediaKey={`shop_${customizeType}_hero`}
           type="video"
-          className="video-placeholder"
-          style={{ minHeight: '560px', borderRadius: 0 }}
+          className={styles.heroMedia}
+          style={{ borderRadius: 0 }}
           defaultComponent={
             <div className="video-placeholder-inner">
               <div className="video-placeholder-play">

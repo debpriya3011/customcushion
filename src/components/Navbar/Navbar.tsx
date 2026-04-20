@@ -92,10 +92,20 @@ export default function Navbar() {
               </li>
 
               {/* Desktop shop dropdown */}
-              <li className={styles.hasDropdown} ref={desktopShopRef}>
+              <li 
+                className={styles.hasDropdown} 
+                ref={desktopShopRef}
+                onMouseEnter={() => setDesktopShop(true)}
+                onMouseLeave={() => setDesktopShop(false)}
+              >
                 <button
                   className={`${styles.navLink} ${styles.dropdownTrigger} ${pathname.startsWith('/shop') || pathname === '/products' ? styles.active : ''}`}
-                  onClick={() => setDesktopShop(v => !v)}
+                  onClick={(e) => {
+                    if (window.innerWidth <= 1024) {
+                      e.preventDefault();
+                      setDesktopShop(v => !v);
+                    }
+                  }}
                   aria-expanded={desktopShop}
                 >
                   Shop
