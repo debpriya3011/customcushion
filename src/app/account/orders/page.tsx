@@ -177,8 +177,8 @@ export default function AccountOrdersPage() {
                         // Compare all fields — any difference means billing is different
                         const billDiff = bill && JSON.stringify(bill) !== JSON.stringify(ship);
                         return (
-                          <div style={{ display: 'grid', gridTemplateColumns: billDiff ? '1fr 1fr' : '1fr 1fr', gap: '1.5rem' }}>
-                            <div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+                            <div style={{ flex: '1 1 250px' }}>
                               <h3 style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>🚚 Shipping Address</h3>
                               <div style={{ background: 'var(--gray-50)', border: '1px solid var(--gray-100)', borderRadius: 'var(--radius-md)', padding: '1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.9 }}>
                                 <strong style={{ color: 'var(--text-primary)' }}>{ship.fullName}</strong><br />
@@ -189,7 +189,7 @@ export default function AccountOrdersPage() {
                                 {ship.email && <span>✉️ {ship.email}</span>}
                               </div>
                             </div>
-                            <div>
+                            <div style={{ flex: '1 1 250px' }}>
                               <h3 style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>💳 Billing Address</h3>
                               <div style={{ background: 'var(--gray-50)', border: '1px solid var(--gray-100)', borderRadius: 'var(--radius-md)', padding: '1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.9 }}>
                                 {billDiff ? (

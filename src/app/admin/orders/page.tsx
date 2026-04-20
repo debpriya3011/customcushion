@@ -6,21 +6,10 @@ import { useSite } from '@/context/SiteContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
+import AdminSidebar from '@/components/AdminSidebar';
 import { downloadInvoice } from '@/lib/invoice';
 
-const NAV_ITEMS = [
-  { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
-  // { href: '/admin/media', label: 'Media', icon: '🖼️' },
-  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
-  { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
-  { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
-  { href: '/admin/products', label: 'Products', icon: '🛍️' },
-  { href: '/admin/fabrics', label: 'Fabrics', icon: '🧵' },
-  { href: '/admin/users', label: 'Users Data', icon: '👥' },
-  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
-];
+
 
 const STATUS_OPTIONS = [
   'ORDER_RECEIVED',
@@ -110,29 +99,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div className={styles.layout}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <span>🛋️</span>
-          <div><strong>CushionGuru</strong>
-            {/* <span>Admin Panel</span> */}
-          </div>
-        </div>
-        <nav className={styles.sideNav}>
-          {NAV_ITEMS.map(item => (
-            <Link key={item.href} href={item.href} className={styles.navItem}
-              style={{ background: item.href === '/admin/orders' ? 'rgba(255,255,255,.08)' : '', color: item.href === '/admin/orders' ? '#fff' : '' }}>
-              <span>{item.icon}</span>{item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className={styles.sidebarFooter}>
-          <div className={styles.adminUser}>
-            <div className={styles.avatar}>{user.name?.[0] ?? 'A'}</div>
-            <div><strong>{user.name ?? 'Admin'}</strong><span>{user.email}</span></div>
-          </div>
-          <button onClick={() => { logout(); router.push('/'); }} className="btn btn-outline btn-sm" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)' }}>Sign Out</button>
-        </div>
-      </aside>
+      <AdminSidebar />
 
       <main className={styles.main}>
         <div className={styles.mainHeader}>
@@ -238,8 +205,8 @@ export default function AdminOrdersPage() {
                   // Compare every field — any difference shows the billing address separately
                   const billDiff = bill && JSON.stringify(bill) !== JSON.stringify(ship);
                   return (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--gray-100)' }}>
-                      <div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--gray-100)' }}>
+                      <div style={{ flex: '1 1 250px' }}>
                         <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>🚚 Shipping Address</div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                           <strong>{ship.fullName}</strong><br />
@@ -250,7 +217,7 @@ export default function AdminOrdersPage() {
                           {ship.email && <span>✉️ {ship.email}</span>}
                         </div>
                       </div>
-                      <div>
+                      <div style={{ flex: '1 1 250px' }}>
                         <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>💳 Billing Address</div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                           {billDiff ? (

@@ -5,19 +5,9 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
+import AdminSidebar from '@/components/AdminSidebar';
 
-const NAV_ITEMS = [
-  { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
-  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
-  { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
-  { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
-  { href: '/admin/products', label: 'Products', icon: '🛍️' },
-  { href: '/admin/fabrics', label: 'Fabrics', icon: '🧵' },
-  { href: '/admin/users', label: 'Users Data', icon: '👥' },
-  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
-];
+
 
 /* ── Rich Text Toolbar ── */
 const FONT_SIZES = ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '40px', '48px'];
@@ -240,35 +230,7 @@ export default function AdminBlogsPage() {
   return (
     <div className={styles.layout}>
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <span>🛋️</span>
-          <div>
-            <strong>CushionGuru</strong>
-            {/* <span>Admin Panel</span> */}
-          </div>
-        </div>
-        <nav className={styles.sideNav}>
-          {NAV_ITEMS.map(item => (
-            <Link key={item.href} href={item.href} className={styles.navItem} style={{ background: item.href === '/admin/blogs' ? 'rgba(255,255,255,.08)' : '', color: item.href === '/admin/blogs' ? '#fff' : '' }}>
-              <span>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className={styles.sidebarFooter}>
-          <div className={styles.adminUser}>
-            <div className={styles.avatar}>{user.name?.[0] ?? 'A'}</div>
-            <div>
-              <strong>{user.name ?? 'Admin'}</strong>
-              <span>{user.email}</span>
-            </div>
-          </div>
-          <button onClick={() => { logout(); router.push('/'); }} className="btn btn-outline btn-sm" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)' }}>
-            Sign Out
-          </button>
-        </div>
-      </aside>
+      <AdminSidebar />
 
       {/* Main Content */}
       <main className={styles.main}>

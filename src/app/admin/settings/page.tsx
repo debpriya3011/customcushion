@@ -5,21 +5,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
+import AdminSidebar from '@/components/AdminSidebar';
 import OtpVerification from '@/components/OtpVerification';
 
-const NAV_ITEMS = [
-  { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
-  // { href: '/admin/media', label: 'Media', icon: '🖼️' },
-  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
-  { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
-  { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
-  { href: '/admin/products', label: 'Products', icon: '🛍️' },
-  { href: '/admin/fabrics', label: 'Fabrics', icon: '🧵' },
-  { href: '/admin/users', label: 'Users Data', icon: '👥' },
-  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
-];
+
 
 export default function AdminSettingsPage() {
   const { user, logout, loading } = useAuth();
@@ -285,29 +274,7 @@ export default function AdminSettingsPage() {
 
   return (
     <div className={styles.layout}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <span>🛋️</span>
-          <div><strong>CushionGuru</strong>
-            {/* <span>Admin Panel</span> */}
-          </div>
-        </div>
-        <nav className={styles.sideNav}>
-          {NAV_ITEMS.map(item => (
-            <Link key={item.href} href={item.href} className={styles.navItem}
-              style={{ background: item.href === '/admin/settings' ? 'rgba(255,255,255,.08)' : '', color: item.href === '/admin/settings' ? '#fff' : '' }}>
-              <span>{item.icon}</span>{item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className={styles.sidebarFooter}>
-          <div className={styles.adminUser}>
-            <div className={styles.avatar}>{user.name?.[0] ?? 'A'}</div>
-            <div><strong>{user.name ?? 'Admin'}</strong><span>{user.email}</span></div>
-          </div>
-          <button onClick={() => { logout(); router.push('/'); }} className="btn btn-outline btn-sm" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)' }}>Sign Out</button>
-        </div>
-      </aside>
+      <AdminSidebar />
 
       <main className={styles.main}>
         <div className={styles.mainHeader}>
@@ -441,8 +408,8 @@ export default function AdminSettingsPage() {
                   required
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                <div style={{ flex: '1 1 200px' }}>
                   <label style={labelStyle}>New Password</label>
                   <input
                     type="password"
@@ -454,7 +421,7 @@ export default function AdminSettingsPage() {
                     required
                   />
                 </div>
-                <div>
+                <div style={{ flex: '1 1 200px' }}>
                   <label style={labelStyle}>Confirm Password</label>
                   <input
                     type="password"
@@ -612,12 +579,12 @@ export default function AdminSettingsPage() {
             <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '1.5rem' }}>
               👁️ Navbar Preview
             </h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1.25rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)', width: 'fit-content' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1.25rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)', width: 'fit-content', maxWidth: '100%', flexWrap: 'wrap' }}>
               {(logoPreview || logoUrl)
                 ? <img src={logoPreview || logoUrl} alt="logo" style={{ height: '36px', width: 'auto', objectFit: 'contain', maxWidth: '140px' }} />
                 : <span style={{ fontSize: '1.5rem' }}>🛋️</span>
               }
-              <span style={{ color: 'white', fontWeight: 700, fontSize: '1.15rem', letterSpacing: '-0.01em' }}>{siteName || 'CushionGuru'}</span>
+              <span style={{ color: 'white', fontWeight: 700, fontSize: '1.15rem', letterSpacing: '-0.01em', wordBreak: 'break-word' }}>{siteName || 'CushionGuru'}</span>
             </div>
             <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>This is how your brand appears in the navigation bar.</div>
           </div>

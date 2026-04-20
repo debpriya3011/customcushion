@@ -5,19 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import styles from './admin.module.css';
+import AdminSidebar from '@/components/AdminSidebar';
 
-const NAV_ITEMS = [
-  { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/orders', label: 'Orders', icon: '📦' },
-  { href: '/admin/hero', label: 'Hero Images', icon: '🖼️' },
-  // { href: '/admin/messages', label: 'Messages', icon: '✉️' },
-  { href: '/admin/subscribers', label: 'Subscribers', icon: '📧' },
-  { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
-  { href: '/admin/products', label: 'Products', icon: '🛍️' },
-  { href: '/admin/fabrics', label: 'Fabrics', icon: '🧵' },
-  { href: '/admin/users', label: 'Users Data', icon: '👥' },
-  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
-];
+
 
 const statusColor: Record<string, { bg: string; color: string }> = {
   ORDER_RECEIVED: { bg: '#fff7ed', color: '#f59e0b' },
@@ -92,31 +82,7 @@ export default function AdminPage() {
   return (
     <div className={styles.layout}>
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <span>🛋️</span>
-          <div><strong>CushionGuru</strong>
-            {/* <span>Admin Panel</span> */}
-          </div>
-        </div>
-        <nav className={styles.sideNav}>
-          {NAV_ITEMS.map(item => (
-            <Link key={item.href} href={item.href} className={styles.navItem}
-              style={{ background: item.href === '/admin' ? 'rgba(255,255,255,.08)' : '', color: item.href === '/admin' ? '#fff' : '' }}>
-              <span>{item.icon}</span>{item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className={styles.sidebarFooter}>
-          <div className={styles.adminUser}>
-            <div className={styles.avatar}>{user.name?.[0] ?? 'A'}</div>
-            <div><strong>{user.name ?? 'Admin'}</strong><span>{user.email}</span></div>
-          </div>
-          <button onClick={() => { logout(); router.push('/'); }} className="btn btn-outline btn-sm" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.4)' }}>
-            Sign Out
-          </button>
-        </div>
-      </aside>
+      <AdminSidebar />
 
       {/* Main */}
       <main className={styles.main}>

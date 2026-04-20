@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useSite } from '@/context/SiteContext';
@@ -19,8 +19,9 @@ const SHOP_ITEMS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { count } = useCart();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { siteName, logoUrl, initialized } = useSite();
 
   const [scrolled, setScrolled] = useState(false);
@@ -227,9 +228,19 @@ export default function Navbar() {
               <li>
                 <Link href="/account" className={styles.mobileLink} onClick={closeAll}>My Account</Link>
               </li>
-              {user?.role === 'ADMIN' && (
+              {user && (
                 <li>
-                  <Link href="/admin" className={styles.mobileLink} onClick={closeAll}>Admin</Link>
+                  <button 
+                    className={styles.mobileLink} 
+                    style={{ textAlign: 'left', width: '100%', color: 'var(--error)', background: 'transparent', border: 'none', padding: '1rem', cursor: 'pointer' }}
+                    onClick={() => {
+                      closeAll();
+                      logout();
+                      router.push('/');
+                    }}
+                  >
+                    Sign Out
+                  </button>
                 </li>
               )}
             </ul>
