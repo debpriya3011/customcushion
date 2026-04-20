@@ -4,11 +4,11 @@ import styles from './ShopByCategory.module.css';
 import EditableMedia from '@/components/EditableMedia/EditableMedia';
 
 const CATEGORIES = [
-  { href: '/shop/indoor',  label: 'Indoor Cushions',  emoji: '🛋️' },
+  { href: '/shop/indoor', label: 'Indoor Cushions', emoji: '🛋️' },
   { href: '/shop/outdoor', label: 'Outdoor Cushions', emoji: '☀️' },
-  { href: '/shop/rv',      label: 'RV Cushions',      emoji: '🚌' },
-  { href: '/shop/pet-bed', label: 'Pet Bed',           emoji: '🐾' },
-  { href: '/shop/boat',    label: 'Boat Cushions',     emoji: '⛵' },
+  { href: '/shop/rv', label: 'RV Cushions', emoji: '🚌' },
+  { href: '/shop/pet-bed', label: 'Pet Bed', emoji: '🐾' },
+  { href: '/shop/boat', label: 'Boat Cushions', emoji: '⛵' },
 ];
 
 export default function ShopByCategory() {
@@ -29,9 +29,9 @@ export default function ShopByCategory() {
                   mediaKey={`home_cat_${cat.label.toLowerCase().replace(/[^a-z]/g, '')}`}
                   type="image"
                   className={`img-placeholder ${styles.img}`}
-                  defaultComponent={
-                    <span className={styles.catEmoji}>{cat.emoji}</span>
-                  }
+                // defaultComponent={
+                //   <span className={styles.catEmoji}>{cat.emoji}</span>
+                // }
                 />
                 <div className={styles.overlay} />
               </div>

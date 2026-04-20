@@ -33,9 +33,9 @@ export default function ShopPage({ badge, heroTitle, heroSubtitle, introText, se
           style={{ borderRadius: 0 }}
           defaultComponent={
             <div className="video-placeholder-inner">
-              <div className="video-placeholder-play">
+              {/* <div className="video-placeholder-play">
                 <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-              </div>
+              </div> */}
             </div>
           }
         />

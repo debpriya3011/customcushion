@@ -49,9 +49,9 @@ export default function PetBedPage() {
           style={{ borderRadius: 0 }}
           defaultComponent={
             <div className="video-placeholder-inner">
-              <div className="video-placeholder-play">
+              {/* <div className="video-placeholder-play">
                 <svg viewBox="0 0 24 24" fill="white" width="30" height="30"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-              </div>
+              </div> */}
             </div>
           }
         />

@@ -19,19 +19,19 @@ const NAV_ITEMS = [
   { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-const CATEGORY_BANNERS = [
-  { key: 'home_cat_indoorcushions', label: 'Custom Indoor Cushions' },
-  { key: 'home_cat_outdoorcushions', label: 'Custom Outdoor Cushions' },
-  { key: 'home_cat_rvcushions', label: 'Custom RV Cushions' },
-  { key: 'home_cat_boatcushions', label: 'Custom Boat Cushions' },
-  { key: 'home_cat_petbed', label: 'Custom Pet Bed' },
+const HERO_BANNERS = [
+  { key: 'shop_indoor_hero', label: 'Indoor Cushions Hero' },
+  { key: 'shop_outdoor_hero', label: 'Outdoor Cushions Hero' },
+  { key: 'shop_rv_hero', label: 'RV Cushions Hero' },
+  { key: 'shop_boat_hero', label: 'Boat Cushions Hero' },
+  { key: 'shop_pet-bed_hero', label: 'Pet Bed Hero' },
 ];
 
 export default function AdminHeroPage() {
   const { user, logout, loading, refreshMedia } = useAuth();
   const router = useRouter();
 
-  const [heroKey, setHeroKey] = useState(CATEGORY_BANNERS[0].key);
+  const [heroKey, setHeroKey] = useState(HERO_BANNERS[0].key);
   const [heroFile, setHeroFile] = useState<File | null>(null);
   const [heroUploading, setHeroUploading] = useState(false);
   const [heroMsg, setHeroMsg] = useState('');
@@ -47,7 +47,7 @@ export default function AdminHeroPage() {
   const handleHeroUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!heroKey || !heroFile) {
-      setHeroMsg('❌ Select a category and an image file.');
+      setHeroMsg('❌ Select a slider and an image file.');
       return;
     }
     setHeroUploading(true);
@@ -62,7 +62,7 @@ export default function AdminHeroPage() {
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Upload failed');
-      setHeroMsg(`✅ Hero image uploaded for ${CATEGORY_BANNERS.find(b => b.key === heroKey)?.label}`);
+      setHeroMsg(`✅ Hero image uploaded for ${HERO_BANNERS.find(b => b.key === heroKey)?.label}`);
       setHeroFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
       if (refreshMedia) refreshMedia();
@@ -124,18 +124,18 @@ export default function AdminHeroPage() {
 
         <section style={{ marginBottom: '2.5rem' }}>
           <h2 style={{ fontSize: '1.15rem', marginBottom: '.5rem', color: 'var(--brand-primary)' }}>
-            🖼️ Category Banners
+            🖼️ Hero Slider Banners
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '.875rem', marginBottom: '1rem' }}>
-            Upload the main hero background image for each category page.
+            Upload the main hero background image for each slide in the hompeage Hero Slider.
           </p>
           <div className="card" style={{ padding: '1.5rem' }}>
             <form onSubmit={handleHeroUpload}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '1rem', alignItems: 'flex-end' }}>
                 <div className="form-group">
-                  <label className="form-label">Category Page</label>
+                  <label className="form-label">Slider Image</label>
                   <select className="form-control" value={heroKey} onChange={e => setHeroKey(e.target.value)}>
-                    {CATEGORY_BANNERS.map(k => <option key={k.key} value={k.key}>{k.label}</option>)}
+                    {HERO_BANNERS.map(k => <option key={k.key} value={k.key}>{k.label}</option>)}
                   </select>
                 </div>
                 <div className="form-group">
