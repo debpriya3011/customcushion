@@ -94,7 +94,7 @@ export default function AdminPage() {
         </div>
 
         {/* Stats Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '3rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '2.25rem', marginBottom: '3rem' }}>
           {statCards.map((s, i) => (
             <Link key={i} href={s.href} style={{ textDecoration: 'none' }}>
               <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', transition: 'transform 0.2s, box-shadow 0.2s', cursor: 'pointer' }}
