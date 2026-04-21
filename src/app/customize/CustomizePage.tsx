@@ -293,16 +293,18 @@ function FabricCard({
       onMouseMove={handleMouseMove}
       title={fabric.label}
     >
-      {fabric.imageUrl ? (
-        <img
-          src={fabric.imageUrl}
-          alt={fabric.label}
-          className={styles.fabricCardImg}
-          loading="lazy"
-        />
-      ) : (
-        <div className={styles.fabricCardPlaceholder}>🧵</div>
-      )}
+      <div className={styles.fabricCardImgWrapper}>
+        {fabric.imageUrl ? (
+          <img
+            src={fabric.imageUrl}
+            alt={fabric.label}
+            className={styles.fabricCardImg}
+            loading="lazy"
+          />
+        ) : (
+          <div className={styles.fabricCardPlaceholder}>🧵</div>
+        )}
+      </div>
       {/* <span className={styles.fabricCardLabel}>{fabric.label}</span> */}
 
       {/* Hover popover using Portal */}
@@ -357,13 +359,15 @@ function ImgOptionCard({
         className={`${styles.imgOptionCard} ${selected ? styles.imgOptionSelected : ''}`}
         onClick={onClick}
       >
-        {displayImg ? (
-          <img src={displayImg} alt={label} className={styles.imgOptionImg} />
-        ) : (
-          <div className={styles.imgOptionPlaceholder}>
-            {'key' in opt && opt.key === 'Rectangle' ? '🟦' : 'key' in opt && opt.key === 'Box' ? '⬛' : 'key' in opt && opt.key === 'Round' ? '⭕' : 'key' in opt && opt.key === 'Triangle' ? '🔺' : 'key' in opt && opt.key === 'Trapezium' ? '🔷' : 'key' in opt && opt.key === 'T Cushion' ? '🔤' : '🔣'}
-          </div>
-        )}
+        <div className={styles.imgOptionImgWrapper}>
+          {displayImg ? (
+            <img src={displayImg} alt={label} className={styles.imgOptionImg} />
+          ) : (
+            <div className={styles.imgOptionPlaceholder}>
+              {'key' in opt && opt.key === 'Rectangle' ? '🟦' : 'key' in opt && opt.key === 'Box' ? '⬛' : 'key' in opt && opt.key === 'Round' ? '⭕' : 'key' in opt && opt.key === 'Triangle' ? '🔺' : 'key' in opt && opt.key === 'Trapezium' ? '🔷' : 'key' in opt && opt.key === 'T Cushion' ? '🔤' : '🔣'}
+            </div>
+          )}
+        </div>
         <span className={styles.imgOptionLabel}>{label}</span>
       </button>
 
