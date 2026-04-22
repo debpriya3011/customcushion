@@ -223,7 +223,7 @@
 }
 
 .imgOptionImgWrapper {
-  width: 110px;
+  width: 120px;
   height: 110px;
   flex-shrink: 0;
   display: flex;
@@ -516,7 +516,8 @@
   font-style: italic;
 }
 
-.loadingMsg, .emptyMsg {
+.loadingMsg,
+.emptyMsg {
   text-align: center;
   padding: 2rem;
   color: var(--text-muted);
@@ -543,7 +544,7 @@
   gap: .45rem;
 }
 
-.summaryRows > div {
+.summaryRows>div {
   display: flex;
   justify-content: space-between;
   font-size: .875rem;
@@ -551,11 +552,11 @@
   padding-bottom: .35rem;
 }
 
-.summaryRows > div span {
+.summaryRows>div span {
   color: var(--text-muted);
 }
 
-.summaryRows > div strong {
+.summaryRows>div strong {
   color: var(--text-primary);
   font-weight: 600;
 }
@@ -646,7 +647,7 @@
   gap: .55rem;
 }
 
-.priceRows > div {
+.priceRows>div {
   display: flex;
   justify-content: space-between;
   font-size: .82rem;
@@ -738,6 +739,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .imgOptionImgWrapper {
+    width: 110px;
+  }
+
   .fabricGrid {
     grid-template-columns: repeat(3, 1fr) !important;
   }
@@ -754,6 +759,10 @@
 @media (max-width: 480px) {
   .stepContent {
     padding: 1.25rem;
+  }
+
+  .imgOptionImgWrapper {
+    width: 110px;
   }
 
   .shapeGrid {
