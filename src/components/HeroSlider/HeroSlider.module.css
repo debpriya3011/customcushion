@@ -234,6 +234,10 @@
     padding-top: 1rem;
   }
 
+  .subtitle {
+    min-height: 145px;
+  }
+
   .arrow {
     display: none;
   }
