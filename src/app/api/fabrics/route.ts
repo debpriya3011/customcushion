@@ -124,3 +124,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+// ── DELETE /api/fabrics ───────────────────────────────────
+// Admin only. Requires ?id=fabricItemId
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getSession(req);
+    if (!session || session.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const id = req.nextUrl.searchParams.get('id');
+    if (!id) {
+      return NextResponse.json({ error: 'Fabric ID is required' }, { status: 400 });
+    }
+
+    await prisma.fabricItem.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error('Fabric delete error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

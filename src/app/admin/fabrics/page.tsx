@@ -30,6 +30,7 @@ export default function AdminFabricsPage() {
   const [brands, setBrands] = useState<FabricBrand[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
   const [expandedBrands, setExpandedBrands] = useState<Record<string, boolean>>({});
+  const [hoveredFabricId, setHoveredFabricId] = useState<string | null>(null);
 
   // Bulk upload form
   const [brandName, setBrandName] = useState('');
@@ -136,6 +137,20 @@ export default function AdminFabricsPage() {
       setShapeMsg(`❌ ${err.message}`);
     } finally {
       setShapeUploading(false);
+    }
+  };
+
+  const handleDeleteFabric = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this fabric?')) return;
+    try {
+      const res = await fetch(`/api/fabrics?id=${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to delete fabric');
+      }
+      loadBrands(); // refresh
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error deleting fabric');
     }
   };
 
@@ -286,15 +301,43 @@ export default function AdminFabricsPage() {
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '.5rem' }}>
                     {visibleFabs.map(fab => (
-                      <div key={fab.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.25rem' }}>
+                      <div 
+                        key={fab.id} 
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.25rem', position: 'relative' }}
+                        onMouseEnter={() => setHoveredFabricId(fab.id)}
+                        onMouseLeave={() => setHoveredFabricId(null)}
+                      >
+                        {hoveredFabricId === fab.id && (
+                          <button
+                            onClick={() => handleDeleteFabric(fab.id)}
+                            style={{
+                              position: 'absolute',
+                              top: '40%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              backgroundColor: 'rgba(239, 68, 68, 0.9)',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '6px',
+                              padding: '6px 12px',
+                              fontSize: '0.75rem',
+                              fontWeight: 'bold',
+                              cursor: 'pointer',
+                              zIndex: 10,
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                          >
+                            🗑️ Delete
+                          </button>
+                        )}
                         {fab.imageUrl ? (
                           <img
                             src={fab.imageUrl}
                             alt={fab.label}
-                            style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: '8px', border: '1.5px solid var(--gray-200)' }}
+                            style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: '8px', border: '1.5px solid var(--gray-200)', opacity: hoveredFabricId === fab.id ? 0.7 : 1, transition: 'opacity 0.2s' }}
                           />
                         ) : (
-                          <div style={{ width: '100%', aspectRatio: '1', background: 'var(--gray-100)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>
+                          <div style={{ width: '100%', aspectRatio: '1', background: 'var(--gray-100)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', opacity: hoveredFabricId === fab.id ? 0.7 : 1, transition: 'opacity 0.2s' }}>
                             🧵
                           </div>
                         )}
