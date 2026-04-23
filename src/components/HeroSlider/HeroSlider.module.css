@@ -219,11 +219,11 @@
 
 @media (max-width: 768px) {
   .hero {
-    min-height: 55vh;
+    min-height: 70vh;
   }
 
   .hero.hasImage {
-    min-height: 55vh;
+    min-height: 70vh;
   }
 
   .content {

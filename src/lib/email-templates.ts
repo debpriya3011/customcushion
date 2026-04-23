@@ -34,7 +34,7 @@ export function generateOrderConfirmationEmail(order: any, brandName: string, br
         ${order.items.map((item: any) => {
           const itemImgUrl = item.image ? (item.image.startsWith('http') ? item.image : `${siteUrl}/${item.image.replace(/^\//, '')}`) : '';
           const customDetails = item.customOptions ? Object.entries(item.customOptions)
-            .filter(([k,v]) => k !== 'shape' && v)
+            .filter(([k,v]) => k !== 'shape' && k !== 'fabricMeters' && k !== 'FabricMeters' && v)
             .map(([k,v]) => `<strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v}`)
             .join('<br/>') : '';
 

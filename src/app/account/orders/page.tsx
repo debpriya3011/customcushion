@@ -137,7 +137,9 @@ export default function AccountOrdersPage() {
                                 {item.customOptions && Object.keys(item.customOptions).length > 0 && (
                                   <div style={{ marginTop: '0.4rem', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
                                     <strong>Details:</strong>{' '}
-                                    {Object.entries(item.customOptions).map(([k, v]) => (
+                                    {Object.entries(item.customOptions)
+                                      .filter(([k,v]) => k !== 'shape' && k !== 'fabricMeters' && k !== 'FabricMeters' && v)
+                                      .map(([k, v]) => (
                                       `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v as string}`
                                     )).join(' | ')}
                                   </div>

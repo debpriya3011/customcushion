@@ -487,7 +487,7 @@ export default function CustomizePage() {
   }, []);
 
   /* ── Is throw pillow? ── */
-  const isThrowPillow = shape === 'Rectangle' || shape === 'Box';
+  const isThrowPillow = shape === 'Rectangle';
 
   /* ── Ensure fill is valid for shape ── */
   useEffect(() => {

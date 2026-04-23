@@ -371,7 +371,7 @@ export default function CartPageClient() {
                       {item.customOptions && (
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'var(--gray-50)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.2rem', marginBottom: '0.2rem' }}>
                           <span style={{fontWeight: 600}}>Details:</span> {Object.entries(item.customOptions)
-                            .filter(([k,v]) => k !== 'shape' && v)
+                            .filter(([k,v]) => k !== 'shape' && k !== 'fabricMeters' && k !== 'FabricMeters' && v)
                             .map(([k,v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
                             .join(' | ')}
                         </div>
