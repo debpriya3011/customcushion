@@ -26,6 +26,7 @@ export default function DesignPerformance() {
                   mediaKey="home_brand_cushionguru"
                   type="image"
                   className={styles.brandLogoImg}
+                  objectFit="contain"
                   defaultComponent={
                     <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--brand-primary)', padding: '0.4rem 0.75rem', display: 'block', textAlign: 'center' }}>CushionGuru</span>
                   }
@@ -37,6 +38,7 @@ export default function DesignPerformance() {
                   mediaKey="home_brand_sunbrella"
                   type="image"
                   className={styles.brandLogoImg}
+                  objectFit="contain"
                   defaultComponent={
                     <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--brand-primary)', padding: '0.4rem 0.75rem', display: 'block', textAlign: 'center' }}>Sunbrella®</span>
                   }

@@ -11,9 +11,10 @@ interface EditableMediaProps {
   className?: string;
   style?: React.CSSProperties;
   priority?: boolean;
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
 }
 
-export default function EditableMedia({ mediaKey, type = 'image', defaultComponent, className = '', style, priority = false }: EditableMediaProps) {
+export default function EditableMedia({ mediaKey, type = 'image', defaultComponent, className = '', style, priority = false, objectFit = 'cover' }: EditableMediaProps) {
   const { user, refreshMedia: globalRefreshMedia, mediaRefreshKey, mediaCache, updateMediaCache } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
 
@@ -148,11 +149,11 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     }
     if (url.startsWith('blob:')) {
       return wrapWithEdit(
-        <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+        <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit }} loading="lazy" />
       );
     }
     return wrapWithEdit(
-      <Image src={url} alt={mediaKey} fill style={{ objectFit: 'cover' }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
+      <Image src={url} alt={mediaKey} fill style={{ objectFit }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
     );
   }
 
