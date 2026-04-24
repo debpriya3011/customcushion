@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import styles from './MarqueeStrip.module.css';
 
 const ITEMS = [
@@ -19,7 +20,9 @@ export default function MarqueeStrip() {
       <div className={styles.track}>
         {doubled.map((item, i) => (
           <span key={i} className={styles.item}>
-            <img src={item} alt="Partner" />
+            <div className={styles.imgWrapper}>
+              <Image src={item} alt="Partner" fill style={{ objectFit: 'contain' }} sizes="250px" />
+            </div>
           </span>
         ))}
       </div>

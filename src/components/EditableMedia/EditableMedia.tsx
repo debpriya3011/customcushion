@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 
 interface EditableMediaProps {
@@ -9,9 +10,10 @@ interface EditableMediaProps {
   defaultComponent?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  priority?: boolean;
 }
 
-export default function EditableMedia({ mediaKey, type = 'image', defaultComponent, className = '', style }: EditableMediaProps) {
+export default function EditableMedia({ mediaKey, type = 'image', defaultComponent, className = '', style, priority = false }: EditableMediaProps) {
   const { user, refreshMedia: globalRefreshMedia, mediaRefreshKey, mediaCache, updateMediaCache } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
 
@@ -113,10 +115,10 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
   };
 
   const wrapWithEdit = (content: React.ReactNode) => {
-    if (!isAdmin) return <div className={`editable-media-wrapper ${className}`} style={style}>{content}</div>;
+    if (!isAdmin) return <div className={`editable-media-wrapper ${className}`} style={{ position: 'relative', ...style }}>{content}</div>;
 
     return (
-      <div className={`editable-media-wrapper editable-admin ${className}`} style={{ ...style, position: 'relative', overflow: 'hidden' }}>
+      <div className={`editable-media-wrapper editable-admin ${className}`} style={{ position: 'relative', overflow: 'hidden', ...style }}>
         {content}
         <div className="edit-overlay" style={{
           position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', color: 'white',
@@ -144,8 +146,13 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
         <video key={url} src={url} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       );
     }
+    if (url.startsWith('blob:')) {
+      return wrapWithEdit(
+        <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+      );
+    }
     return wrapWithEdit(
-      <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+      <Image src={url} alt={mediaKey} fill style={{ objectFit: 'cover' }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
     );
   }
 

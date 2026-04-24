@@ -26,6 +26,7 @@ export default function AboutPage() {
               mediaKey="about_hero"
               type="image"
               className={`img-placeholder ${styles.heroImg}`}
+              priority={true}
             />
           </div>
         </div>

@@ -114,6 +114,7 @@ export default function HowToMeasurePage() {
                 mediaKey={`measure_${shape.name.toLowerCase().replace(/[^a-z]/g, '')}`}
                 type="image"
                 className={`img-placeholder ${styles.shapeImg}`}
+                priority={i === 0}
                 defaultComponent={
                   <span className={styles.imgCaption}>{shape.img}</span>
                 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -79,7 +80,7 @@ export default function Navbar() {
               ? <span style={{ display: 'inline-block', width: 100, height: 24 }} />
               : <>
                 {logoUrl
-                  ? <img src={logoUrl} alt={siteName} style={{ height: 36, width: 'auto', maxWidth: 140, objectFit: 'contain' }} fetchPriority="high" loading="eager" />
+                  ? <div style={{ position: 'relative', height: 36, width: 140 }}><Image src={logoUrl} alt={siteName || 'Logo'} fill style={{ objectFit: 'contain', objectPosition: 'left center' }} priority sizes="140px" /></div>
                   : <span className={styles.brandIcon}>🛋️</span>}
                 {siteName && <span className={styles.brandName}>{siteName}</span>}
               </>}
