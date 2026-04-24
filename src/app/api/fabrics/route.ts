@@ -9,6 +9,11 @@ import { uploadToS3 } from '@/lib/s3';
 export async function GET() {
   try {
     const brands = await prisma.fabricBrand.findMany({
+      where: {
+        fabrics: {
+          some: {}
+        }
+      },
       include: { fabrics: { orderBy: { label: 'asc' } } },
       orderBy: { name: 'asc' },
     });

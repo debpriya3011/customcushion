@@ -301,8 +301,8 @@ export default function AdminFabricsPage() {
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '.5rem' }}>
                     {visibleFabs.map(fab => (
-                      <div 
-                        key={fab.id} 
+                      <div
+                        key={fab.id}
                         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.25rem', position: 'relative' }}
                         onMouseEnter={() => setHoveredFabricId(fab.id)}
                         onMouseLeave={() => setHoveredFabricId(null)}
