@@ -17,6 +17,7 @@ export const uploadToS3 = async (buffer: Buffer, filename: string, mimeType: str
     Key: filename,
     Body: buffer,
     ContentType: mimeType,
+    CacheControl: 'max-age=31536000, public',
   });
 
   await s3Client.send(command);

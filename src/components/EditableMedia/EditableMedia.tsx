@@ -34,7 +34,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
 
     // Fallback to API if not in cache
     try {
-      const res = await fetch(`/api/media/${mediaKey}`, { cache: 'no-store' });
+      const res = await fetch(`/api/media/${mediaKey}`, { cache: 'force-cache' });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
       if (data && data.url) setUrl(data.url);
