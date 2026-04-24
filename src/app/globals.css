@@ -3,8 +3,10 @@
 :root {
   /* Brand palette */
   --brand-primary: #fb4a1e;
+  --brand-primary-dark: #c43310;
   --brand-secondary: #FBB91E;
   --brand-accent: #fb4a1e;
+  --brand-accent-dark: #c43310;
   --brand-light: #f0f7ff;
   --brand-dynamic: #000000;
 
@@ -195,12 +197,12 @@ p {
   padding: .3rem .9rem;
   border-radius: var(--radius-full);
   background: rgba(216, 221, 223, 0.938);
-  color: var(--brand-primary);
+  color: var(--brand-primary-dark);
 }
 
 .badge-accent {
   background: rgba(212, 168, 85, .15);
-  color: #a07830;
+  color: #825d1e;
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
@@ -616,7 +618,7 @@ textarea.form-control {
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--brand-accent);
+  color: var(--brand-accent-dark);
   margin-bottom: .5rem;
 }
 

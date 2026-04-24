@@ -46,7 +46,7 @@
 .imgBadge div strong {
   display: block;
   font-size: .9rem;
-  color: var(--brand-primary);
+  color: var(--brand-primary-dark);
 }
 
 .imgBadge div p {

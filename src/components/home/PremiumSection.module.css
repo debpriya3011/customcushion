@@ -57,7 +57,7 @@
 .badge strong {
   font-size: .82rem;
   font-weight: 700;
-  color: var(--brand-primary);
+  color: var(--brand-primary-dark);
 }
 
 @media (max-width: 900px) {

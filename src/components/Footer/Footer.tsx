@@ -60,7 +60,7 @@ export default function Footer() {
           <div className={styles.grid}>
             {/* Brand */}
             <div className={styles.brand}>
-              <Link href="/" className={styles.brandLogo}>
+              <Link href="/" className={styles.brandLogo} aria-label="Home">
                 {!initialized
                   ? <span style={{ display: 'inline-block', width: '100px', height: '28px' }} />
                   : <>
@@ -84,7 +84,7 @@ export default function Footer() {
 
             {/* Useful Links */}
             <div>
-              <h4 className={styles.colTitle}>Useful Links</h4>
+              <h3 className={styles.colTitle}>Useful Links</h3>
               <ul className={styles.links}>
                 {USEFUL_LINKS.map(l => (
                   <li key={l.href}>
@@ -99,7 +99,7 @@ export default function Footer() {
 
             {/* Contact info */}
             <div>
-              <h4 className={styles.colTitle}>Contact Info</h4>
+              <h3 className={styles.colTitle}>Contact Info</h3>
               <ul className={styles.contactList}>
                 <li>
                   <svg
@@ -128,7 +128,7 @@ export default function Footer() {
 
             {/* Newsletter */}
             <div>
-              <h4 className={styles.colTitle}>Follow Us</h4>
+              <h3 className={styles.colTitle}>Follow Us</h3>
               <p className={styles.newsText}>Stay updated with our latest collections and exclusive offers.</p>
               {sent ? (
                 <div className="alert alert-success" style={{ padding: '0.75rem', fontSize: '0.85rem' }}>🎉 Thanks for subscribing!</div>

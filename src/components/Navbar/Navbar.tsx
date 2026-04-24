@@ -74,7 +74,7 @@ export default function Navbar() {
         <div className={`container ${styles.inner}`}>
 
           {/* Brand */}
-          <Link href="/" className={styles.brand} onClick={closeAll}>
+          <Link href="/" className={styles.brand} onClick={closeAll} aria-label="Home">
             {!initialized
               ? <span style={{ display: 'inline-block', width: 100, height: 24 }} />
               : <>

@@ -198,6 +198,16 @@
   border: none;
   cursor: pointer;
   transition: all .3s ease;
+  position: relative;
+}
+
+.dot::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  bottom: -16px;
+  left: -16px;
+  right: -16px;
 }
 
 .dotActive {

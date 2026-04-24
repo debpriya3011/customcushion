@@ -105,7 +105,7 @@
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--brand-primary);
+  color: var(--brand-primary-dark);
   line-height: 1.4;
 }
 
@@ -154,7 +154,7 @@
 .floatCard div strong {
   display: block;
   font-size: .9rem;
-  color: var(--brand-primary);
+  color: var(--brand-primary-dark);
 }
 
 .floatCard div p {
