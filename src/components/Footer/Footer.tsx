@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 import { useSite } from '@/context/SiteContext';
 import { useAuth } from '@/context/AuthContext';
@@ -65,7 +66,7 @@ export default function Footer() {
                   ? <span style={{ display: 'inline-block', width: '100px', height: '28px' }} />
                   : <>
                     {logoUrl
-                      ? <img src={logoUrl} alt={siteName} style={{ height: '36px', width: 'auto', objectFit: 'contain', maxWidth: '150px' }} />
+                      ? <div style={{ position: 'relative', height: '36px', width: '150px' }}><Image src={logoUrl} alt={siteName || 'CushionGuru'} fill style={{ objectFit: 'contain', objectPosition: 'left center' }} sizes="150px" /></div>
                       : <span>🛋️</span>
                     }
                     {siteName && <span>{siteName}</span>}

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import styles from './blogs.module.css';
 
@@ -33,8 +34,19 @@ export default async function BlogsPage() {
             <div className={styles.grid}>
               {blogs.map((post: any, i: number) => (
                 <article key={post.slug} className={`${styles.card} ${i === 0 ? styles.featured : ''}`}>
-                  <div className={`img-placeholder ${styles.cardImg}`} style={post.imageUrl ? { backgroundImage: `url(${post.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 1 } : {}}>
-                    {!post.imageUrl && <span className={styles.cardImgLabel}>📷 No Image</span>}
+                  <div className={`img-placeholder ${styles.cardImg}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                    {post.imageUrl ? (
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        fill
+                        style={{ objectFit: 'cover', objectPosition: 'center' }}
+                        sizes={i === 0 ? "(max-width: 1024px) 100vw, 100vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
+                        priority={i === 0}
+                      />
+                    ) : (
+                      <span className={styles.cardImgLabel}>📷 No Image</span>
+                    )}
                   </div>
                   <div className={styles.cardBody}>
                     <div className={styles.cardMeta}>
