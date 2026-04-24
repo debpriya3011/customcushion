@@ -70,6 +70,13 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    if (type === 'video' && ext && ['avi', 'wmv', 'mkv', 'flv'].includes(ext)) {
+      alert(`The .${ext} format is not natively supported by web browsers. Please upload an .mp4, .webm, or .ogg video file instead.`);
+      e.target.value = '';
+      return;
+    }
+
     // INSTANT UPDATE: Create object URL immediately for instant preview
     const objectUrl = URL.createObjectURL(file);
     setUrl(objectUrl);
@@ -127,7 +134,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
           transition: 'opacity 0.2s', cursor: 'pointer', zIndex: 10, fontWeight: 600
         }}>
           {uploading ? 'Uploading...' : `Upload ${type === 'video' ? 'Video' : 'Image'}`}
-          <input type="file" accept={type === 'video' ? 'video/*' : 'image/*'}
+          <input type="file" accept={type === 'video' ? 'video/mp4,video/webm,video/ogg' : 'image/*'}
             onChange={handleUpload}
             style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
             disabled={uploading} />
