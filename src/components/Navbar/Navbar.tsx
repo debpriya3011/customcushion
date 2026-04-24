@@ -79,7 +79,7 @@ export default function Navbar() {
               ? <span style={{ display: 'inline-block', width: 100, height: 24 }} />
               : <>
                 {logoUrl
-                  ? <img src={logoUrl} alt={siteName} style={{ height: 36, width: 'auto', maxWidth: 140, objectFit: 'contain' }} />
+                  ? <img src={logoUrl} alt={siteName} style={{ height: 36, width: 'auto', maxWidth: 140, objectFit: 'contain' }} fetchPriority="high" loading="eager" />
                   : <span className={styles.brandIcon}>🛋️</span>}
                 {siteName && <span className={styles.brandName}>{siteName}</span>}
               </>}
