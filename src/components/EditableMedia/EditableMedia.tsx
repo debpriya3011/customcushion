@@ -145,7 +145,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
       );
     }
     return wrapWithEdit(
-      <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
     );
   }
 

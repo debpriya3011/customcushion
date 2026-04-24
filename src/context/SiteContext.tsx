@@ -18,10 +18,13 @@ const defaults: SiteSettings = {
 
 const SiteContext = createContext<SiteSettings>(defaults);
 
-export function SiteProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useState<SiteSettings>(defaults);
+export function SiteProvider({ children, initialSettings }: { children: React.ReactNode, initialSettings?: Partial<SiteSettings> }) {
+  const [settings, setSettings] = useState<SiteSettings>({ ...defaults, ...initialSettings });
 
   useEffect(() => {
+    // If we already have initialized settings from server, skip fetching on mount unless needed
+    if (initialSettings?.initialized) return;
+
     fetch('/api/settings')
       .then(r => {
         if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
