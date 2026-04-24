@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   console.log('[Auth/ME] Session:', session ? `Found for ${session.email}` : 'Not found');
   
   if (!session) {
-    return NextResponse.json({ user: null }, { status: 401 });
+    return NextResponse.json({ user: null }, { status: 200 });
   }
   const user = await prisma.user.findUnique({
     where: { id: session.id },
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
   });
   if (!user) {
     console.log('[Auth/ME] User not found in DB');
-    return NextResponse.json({ user: null }, { status: 401 });
+    return NextResponse.json({ user: null }, { status: 200 });
   }
   console.log(`[Auth/ME] Returning user: ${user.email}`);
   return NextResponse.json({ user });
