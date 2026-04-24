@@ -581,7 +581,8 @@ export default function CustomizePage() {
 
   const buildDimString = () => {
     switch (shape) {
-      case 'Rectangle': return `${dims.length}"×${dims.width}"×${dims.thickness}"`;
+      case 'Rectangle':
+      case 'Box': return `${dims.length}"×${dims.width}"×${dims.thickness}"`;
       case 'Trapezium': return `${dims.length}"×${dims.bottomWidth}"/${dims.topWidth}"×${dims.thickness}"`;
       case 'T Cushion': case 'L Shape':
         return `${dims.length}"×${dims.bottomWidth}"/${dims.topWidth}"×${dims.thickness}" ear:${dims.ear}"`;
