@@ -369,11 +369,15 @@ export default function CartPageClient() {
                         )}
                       </div>
                       {item.customOptions && (
-                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'var(--gray-50)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.2rem', marginBottom: '0.2rem' }}>
-                          <span style={{fontWeight: 600}}>Details:</span> {Object.entries(item.customOptions)
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'var(--gray-50)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.2rem', marginBottom: '0.2rem' }}>
+                          <span style={{fontWeight: 600}}>Details:</span>
+                          {Object.entries(item.customOptions)
                             .filter(([k,v]) => k !== 'shape' && k !== 'fabricMeters' && k !== 'FabricMeters' && v)
-                            .map(([k,v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
-                            .join(' | ')}
+                            .map(([k,v], i, arr) => (
+                              <span key={k} style={{ wordBreak: 'break-word' }}>
+                                {k.charAt(0).toUpperCase() + k.slice(1)}: {v}{i < arr.length - 1 ? ' |' : ''}
+                              </span>
+                            ))}
                         </div>
                       )}
                       <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Unit price: <strong>${(item.price || 0).toFixed(2)}</strong></div>
@@ -494,10 +498,10 @@ export default function CartPageClient() {
                           <div style={{ fontWeight: 600, fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</div>
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Qty: {item.quantity}</div>
                           {item.customOptions && (
-                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem', lineHeight: 1.4 }}>
-                              {item.customOptions.dimensions && <span>📐 {item.customOptions.dimensions} </span>}
-                              {item.customOptions.fabric && <span>🧵 {item.customOptions.fabric} </span>}
-                              {item.customOptions.fill && <span>• {item.customOptions.fill}</span>}
+                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem', lineHeight: 1.4, display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
+                              {item.customOptions.dimensions && <span style={{ wordBreak: 'break-word' }}>📐 {item.customOptions.dimensions}</span>}
+                              {item.customOptions.fabric && <span style={{ wordBreak: 'break-word' }}>🧵 {item.customOptions.fabric}</span>}
+                              {item.customOptions.fill && <span style={{ wordBreak: 'break-word' }}>• {item.customOptions.fill}</span>}
                             </div>
                           )}
                         </div>
