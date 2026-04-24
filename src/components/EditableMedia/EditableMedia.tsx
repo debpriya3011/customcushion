@@ -151,7 +151,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     if (type === 'video') {
       return wrapWithEdit(
         // Use a key to force reload if url changes
-        <video key={url} src={url} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <video key={url} src={url} autoPlay muted loop playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       );
     }
     if (url.startsWith('blob:')) {

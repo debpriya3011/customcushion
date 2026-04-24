@@ -45,8 +45,8 @@ export default function ProductsPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/products').then(r => r.json()).catch(() => []),
-      fetch('/api/linked-products').then(r => r.json()).catch(() => []),
+      fetch('/api/products', { cache: 'force-cache' }).then(r => r.json()).catch(() => []),
+      fetch('/api/linked-products', { cache: 'force-cache' }).then(r => r.json()).catch(() => []),
     ]).then(([prod, linked]) => {
       setProducts(Array.isArray(prod) ? prod : []);
       setLinkedProducts(Array.isArray(linked) ? linked : []);
