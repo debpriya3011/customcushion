@@ -15,6 +15,13 @@
   background-color: var(--gray-50);
 }
 
+@media (max-width: 768px) {
+  .heroSection {
+    height: 60vh;
+    min-height: 300px;
+  }
+}
+
 .heroBackground {
   position: absolute;
   top: 0;
@@ -266,11 +273,4 @@
   border-radius: var(--radius-md);
   margin-top: 4rem;
   text-align: center;
-}
-
-
-@media (max-width: 768px) {
-  .heroSection {
-    height: calc(100vh - var(--nav-height));
-  }
 }
