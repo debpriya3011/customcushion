@@ -450,7 +450,7 @@ export default function CustomizePage() {
   /* ── Fetch fabrics ── */
   useEffect(() => {
     setFabricsLoading(true);
-    fetch('/api/fabrics', { cache: 'force-cache' })
+    fetch('/api/fabrics')
       .then(r => r.json())
       .then((data: FabricBrand[]) => {
         if (Array.isArray(data)) setBrands(data);
@@ -461,7 +461,7 @@ export default function CustomizePage() {
 
   /* ── Fetch step images ── */
   useEffect(() => {
-    fetch('/api/media', { cache: 'force-cache' })
+    fetch('/api/media')
       .then(r => r.json())
       .then((items: { key: string; url: string }[]) => {
         const map: Record<string, string> = {};
