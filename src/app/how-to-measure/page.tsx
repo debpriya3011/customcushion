@@ -131,7 +131,7 @@ export default function HowToMeasurePage() {
           <p>Complex shapes like papasan chairs or antique furniture can be tricky. You can always send us a template or photos.</p>
           <div className={styles.ctaButtons}>
             <Link href="/contact" className="btn btn-accent btn-lg">Contact Support</Link>
-            <a href="/Measuring_Template_Guide.pdf" download className="btn btn-ghost btn-lg">Download Template Guide</a>
+            {/* <a href="/Measuring_Template_Guide.pdf" download className="btn btn-ghost btn-lg">Download Template Guide</a> */}
           </div>
         </div>
       </section>

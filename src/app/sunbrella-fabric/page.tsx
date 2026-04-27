@@ -56,7 +56,7 @@ export default function SunbrellaPage() {
               className={styles.heroImage}
               defaultComponent={
                 <Image
-                  src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/samples/color-core.jpg"
+                  src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/Picture-2.webp"
                   alt="Color to the Core Technology"
                   fill
                   className={styles.heroImage}
@@ -143,13 +143,13 @@ export default function SunbrellaPage() {
             <div className={styles.iconsGrid} style={{ marginTop: '2rem' }}>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Comfort" alt="Comfort" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/comfort-100x100.webp" alt="Comfort" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Comfort</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Soft+Touch" alt="Soft Touch" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/soft-100x100.webp" alt="Soft Touch" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Soft Touch</span>
               </div>
@@ -167,19 +167,19 @@ export default function SunbrellaPage() {
             <div className={styles.iconsGrid} style={{ marginTop: '2rem' }}>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Easy+Clean" alt="Easy to Clean" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/easy-clean-100x100.webp" alt="Easy to Clean" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Easy to Clean</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Stain+Resist" alt="Stain & Water Resistant" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/stain-resistant_1_-100x100.webp" alt="Stain & Water Resistant" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Stain & Water Resistant</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Bleach" alt="Bleach Cleanable" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/bleach-cleanable-100x100.webp" alt="Bleach Cleanable" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Bleach Cleanable</span>
               </div>
@@ -231,13 +231,13 @@ export default function SunbrellaPage() {
             <div className={styles.iconsGrid} style={{ marginTop: '2rem' }}>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Fade+Resist" alt="Fade Resistant" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/fade-proof_1_-100x100.webp" alt="Fade Resistant" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Fade Resistant</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=UV+Protect" alt="UV Protection" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/uv-protection-100x100.webp" alt="UV Protection" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>UV Protection</span>
               </div>
@@ -255,19 +255,19 @@ export default function SunbrellaPage() {
             <div className={styles.iconsGrid} style={{ marginTop: '2rem' }}>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Abrasion" alt="Abrasion Resistant" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/pilling-abraision-resistant-100x100.webp" alt="Abrasion Resistant" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Abrasion Resistant</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Mold+Resist" alt="Mold & Mildew Resistant" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/mold-mildew-resistant_1_-100x100.webp" alt="Mold & Mildew Resistant" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Mold & Mildew Resistant</span>
               </div>
               <div className={styles.iconCard}>
                 <div className={styles.iconImageWrapper}>
-                  <Image src="https://via.placeholder.com/80?text=Weather" alt="Weather Resistant" fill className={styles.heroImage} unoptimized />
+                  <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/weather-resistant-100x100.webp" alt="Weather Resistant" fill className={styles.heroImage} unoptimized />
                 </div>
                 <span className={styles.iconText}>Weather Resistant</span>
               </div>
@@ -334,31 +334,31 @@ export default function SunbrellaPage() {
           <div className={styles.iconsGrid} style={{ maxWidth: '1200px' }}>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Recycle" alt="Recycle My Sunbrella" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/Recycle-My-Sunbrella-100x100.webp" alt="Recycle My Sunbrella" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Recycle My Sunbrella</span>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Material" alt="Recycled Material Use" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/Recycled-Material-Use-150x150.webp" alt="Recycled Material Use" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Recycled Material Use</span>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Zero+Waste" alt="Zero Waste" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/goal-of-zero-waste-270_1-100x100.webp" alt="Zero Waste" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Maintaining Zero Waste to Landfill Best Practices</span>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Energy" alt="Renewable Energy" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/download-100x100.webp" alt="Renewable Energy" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Renewable Energy</span>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Carbon" alt="Carbon Footprint" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/Carbon-Footprint-150x150.webp" alt="Carbon Footprint" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Carbon Footprint</span>
             </div>
@@ -370,22 +370,22 @@ export default function SunbrellaPage() {
           <div className={styles.iconsGrid} style={{ maxWidth: '1000px' }}>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Skin+Cancer" alt="Skin Cancer Foundation" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/Sunbrela-Claims.webp" alt="Skin Cancer Foundation" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=%231+Trusted" alt="#1 Most Trusted" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/1-Most-Trusted-Shade-150x145.webp" alt="#1 Most Trusted" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Lead+Free" alt="Lead Free" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/LEAD-Free.webp" alt="Lead Free" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Non+PFAS" alt="Non PFAS" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/non-pfas-100x84.webp" alt="Non PFAS" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
           </div>
@@ -396,52 +396,52 @@ export default function SunbrellaPage() {
           <div className={styles.iconsGrid} style={{ maxWidth: '1000px' }}>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Oeko-Tex" alt="Oeko-Tex" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/oeko-tex-standard-100-100x100.webp" alt="Oeko-Tex" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=Greenguard" alt="Greenguard" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/greenguard-100x100.webp" alt="Greenguard" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=ISO" alt="ISO" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/iso-14001-2015-certified.webp" alt="ISO" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=W.A.I.T" alt="W.A.I.T" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/wait-100x100.webp" alt="W.A.I.T" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
           </div>
         </section>
 
-        <section className={styles.iconsSection} style={{ paddingBottom: '4rem' }}>
+        <section className={styles.iconsSection}>
           <h3 className={styles.iconsTitle}>Warranties</h3>
           <div className={styles.iconsGrid} style={{ maxWidth: '1000px' }}>
             <div className={styles.iconCard}>
-              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=5+Year" alt="5 Year" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '70px' }}>
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/sunbrella-3-year-limited-warranty-black.webp" alt="3 Year" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
-              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=10+Year" alt="10 Year" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '70px' }}>
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/sunbrella-5-year-limited-warranty-black.webp" alt="5 Year" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
             </div>
             <div className={styles.iconCard}>
-              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
-                <Image src="https://via.placeholder.com/120?text=5+Year+Acrylic" alt="5 Year Recycled Acrylic" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
+              <div className={styles.iconImageWrapper} style={{ width: '120px', height: '70px' }}>
+                <Image src="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com/sunbrellapageicons/sunbrella-10-year-limited-warranty-black.webp" alt="10 Year " fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
-              <span className={styles.iconText}>Recycled Acrylic</span>
+              {/* <span className={styles.iconText}>Recycled Acrylic</span> */}
             </div>
-            <div className={styles.iconCard}>
+            {/* <div className={styles.iconCard}>
               <div className={styles.iconImageWrapper} style={{ width: '120px', height: '120px' }}>
                 <Image src="https://via.placeholder.com/120?text=3+Year+Poly" alt="3 Year Recycled Polyester" fill className={styles.heroImage} unoptimized style={{ objectFit: 'contain' }} />
               </div>
               <span className={styles.iconText}>Recycled Polyester</span>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>

@@ -66,7 +66,7 @@ export default function HeroSlider() {
   useEffect(() => {
     const loadBanners = async () => {
       try {
-        const res = await fetch('/api/media?prefix=shop_', { cache: 'force-cache' });
+        const res = await fetch('/api/media?prefix=shop_');
         if (!res.ok) return;
         const items: Array<{ key: string; url: string }> = await res.json();
         const map: Record<string, string> = {};
