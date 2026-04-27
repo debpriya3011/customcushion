@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Preload all media on app start for instant loading
   const preloadMedia = useCallback(async () => {
     try {
-      const res = await fetch('/api/media', { cache: 'force-cache' });
+      const res = await fetch('/api/media');
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const items: { key: string; url: string }[] = await res.json();
       const cache: Record<string, string> = {};

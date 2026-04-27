@@ -700,7 +700,7 @@ export default function CustomizePage() {
                 <div className="form-group">
                   <label className="form-label">Shape</label>
                   <div className={styles.shapeGrid}>
-                    {SHAPES.map(s => {
+                    {SHAPES.filter(s => category !== 'Pet Bed' || ['Rectangle', 'Box', 'Round'].includes(s.key)).map(s => {
                       const imgKey = s.key.toLowerCase().replace(/ /g, '_');
                       const imgUrl = stepImages[imgKey];
                       return (
