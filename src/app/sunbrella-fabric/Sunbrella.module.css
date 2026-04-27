@@ -66,25 +66,31 @@
     transform: translateX(50px);
     opacity: 0;
   }
+
   5% {
     transform: translateX(0);
     opacity: 1;
   }
+
   28% {
     transform: translateX(0);
     opacity: 1;
   }
+
   33.33% {
     transform: translateX(-50px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(-50px);
     opacity: 0;
   }
 }
 
-.slideText1, .slideText2, .slideText3 {
+.slideText1,
+.slideText2,
+.slideText3 {
   font-family: var(--font-playfair);
   font-size: clamp(1.5rem, 4vw, 3rem);
   font-weight: 700;
@@ -107,8 +113,10 @@
   animation: slideInOut 9s linear 6s infinite;
 }
 
-.heroContent p, .heroContent h2 {
-  display: none; /* fallback removed, now using h1 for all */
+.heroContent p,
+.heroContent h2 {
+  display: none;
+  /* fallback removed, now using h1 for all */
 }
 
 
@@ -258,4 +266,11 @@
   border-radius: var(--radius-md);
   margin-top: 4rem;
   text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .heroSection {
+    height: calc(100vh - var(--nav-height));
+  }
 }
