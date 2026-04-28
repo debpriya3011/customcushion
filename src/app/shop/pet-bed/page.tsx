@@ -44,7 +44,7 @@ export default function PetBedPage() {
       <section className={styles.hero}>
         <EditableMedia
           mediaKey="shop_pet_bed_video"
-          type="video"
+          type="both"
           className={styles.heroMedia}
           style={{ borderRadius: 0 }}
           defaultComponent={

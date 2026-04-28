@@ -737,3 +737,12 @@ textarea.form-control {
 .blog-content a:hover {
   color: var(--brand-primary-dark);
 }
+@keyframes kenburns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.ken-burns-effect {
+  animation: kenburns 15s infinite alternate ease-in-out;
+}
+

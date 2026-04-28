@@ -16,7 +16,7 @@ export default function OutdoorPage() {
       <section className={styles.heroVideo}>
         <EditableMedia
           mediaKey="shop_outdoor_hero"
-          type="video"
+          type="both"
           className={styles.heroMedia}
           style={{ borderRadius: 0 }}
           defaultComponent={

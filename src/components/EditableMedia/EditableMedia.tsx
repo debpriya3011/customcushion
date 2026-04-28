@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 
 interface EditableMediaProps {
   mediaKey: string;
-  type?: 'image' | 'video';
+  type?: 'image' | 'video' | 'both';
   defaultComponent?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -71,7 +71,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     if (!file) return;
 
     const ext = file.name.split('.').pop()?.toLowerCase();
-    if (type === 'video' && ext && ['avi', 'wmv', 'mkv', 'flv'].includes(ext)) {
+    if ((type === 'video' || (type === 'both' && file.type.startsWith('video/'))) && ext && ['avi', 'wmv', 'mkv', 'flv'].includes(ext)) {
       alert(`The .${ext} format is not natively supported by web browsers. Please upload an .mp4, .webm, or .ogg video file instead.`);
       e.target.value = '';
       return;
@@ -123,7 +123,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
   };
 
   const wrapWithEdit = (content: React.ReactNode) => {
-    if (!isAdmin) return <div className={`editable-media-wrapper ${className}`} style={{ position: 'relative', ...style }}>{content}</div>;
+    if (!isAdmin) return <div className={`editable-media-wrapper ${className}`} style={{ position: 'relative', overflow: 'hidden', ...style }}>{content}</div>;
 
     return (
       <div className={`editable-media-wrapper editable-admin ${className}`} style={{ position: 'relative', overflow: 'hidden', ...style }}>
@@ -133,8 +133,8 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
           display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0,
           transition: 'opacity 0.2s', cursor: 'pointer', zIndex: 10, fontWeight: 600
         }}>
-          {uploading ? 'Uploading...' : `Upload ${type === 'video' ? 'Video' : 'Image'}`}
-          <input type="file" accept={type === 'video' ? 'video/mp4,video/webm,video/ogg' : 'image/*'}
+          {uploading ? 'Uploading...' : `Upload ${type === 'video' ? 'Video' : type === 'image' ? 'Image' : 'Media'}`}
+          <input type="file" accept={type === 'both' ? 'image/*,video/mp4,video/webm,video/ogg' : type === 'video' ? 'video/mp4,video/webm,video/ogg' : 'image/*'}
             onChange={handleUpload}
             style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
             disabled={uploading} />
@@ -147,20 +147,26 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
     return wrapWithEdit(defaultComponent || <div className={`img-placeholder ${className}`} style={{ width: '100%', height: '100%' }} />);
   }
 
+  const isVideoFile = (fileUrl: string) => /\.(mp4|webm|ogg|mov)$/i.test(fileUrl.split('?')[0]);
+
   if (url) {
-    if (type === 'video') {
+    const isVid = type === 'video' || (type === 'both' && isVideoFile(url));
+    if (isVid) {
       return wrapWithEdit(
         // Use a key to force reload if url changes
         <video key={url} src={url} autoPlay muted loop playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       );
     }
+    
+    const imgClass = type === 'both' ? 'ken-burns-effect' : '';
+
     if (url.startsWith('blob:')) {
       return wrapWithEdit(
-        <img src={url} alt={mediaKey} style={{ width: '100%', height: '100%', objectFit }} loading="lazy" />
+        <img src={url} alt={mediaKey} className={imgClass} style={{ width: '100%', height: '100%', objectFit }} loading="lazy" />
       );
     }
     return wrapWithEdit(
-      <Image src={url} alt={mediaKey} fill style={{ objectFit }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
+      <Image src={url} alt={mediaKey} fill className={imgClass} style={{ objectFit }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
     );
   }
 

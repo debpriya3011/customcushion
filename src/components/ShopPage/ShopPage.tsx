@@ -28,7 +28,7 @@ export default function ShopPage({ badge, heroTitle, heroSubtitle, introText, se
       <section className={styles.heroVideo}>
         <EditableMedia
           mediaKey={`shop_${customizeType}_hero`}
-          type="video"
+          type="both"
           className={styles.heroMedia}
           style={{ borderRadius: 0 }}
           defaultComponent={
