@@ -10,11 +10,11 @@ import AdminSidebar from '@/components/AdminSidebar';
 
 
 const HERO_BANNERS = [
-  { key: 'shop_indoor_hero', label: 'Indoor Cushions Hero' },
-  { key: 'shop_outdoor_hero', label: 'Outdoor Cushions Hero' },
-  { key: 'shop_rv_hero', label: 'RV Cushions Hero' },
-  { key: 'shop_boat_hero', label: 'Boat Cushions Hero' },
-  { key: 'shop_pet-bed_hero', label: 'Pet Bed Hero' },
+  { key: 'home_slider_indoor', label: 'Indoor Cushions Hero' },
+  { key: 'home_slider_outdoor', label: 'Outdoor Cushions Hero' },
+  { key: 'home_slider_rv', label: 'RV Cushions Hero' },
+  { key: 'home_slider_boat', label: 'Boat Cushions Hero' },
+  { key: 'home_slider_pet-bed', label: 'Pet Bed Hero' },
 ];
 
 export default function AdminHeroPage() {

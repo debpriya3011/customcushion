@@ -11,7 +11,7 @@ const SLIDES = [
     subtitle: 'Wrap your adventures in comfort with our RV cushion covers from CushionGuru – where every journey feels like home.',
     cta: 'Buy Now',
     href: '/shop/rv',
-    mediaKey: 'shop_rv_hero',
+    mediaKey: 'home_slider_rv',
     gradient: 'linear-gradient(135deg, #1a3c5e 0%, #FBB91E 100%)',
     emoji: '🚌',
   },
@@ -21,7 +21,7 @@ const SLIDES = [
     subtitle: 'Transform your living space with the exquisite elegance of the Indoor Cushion Cover from CushionGuru, where comfort meets style seamlessly.',
     cta: 'Buy Now',
     href: '/shop/indoor',
-    mediaKey: 'shop_indoor_hero',
+    mediaKey: 'home_slider_indoor',
     gradient: 'linear-gradient(135deg, #2c1654 0%, #1a3c5e 100%)',
     emoji: '🛋️',
   },
@@ -31,7 +31,7 @@ const SLIDES = [
     subtitle: 'Where comfort meets style, cushion your pet\'s dreams with our bespoke pet beds from CushionGuru.',
     cta: 'Buy Now',
     href: '/shop/pet-bed',
-    mediaKey: 'shop_pet-bed_hero',
+    mediaKey: 'home_slider_pet-bed',
     gradient: 'linear-gradient(135deg, #6b3a2a 0%, #c0652b 100%)',
     emoji: '🐾',
   },
@@ -41,7 +41,7 @@ const SLIDES = [
     subtitle: 'Experience comfort that lasts with CushionGuru\'s outdoor cushion covers where style meets durability, outdoors!',
     cta: 'Buy Now',
     href: '/shop/outdoor',
-    mediaKey: 'shop_outdoor_hero',
+    mediaKey: 'home_slider_outdoor',
     gradient: 'linear-gradient(135deg, #1a4a28 0%, #FBB91E 100%)',
     emoji: '☀️',
   },
@@ -51,7 +51,7 @@ const SLIDES = [
     subtitle: 'Where comfort meets style, cushion your Boat Cushions dreams with our bespoke Boat Cushions from CushionGuru.',
     cta: 'Buy Now',
     href: '/shop/boat',
-    mediaKey: 'shop_boat_hero',
+    mediaKey: 'home_slider_boat',
     gradient: 'linear-gradient(135deg, #0d2d4a 0%, #1a5d8a 100%)',
     emoji: '⛵',
   },
@@ -66,7 +66,7 @@ export default function HeroSlider() {
   useEffect(() => {
     const loadBanners = async () => {
       try {
-        const res = await fetch('/api/media?prefix=shop_');
+        const res = await fetch(`/api/media?prefix=home_slider_&t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return;
         const items: Array<{ key: string; url: string }> = await res.json();
         const map: Record<string, string> = {};
