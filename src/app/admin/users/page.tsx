@@ -23,6 +23,7 @@ export default function AdminUsersPage() {
   const [usersList, setUsersList] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
@@ -30,8 +31,8 @@ export default function AdminUsersPage() {
     } else if (user?.role === 'ADMIN') {
       fetch('/api/users')
         .then(res => res.json())
-        .then(data => { if (Array.isArray(data)) setUsersList(data); })
-        .catch(console.error);
+        .then(data => { if (Array.isArray(data)) setUsersList(data); setDataLoading(false); })
+        .catch(err => { console.error(err); setDataLoading(false); });
     }
   }, [user, loading, router]);
 
@@ -79,9 +80,11 @@ export default function AdminUsersPage() {
               <span>Joined</span>
             </div>
 
-            {filtered.length === 0 && (
+            {dataLoading ? (
+              <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading users...</div>
+            ) : filtered.length === 0 ? (
               <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>No users found.</div>
-            )}
+            ) : null}
 
             {filtered.map((u, idx) => {
               const isExpanded = expanded === u.id;

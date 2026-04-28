@@ -47,7 +47,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </header>
 
         <div 
-          style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}
+          className="blog-content"
           dangerouslySetInnerHTML={{ __html: post.content }} 
         />
       </div>

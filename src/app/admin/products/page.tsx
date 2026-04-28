@@ -304,6 +304,7 @@ export default function AdminProductsPage() {
 
   // ── Regular Product ──
   const [products, setProducts] = useState<any[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
   const [name, setName] = useState('');
   const [sku, setSku] = useState('');
   const [listingPrice, setListingPrice] = useState('');
@@ -335,7 +336,9 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) { router.replace('/account'); return; }
-    if (user?.role === 'ADMIN') { fetchProducts(); fetchLinked(); }
+    if (user?.role === 'ADMIN') { 
+      Promise.all([fetchProducts(), fetchLinked()]).finally(() => setDataLoading(false));
+    }
   }, [user, loading]);
 
   const fetchProducts = () =>
@@ -531,7 +534,11 @@ export default function AdminProductsPage() {
                   </div>
                 </div>
               ))}
-              {products.length === 0 && <p style={{ color: 'var(--text-muted)', gridColumn: '1/-1' }}>No products yet.</p>}
+              {dataLoading ? (
+                <div style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--text-muted)', padding: '3rem' }}>Loading products...</div>
+              ) : products.length === 0 ? (
+                <p style={{ color: 'var(--text-muted)', gridColumn: '1/-1' }}>No products yet.</p>
+              ) : null}
             </div>
           </>
         )}
@@ -620,13 +627,17 @@ export default function AdminProductsPage() {
                   </div>
                 </div>
               ))}
-              {linkedProducts.length === 0 && !showLinkedForm && (
+              {dataLoading ? (
+                <div style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--text-muted)', padding: '3rem', border: '2px dashed var(--gray-200)', borderRadius: '12px' }}>
+                  <div style={{ fontWeight: 600 }}>Loading linked products...</div>
+                </div>
+              ) : linkedProducts.length === 0 && !showLinkedForm ? (
                 <div style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--text-muted)', padding: '3rem', border: '2px dashed var(--gray-200)', borderRadius: '12px' }}>
                   <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔗</div>
                   <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>No linked products yet</div>
                   <div style={{ fontSize: '0.9rem' }}>Click "Add Linked Product" to get started.</div>
                 </div>
-              )}
+              ) : null}
             </div>
           </>
         )}

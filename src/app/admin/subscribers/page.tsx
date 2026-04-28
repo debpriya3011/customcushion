@@ -13,6 +13,7 @@ export default function AdminSubscribersPage() {
   const { user, logout, loading } = useAuth();
   const router = useRouter();
   const [subscribers, setSubscribers] = useState<any[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
@@ -22,8 +23,12 @@ export default function AdminSubscribersPage() {
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data)) setSubscribers(data);
+          setDataLoading(false);
         })
-        .catch(console.error);
+        .catch(err => {
+          console.error(err);
+          setDataLoading(false);
+        });
     }
   }, [user, loading, router]);
 
@@ -47,7 +52,11 @@ export default function AdminSubscribersPage() {
         </div>
 
         <div className="card" style={{ padding: '1.75rem' }}>
-          {subscribers.length === 0 ? (
+          {dataLoading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+              Loading subscribers...
+            </div>
+          ) : subscribers.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
               No subscribers yet.
             </div>

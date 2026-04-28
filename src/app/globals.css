@@ -715,3 +715,25 @@ textarea.form-control {
     gap: 0.25rem;
   }
 }
+
+/* ── Blog Content Styling ────────────────────────────────── */
+.blog-content {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+  word-wrap: break-word;
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+}
+
+.blog-content a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.blog-content a:hover {
+  color: var(--brand-primary-dark);
+}

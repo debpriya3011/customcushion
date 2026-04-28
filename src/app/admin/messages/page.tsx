@@ -12,6 +12,7 @@ export default function AdminMessagesPage() {
   const router = useRouter();
   const [messages, setMessages] = useState<any[]>([]);
   const [search, setSearch] = useState('');
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
@@ -26,8 +27,10 @@ export default function AdminMessagesPage() {
       const res = await fetch('/api/contact');
       const data = await res.json();
       if (Array.isArray(data)) setMessages(data);
+      setDataLoading(false);
     } catch (err) {
       console.error(err);
+      setDataLoading(false);
     }
   };
 
@@ -96,9 +99,11 @@ export default function AdminMessagesPage() {
               <span>Actions</span>
             </div>
 
-            {filtered.length === 0 && (
+            {dataLoading ? (
+              <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading messages...</div>
+            ) : filtered.length === 0 ? (
               <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>No messages found.</div>
-            )}
+            ) : null}
 
             {filtered.map((m, idx) => (
               <div key={m.id} style={{

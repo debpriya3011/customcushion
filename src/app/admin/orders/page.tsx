@@ -54,6 +54,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [filter, setFilter] = useState('ALL');
   const [updating, setUpdating] = useState<string | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ADMIN')) {
@@ -68,8 +69,12 @@ export default function AdminOrdersPage() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setOrders(data);
+        setDataLoading(false);
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error(err);
+        setDataLoading(false);
+      });
   };
 
   const updateStatus = async (orderId: string, status: string) => {
@@ -135,11 +140,15 @@ export default function AdminOrdersPage() {
 
         {/* Orders list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {filtered.length === 0 && (
+          {dataLoading ? (
+            <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              Loading orders...
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
               No orders found{filter !== 'ALL' ? ` with status "${filter}"` : ''}.
             </div>
-          )}
+          ) : null}
           {filtered.map(order => {
             const sc = statusColor[order.status] ?? { bg: '#f3f4f6', color: '#6b7280' };
             return (

@@ -78,6 +78,10 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (html: s
         <button type="button" style={btnStyle} onClick={() => exec('insertUnorderedList')} title="Bullet List">• List</button>
         <button type="button" style={btnStyle} onClick={() => exec('insertOrderedList')} title="Numbered List">1. List</button>
         <button type="button" style={btnStyle} onClick={insertLine} title="Insert Horizontal Line">— Line</button>
+        <button type="button" style={btnStyle} onClick={() => {
+          const url = prompt('Enter link URL (e.g., https://example.com):');
+          if (url) exec('createLink', url);
+        }} title="Insert Link">🔗 Link</button>
         <div style={{ width: 1, background: '#d1d5db', margin: '0 2px' }} />
         {/* Font Size */}
         <div style={{ position: 'relative' }}>
@@ -129,6 +133,7 @@ export default function AdminBlogsPage() {
 
   const [blogs, setBlogs] = useState<any[]>([]);
   const [title, setTitle] = useState('');
+  const [dataLoading, setDataLoading] = useState(true);
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState<File | null>(null);
@@ -147,8 +152,8 @@ export default function AdminBlogsPage() {
   const fetchBlogs = () => {
     fetch('/api/blogs')
       .then(res => res.json())
-      .then(data => setBlogs(data))
-      .catch(console.error);
+      .then(data => { setBlogs(data); setDataLoading(false); })
+      .catch(err => { console.error(err); setDataLoading(false); });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -311,7 +316,11 @@ export default function AdminBlogsPage() {
               </div>
             </div>
           ))}
-          {blogs.length === 0 && <p style={{ color: 'var(--text-muted)', gridColumn: '1 / -1' }}>No blog posts found.</p>}
+          {dataLoading ? (
+            <p style={{ color: 'var(--text-muted)', gridColumn: '1 / -1', textAlign: 'center', padding: '3rem' }}>Loading blogs...</p>
+          ) : blogs.length === 0 ? (
+            <p style={{ color: 'var(--text-muted)', gridColumn: '1 / -1' }}>No blog posts found.</p>
+          ) : null}
         </div>
       </main>
     </div>

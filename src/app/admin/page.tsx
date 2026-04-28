@@ -118,7 +118,9 @@ export default function AdminPage() {
             <h2 style={{ margin: 0, color: 'var(--brand-primary)' }}>Recent Orders</h2>
             <Link href="/admin/orders" className="btn btn-outline btn-sm">View All</Link>
           </div>
-          {recentOrders.length === 0 ? (
+          {statsLoading ? (
+            <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading orders...</div>
+          ) : recentOrders.length === 0 ? (
             <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No orders yet.</div>
           ) : (
             <div className="card" style={{ overflowX: 'auto', padding: 0 }}>
@@ -148,7 +150,9 @@ export default function AdminPage() {
             <h2 style={{ margin: 0, color: 'var(--brand-primary)' }}>Products</h2>
             <Link href="/admin/products" className="btn btn-outline btn-sm">Manage</Link>
           </div>
-          {products.length === 0 ? (
+          {statsLoading ? (
+            <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading products...</div>
+          ) : products.length === 0 ? (
             <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No products yet. <Link href="/admin/products">Add one →</Link></div>
           ) : (
             <div className="grid-3" style={{ gap: '1.25rem' }}>
