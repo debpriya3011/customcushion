@@ -2,15 +2,15 @@ import type { Metadata } from 'next';
 import ShopPage from '@/components/ShopPage/ShopPage';
 
 export const metadata: Metadata = {
-  title: 'Custom RV Cushions',
-  description: 'Custom RV cushions made with authentic Sunbrella® performance fabrics. Dinette cushions, bench cushions and more.',
+  title: 'Custom RV Cushions | Durable Travel Seating Solutions | CushionGuru',
+  description: 'Custom RV cushions for motorhomes, travel trailers & campers. Durable, fade-resistant fabrics. Perfect fit guaranteed. Order your replacement cushions online.',
 };
 
 export default function RVPage() {
   return (
     <ShopPage
       badge="RV Collection"
-      heroTitle="Comfort That Travels With You"
+      heroTitle="Custom RV Cushions | Durable Seating for Your Home on Wheels"
       heroSubtitle="Crafted by Cushion Guru using authentic Sunbrella® performance fabrics"
       introText="Cushion Guru designs and crafts custom RV cushions made for life on the road. From dinette seating and lounge areas to beds and driver seating, each cushion is precisely tailored to your RV's dimensions, comfort preferences, and daily use."
       sections={[

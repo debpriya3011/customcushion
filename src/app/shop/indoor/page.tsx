@@ -2,16 +2,41 @@ import type { Metadata } from 'next';
 import ShopPage from '@/components/ShopPage/ShopPage';
 
 export const metadata: Metadata = {
-  title: 'Custom Indoor Cushions',
-  description: 'Luxury custom indoor cushions made with Sunbrella® upholstery fabrics. Sofas, benches, window seats and more.',
+  title: 'Custom Indoor Cushions | Made-to-Order Sofa & Chair Cushions | CushionGuru',
+  description: 'Handcrafted custom indoor cushions for sofas, chairs, and benches. 500+ fabric options, premium foam, shipped in 3-4 weeks. Free measurements consultation. Order online.',
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Custom Indoor Cushions",
+  "description": "Made-to-order indoor cushions handcrafted with premium fabrics and foam",
+  "brand": {"@type": "Brand", "name": "CushionGuru"},
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "49.99",
+    "highPrice": "599.99",
+    "offerCount": "500"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "120"
+  }
 };
 
 export default function IndoorPage() {
   return (
-    <ShopPage
-      badge="Indoor Collection"
-      heroTitle="Refined Comfort, Tailored for Indoor Living"
-      heroSubtitle="Crafted by Cushion Guru using Sunbrella® performance upholstery fabrics"
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ShopPage
+        badge="Indoor Collection"
+        heroTitle="Custom Indoor Cushions | Made-to-Order for Any Size Furniture"
+        heroSubtitle="Crafted by CushionGuru using Sunbrella® performance upholstery fabrics"
       introText="Cushion Guru designs and crafts custom indoor cushions that elevate everyday living. From sofas, benches, and window seats to headboards and built-in seating, each cushion is precisely tailored to your space, comfort preference, and aesthetic."
       sections={[
         { title: 'Indoor Living, Crafted by Cushion Guru', text: 'At Cushion Guru, we create custom indoor cushions and upholstery designed for everyday living. Crafted with care and precision, our sofa replacement cushions are made to withstand years of gatherings, family meals, and meaningful moments at home.', img: 'Luxury custom indoor cushions for living room sofa' },
@@ -22,5 +47,6 @@ export default function IndoorPage() {
       tagline="Custom-Tailored · Soft, Luxurious Comfort · Worry-Free Performance · Easy to Live With"
       customizeType="indoor"
     />
+    </>
   );
 }

@@ -5,8 +5,8 @@ import styles from './shop.module.css';
 import EditableMedia from '@/components/EditableMedia/EditableMedia';
 
 export const metadata: Metadata = {
-  title: 'Custom Outdoor Cushions',
-  description: 'Shop CushionGuru\'s custom outdoor cushion covers made with Sunbrella® performance fabrics. Fade-resistant, water-repellent and durable.',
+  title: 'Custom Outdoor Cushions | Weather-Resistant Sunbrella Fabrics | CushionGuru',
+  description: 'Durable outdoor patio cushions with Sunbrella fabrics. UV-fade resistant, water-repellent, mold-resistant. Custom sizes for any furniture. Fast shipping. Shop today.',
 };
 
 export default function OutdoorPage() {
@@ -30,7 +30,7 @@ export default function OutdoorPage() {
         <div className={styles.heroOverlay}>
           <div className="container">
             <span className={styles.badge}>Outdoor Collection</span>
-            <h1>Outdoor Comfort, Designed to Endure</h1>
+            <h1>Custom Outdoor Cushions | Sunbrella Fabrics & Weather-Resistant Protection</h1>
             <p>Crafted by Cushion Guru using Sunbrella® performance fabrics.</p>
             <Link href="/customize?type=outdoor" className="btn btn-accent" style={{ marginTop: '1rem', border: '2px solid black' }}>
               Customize Now

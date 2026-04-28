@@ -2,15 +2,15 @@ import type { Metadata } from 'next';
 import ShopPage from '@/components/ShopPage/ShopPage';
 
 export const metadata: Metadata = {
-  title: 'Custom Boat Cushions',
-  description: 'Marine-grade custom boat cushions made with Sunbrella® marine fabrics. Built to withstand sun, salt, and moisture.',
+  title: 'Custom Boat Cushions | Marine-Grade Sunbrella Fabrics | CushionGuru',
+  description: 'Marine-grade custom boat cushions built for saltwater & sun. Sunbrella fabrics, mold-resistant, easy to clean. Ships in 3-4 weeks. Customize online.',
 };
 
 export default function BoatPage() {
   return (
     <ShopPage
       badge="Marine Collection"
-      heroTitle="Marine Comfort, Tailored for Life on the Water"
+      heroTitle="Custom Boat Cushions | Marine-Grade Materials & Saltwater Protection"
       heroSubtitle="Crafted by Cushion Guru using authentic Sunbrella® marine-grade performance fabrics"
       introText="Cushion Guru designs and crafts custom marine cushions built to perform in demanding environments. From cockpit seating and sun pads to lounges and cabin interiors, each cushion is precisely tailored for fit, comfort, and long-term durability."
       sections={[

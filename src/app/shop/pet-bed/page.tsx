@@ -5,8 +5,8 @@ import styles from './petbed.module.css';
 import EditableMedia from '@/components/EditableMedia/EditableMedia';
 
 export const metadata: Metadata = {
-  title: 'Custom Pet Beds',
-  description: 'Luxury custom pet beds made with durable Sunbrella® fabric. Available in pillow, round, and lounger styles.',
+  title: 'Luxury Custom Pet Beds | Orthopedic Comfort & Style | CushionGuru',
+  description: 'Luxury custom pet beds with memory foam & premium fabrics. Washable, durable, stylish. Perfect size for your pet. Free design consultation. Shop now.',
 };
 
 const BED_TYPES = [
@@ -58,7 +58,7 @@ export default function PetBedPage() {
         <div className={styles.heroOverlay}>
           <div className="container">
             <span className={styles.badge}>Pet Collection</span>
-            <h1>🐾 Premium Custom Pet Beds</h1>
+            <h1>Custom Pet Beds | Premium Comfort for Your Furry Friends</h1>
             <p>Where comfort meets style — cushion your pet&rsquo;s dreams with our bespoke pet beds.</p>
             <Link href="/customize?type=pet-bed" className="btn btn-accent" style={{ marginTop: '1rem', border: '2px solid black' }}>Customize Now</Link>
           </div>

@@ -4,8 +4,42 @@ import styles from './measure.module.css';
 import EditableMedia from '@/components/EditableMedia/EditableMedia';
 
 export const metadata: Metadata = {
-  title: 'How To Measure',
-  description: 'Step-by-step guide to measuring your cushions for a perfect custom fit. Learn how to measure rectangle, L-shape, round, and more.',
+  title: 'How to Measure for Custom Cushions | Step-by-Step Guide | CushionGuru',
+  description: 'Complete guide on how to measure for custom cushions. Accurate measurement tips, video tutorial, common mistakes to avoid. Perfect fit guaranteed.',
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Measure for Custom Cushions",
+  "description": "Learn the proper way to measure your furniture for perfectly-fitting custom cushions",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Gather Your Tools",
+      "text": "Get a soft measuring tape, notepad, and pen"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Measure Length",
+      "text": "Measure the longest part of your cushion from end to end"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Measure Width",
+      "text": "Measure the side-to-side width of your cushion"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Measure Thickness",
+      "text": "Measure the depth/thickness of your current cushion"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Double-Check",
+      "text": "Take measurements twice to ensure accuracy"
+    }
+  ]
 };
 
 const SHAPES = [
@@ -73,10 +107,14 @@ const RULES = [
 export default function HowToMeasurePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className={styles.hero}>
         <div className="container text-center">
-          <h1>How to Measure Your Cushions</h1>
+          <h1>How to Measure for Custom Cushions | Accurate Sizing Guide</h1>
           <p>Perfect fit starts with perfect measurements. Follow this guide to measure your furniture frames accurately.</p>
         </div>
       </section>
