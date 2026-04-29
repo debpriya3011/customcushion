@@ -123,6 +123,7 @@ export default function HeroSlider({ initialBanners = {} }: HeroSliderProps) {
             alt={slide.title}
             fill
             priority
+            fetchPriority="high"
             style={{ objectFit: 'cover', zIndex: -2 }}
             sizes="100vw"
             quality={85}

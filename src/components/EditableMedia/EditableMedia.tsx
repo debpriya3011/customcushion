@@ -166,7 +166,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
       );
     }
     return wrapWithEdit(
-      <Image src={url} alt={mediaKey} fill className={imgClass} style={{ objectFit }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" />
+      <Image src={url} alt={mediaKey} fill className={imgClass} style={{ objectFit }} priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" quality={priority ? 85 : 60} />
     );
   }
 
