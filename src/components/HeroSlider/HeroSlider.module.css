@@ -108,6 +108,7 @@
   max-width: 580px;
   line-height: 1.8;
   margin-bottom: 2rem;
+  min-height: 105px;
 }
 
 .ctas {
