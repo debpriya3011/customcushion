@@ -209,6 +209,9 @@
   font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
 }
 
 .imgOptionCard:hover {

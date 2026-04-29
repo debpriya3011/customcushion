@@ -401,6 +401,14 @@ export default function CustomizePage() {
 
   /* ── State ── */
   const [step, setStep] = useState(1);
+  const topRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      const y = topRef.current.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, [step]);
 
   // Step 1 – read ?type= and &shape= params
   const typeParam = searchParams.get('type');
@@ -654,7 +662,7 @@ export default function CustomizePage() {
         </div>
 
         {/* Progress bar */}
-        <div className={styles.progress}>
+        <div className={styles.progress} ref={topRef}>
           {STEP_LABELS.map((s, i) => (
             <button
               key={i}
