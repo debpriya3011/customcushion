@@ -64,9 +64,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        <link rel="preconnect" href="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://customcushion-upload-bucket-123.s3.us-east-1.amazonaws.com" />
-        <Script id="google-tag-manager" strategy="afterInteractive">
+        <Script id="google-tag-manager" strategy="lazyOnload">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             })(window,document,'script','dataLayer','GTM-5M8HXHP3');
           `}
         </Script>
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

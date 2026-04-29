@@ -57,10 +57,16 @@ const SLIDES = [
   },
 ];
 
-export default function HeroSlider() {
+import Image from 'next/image';
+
+interface HeroSliderProps {
+  initialBanners?: Record<string, string>;
+}
+
+export default function HeroSlider({ initialBanners = {} }: HeroSliderProps) {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
-  const [bannerUrls, setBannerUrls] = useState<Record<string, string>>({});
+  const [bannerUrls, setBannerUrls] = useState<Record<string, string>>(initialBanners);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -107,11 +113,23 @@ export default function HeroSlider() {
       className={`${styles.hero} ${styles.hasImage}`}
       aria-label="Hero slider"
       style={{
-        background: imageUrl
-          ? `linear-gradient(rgba(0,0,0,0.26), rgba(0,0,0,0.26)), url(${imageUrl}) center/cover no-repeat`
-          : slide.gradient,
+        background: imageUrl ? 'transparent' : slide.gradient,
       }}
     >
+      {imageUrl && (
+        <>
+          <Image
+            src={imageUrl}
+            alt={slide.title}
+            fill
+            priority
+            style={{ objectFit: 'cover', zIndex: -2 }}
+            sizes="100vw"
+            quality={85}
+          />
+          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.26)', zIndex: -1 }} />
+        </>
+      )}
       {/* Slide content */}
       <div className={`container ${styles.content} ${animating ? styles.exit : styles.enter}`}>
         <span className={styles.badge}>{slide.badge}</span>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { prisma } from '@/lib/prisma';
 import HeroSlider from '@/components/HeroSlider/HeroSlider';
 import FeatureBanner from '@/components/home/FeatureBanner';
 import DesignPerformance from '@/components/home/DesignPerformance';
@@ -93,7 +94,17 @@ const breadcrumbJsonLd = {
   ]
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const items = await prisma.media.findMany({
+    where: { key: { startsWith: 'home_slider_' } },
+  });
+  const initialBanners: Record<string, string> = {};
+  items.forEach(item => {
+    if (item.key && item.url) {
+      initialBanners[item.key] = item.url;
+    }
+  });
+
   return (
     <>
       <script
@@ -104,7 +115,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <HeroSlider />
+      <HeroSlider initialBanners={initialBanners} />
       <FeatureBanner />
       <DesignPerformance />
       <WhyUpgrade />
