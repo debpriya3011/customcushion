@@ -18,7 +18,7 @@ export default function EditableMedia({ mediaKey, type = 'image', defaultCompone
   const { user, refreshMedia: globalRefreshMedia, mediaRefreshKey, mediaCache, updateMediaCache } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
 
-  const [url, setUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(mediaCache[mediaKey] || null);
   // Start with loading false if we have cached media
   const [loading, setLoading] = useState(!mediaCache[mediaKey]);
   const [uploading, setUploading] = useState(false);

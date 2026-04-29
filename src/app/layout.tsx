@@ -48,6 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   let siteName = '';
   let logoUrl = '';
   let siteTagline = '';
+  const initialMediaCache: Record<string, string> = {};
 
   try {
     const settings = await prisma.setting.findMany();
@@ -57,8 +58,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     siteName = map.siteName || '';
     logoUrl = map.logoUrl || map.siteLogo || '';
     siteTagline = map.siteTagline || '';
+
+    const allMedia = await prisma.media.findMany();
+    allMedia.forEach(m => {
+      if (m.key && m.url) initialMediaCache[m.key] = m.url;
+    });
   } catch (error) {
-    console.error('Failed to load settings in layout:', error);
+    console.error('Failed to load settings/media in layout:', error);
   }
 
   return (
@@ -100,7 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           src="https://www.facebook.com/tr?id=2121819478608185&ev=PageView&noscript=1"
           />
         </noscript>
-        <AuthProvider>
+        <AuthProvider initialMediaCache={initialMediaCache}>
           <SiteProvider initialSettings={{ siteName, logoUrl, siteTagline, initialized: true }}>
             <CartProvider>
               <a href="#main-content" className="skip-link">Skip to content</a>

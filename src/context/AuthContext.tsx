@@ -23,10 +23,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children, initialMediaCache = {} }: { children: React.ReactNode, initialMediaCache?: Record<string, string> }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [mediaCache, setMediaCache] = useState<Record<string, string>>({});
+  const [mediaCache, setMediaCache] = useState<Record<string, string>>(initialMediaCache);
   const [mediaRefreshKey, setMediaRefreshKey] = useState(0);
 
   const refreshMedia = useCallback(() => {
