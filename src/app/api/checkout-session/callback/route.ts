@@ -60,12 +60,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(`${originUrl}/account/orders?stripe_success=true&order_id=${order.id}`);
       
     } else if (action === 'cancel') {
-      // Cancel the order so it doesn't stay stuck in ORDER_RECEIVED
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { status: 'CANCELLED' }
-      });
-      
       // Revert the stock allocation that was made on order creation
       try {
         const items = order.items as any[];
@@ -83,16 +77,13 @@ export async function GET(req: NextRequest) {
         console.error('Stock increment error:', stockErr);
       }
 
-      // Send the failed payment email securely matching customer's details and logos
-      if (email) {
-        const emailHtml = generatePaymentFailedEmail(order, siteName, siteLogo, customerName, originUrl);
-        try {
-          await sendMail({
-             to: email,
-             subject: `Payment Failed - ${siteName}`,
-             html: emailHtml
-          });
-        } catch(e) { console.error('Callback sendMail error', e); }
+      // Delete the order so it doesn't show up in the orders list
+      try {
+        await prisma.order.delete({
+          where: { id: order.id }
+        });
+      } catch (deleteErr) {
+        console.error('Failed to delete cancelled order:', deleteErr);
       }
 
       return NextResponse.redirect(`${originUrl}/cart?canceled=true`);

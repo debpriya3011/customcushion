@@ -9,8 +9,8 @@ export function generateOrderConfirmationEmail(order: any, brandName: string, br
   console.log('----------------------------');
 
   return `
-    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333;">
-      ${logoUrl ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoUrl}" alt="${brandName}" style="max-height: 50px;"></div>` : `<h2 style="text-align: center;">${brandName}</h2>`}
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333; background-color: #ffffff;">
+      ${logoUrl ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; background-color: transparent;"></div>` : `<h2 style="text-align: center;">${brandName}</h2>`}
       
       <h3 style="color: #4CAF50;">Order Confirmation</h3>
       <p>Dear ${customerName},</p>
@@ -80,8 +80,8 @@ export function generateOtpEmail(otp: string, type: 'REGISTER' | 'FORGOT_PASSWOR
   const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
 
   return `
-    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center;">
-      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px;">` : `<h2>${brandName}</h2>`}
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center; background-color: #ffffff;">
+      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px; background-color: transparent;">` : `<h2>${brandName}</h2>`}
       
       <h3>Verification Code</h3>
       <p>Here is your one-time password (OTP) for ${actionText}.</p>
@@ -100,8 +100,8 @@ export function generatePasswordChangeEmail(brandName: string, brandLogoUrl?: st
   const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
 
   return `
-    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center;">
-      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px;">` : `<h2>${brandName}</h2>`}
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center; background-color: #ffffff;">
+      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px; background-color: transparent;">` : `<h2>${brandName}</h2>`}
       
       <h3 style="color: #4CAF50;">Password Changed Successfully</h3>
       <p>Your account password has been updated.</p>
@@ -118,8 +118,8 @@ export function generateEmailVerificationOtpEmail(otp: string, actionText: strin
   const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
 
   return `
-    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center;">
-      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px;">` : `<h2>${brandName}</h2>`}
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #333; text-align: center; background-color: #ffffff;">
+      ${logoUrl ? `<img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; margin-bottom: 20px; background-color: transparent;">` : `<h2>${brandName}</h2>`}
       
       <h3>Email Verification</h3>
       <p>Here is your one-time password (OTP) for ${actionText}.</p>
@@ -138,8 +138,8 @@ export function generatePaymentFailedEmail(order: any, brandName: string, brandL
   const logoUrl = brandLogoUrl ? (brandLogoUrl.startsWith('http') ? brandLogoUrl : `${siteUrl}/${brandLogoUrl.replace(/^\//, '')}`) : '';
 
   return `
-    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333;">
-      ${logoUrl ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoUrl}" alt="${brandName}" style="max-height: 50px;"></div>` : `<h2 style="text-align: center;">${brandName}</h2>`}
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333; background-color: #ffffff;">
+      ${logoUrl ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoUrl}" alt="${brandName}" style="max-height: 50px; background-color: transparent;"></div>` : `<h2 style="text-align: center;">${brandName}</h2>`}
       
       <h3 style="color: #f44336;">Payment Failed</h3>
       <p>Dear ${customerName},</p>

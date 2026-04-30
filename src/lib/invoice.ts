@@ -5,12 +5,36 @@ const fetchImageAsBase64 = async (url: string) => {
   try {
     const response = await fetch(url);
     const blob = await response.blob();
-    return new Promise<string>((resolve, reject) => {
+    const dataUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
+
+    if (typeof document !== 'undefined') {
+      return new Promise<string>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL('image/jpeg', 0.95));
+          } else {
+            resolve(dataUrl);
+          }
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
+    }
+    return dataUrl;
   } catch (e) {
     console.warn("Failed to fetch image", e);
     return null;
@@ -54,11 +78,10 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
 
   if (logoBase64) {
     try {
-      const type = logoBase64.startsWith('data:image/png')
-        ? 'PNG'
-        : logoBase64.startsWith('data:image/jpeg')
-          ? 'JPEG'
-          : 'JPEG';
+      let type = 'JPEG';
+      const urlStr = (logoUrl || '').toLowerCase();
+      if (logoBase64.startsWith('data:image/png') || urlStr.includes('.png')) type = 'PNG';
+      else if (logoBase64.startsWith('data:image/webp') || urlStr.includes('.webp')) type = 'WEBP';
 
       // Get original image dimensions
       const imgProps = doc.getImageProperties(logoBase64);
@@ -105,6 +128,11 @@ export const downloadInvoice = async (order: any, logoUrl?: string, brandName?: 
   doc.text(`Order Date: ${new Date(order.createdAt).toLocaleDateString()}`, 14, startY + 12);
   doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 14, startY + 18);
   doc.text(`Payment: ${order.paymentMethod || 'COD'}`, 14, startY + 24);
+  let paymentStatus = 'Pending';
+  if (order.status === 'CANCELLED') paymentStatus = 'Cancelled';
+  else if (order.paymentMethod === 'STRIPE') paymentStatus = 'Paid';
+  else if (order.status === 'DELIVERED') paymentStatus = 'Paid';
+  doc.text(`Payment Status: ${paymentStatus}`, 14, startY + 30);
 
   // Address Parsers
   const rawShip = order.shippingAddr?.shipping || order.shippingAddr || {};
